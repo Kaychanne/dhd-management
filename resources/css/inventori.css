@@ -1,0 +1,673 @@
+/* =========================================================
+   DHD INTERIOR - INVENTORY & MATERIAL MANAGEMENT
+   Diimpor / Selaras dengan variabel root dashboard.css
+   ========================================================= */
+
+@import './dashboard.css';
+
+/* =========================================================
+   INVENTORY PAGE HEADER & FILTERS
+   ========================================================= */
+
+.inventory-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.inventory-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.inventory-title h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-dark);
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.inventory-title h1 svg {
+    width: 24px;
+    height: 24px;
+    color: var(--dhd-blue);
+}
+
+.inventory-title p {
+    margin-top: 4px;
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+/* Breadcrumb Styling */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    font-size: 11px;
+    color: var(--text-light);
+}
+
+.breadcrumb a {
+    color: var(--dhd-blue);
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb svg {
+    width: 14px;
+    height: 14px;
+    color: var(--text-light);
+}
+
+/* Top Filter Select Boxes */
+.inventory-filters .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.select-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 14px;
+    height: 38px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.select-box svg {
+    width: 16px;
+    height: 16px;
+    color: var(--dhd-blue);
+    flex-shrink: 0;
+}
+
+.select-box select,
+.select-box input {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--text-dark);
+    font-size: 12px;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   STATISTIC / KPI CARDS (6 GRID)
+   ========================================================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.stat-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Variasi Warna Icon KPI */
+.stat-icon.purple { background: #f0eafc; color: #7047eb; }
+.stat-icon.blue   { background: var(--dhd-blue-light); color: var(--dhd-blue); }
+.stat-icon.green  { background: var(--green-light); color: var(--green); }
+.stat-icon.warning{ background: var(--yellow-light); color: var(--yellow); }
+.stat-icon.danger { background: var(--red-light); color: var(--red); }
+.stat-icon.teal   { background: #e6f7f5; color: #00a896; }
+
+.stat-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.stat-label {
+    color: var(--text-light);
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stat-value {
+    color: var(--text-dark);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.stat-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 10px;
+}
+
+.stat-trend.positive { color: var(--green); }
+.stat-trend.negative { color: var(--red); }
+
+.stat-subtext {
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.stat-subtext.warning { color: var(--yellow); }
+.stat-subtext.danger  { color: var(--red); }
+
+
+/* =========================================================
+   TABLE CARD & TOOLBAR
+   ========================================================= */
+
+.table-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.table-header-action {
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    border-bottom: 1px solid var(--border);
+}
+
+.table-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.table-title h2 {
+    font-size: 15px;
+    font-weight: 650;
+    color: var(--text-dark);
+}
+
+.table-title svg {
+    width: 20px;
+    height: 20px;
+    color: var(--dhd-blue);
+}
+
+/* Button UI */
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 550;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.btn-primary {
+    background: var(--dhd-blue);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background: var(--dhd-blue-dark);
+}
+
+.btn-outline {
+    background: var(--white);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+.btn-outline:hover {
+    background: var(--dhd-blue-light);
+    color: var(--dhd-blue);
+    border-color: var(--dhd-blue);
+}
+
+.btn-secondary {
+    background: #eef3f8;
+    color: var(--text-dark);
+}
+
+.btn-secondary:hover {
+    background: #dfe6ee;
+}
+
+/* Category Tabs & Search Bar Toolbar */
+.table-toolbar {
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    background: #fcfdfe;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.category-tabs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+}
+
+.tab-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: transparent;
+    color: var(--text-light);
+    font-size: 11px;
+    cursor: pointer;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+    color: var(--dhd-blue);
+    background: var(--dhd-blue-light);
+}
+
+.tab-btn.active {
+    background: var(--dhd-blue);
+    color: var(--white);
+    font-weight: 600;
+}
+
+.search-filter-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    height: 36px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    width: 220px;
+}
+
+.search-input input {
+    border: 0;
+    outline: 0;
+    width: 100%;
+    font-size: 12px;
+}
+
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.btn-icon:hover {
+    border-color: var(--dhd-blue);
+    color: var(--dhd-blue);
+}
+
+
+/* =========================================================
+   DATA TABLE STYLING
+   ========================================================= */
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.data-table th {
+    background: #f8fafc;
+    padding: 12px 16px;
+    font-size: 11px;
+    font-weight: 650;
+    color: var(--text-light);
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.data-table td {
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--text-dark);
+    border-bottom: 1px solid #edf1f5;
+    vertical-align: middle;
+}
+
+.data-table tbody tr:hover {
+    background: #fbfcfd;
+}
+
+/* Item Thumbnail Component */
+.material-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.item-thumb {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    background: #f0f3f7;
+}
+
+/* Badges Status */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.badge-success { background: var(--green-light); color: var(--green); }
+.badge-warning { background: var(--yellow-light); color: var(--yellow); }
+.badge-danger  { background: var(--red-light); color: var(--red); }
+
+.btn-action {
+    color: var(--text-light);
+    padding: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-action:hover {
+    color: var(--dhd-blue);
+    background: var(--dhd-blue-light);
+}
+
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+.table-pagination {
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border);
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.pagination-info {
+    font-size: 11px;
+    color: var(--text-light);
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.page-num, .page-nav {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--text);
+    border: 1px solid var(--border);
+    background: var(--white);
+    cursor: pointer;
+}
+
+.page-num.active {
+    background: var(--dhd-blue);
+    color: var(--white);
+    border-color: var(--dhd-blue);
+}
+
+.page-num:hover:not(.active), .page-nav:hover:not(:disabled) {
+    background: var(--dhd-blue-light);
+    color: var(--dhd-blue);
+}
+
+.page-nav:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   CREATE MATERIAL FORM STYLING
+   ========================================================= */
+
+.form-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.form-section:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 650;
+    color: var(--dhd-blue);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.col-span-2 {
+    grid-column: span 2;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.form-group label .required {
+    color: var(--red);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--text-dark);
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--dhd-blue);
+}
+
+.form-group small {
+    color: var(--text-light);
+    font-size: 10px;
+}
+
+.error-msg {
+    color: var(--red);
+    font-size: 10px;
+}
+
+/* File Upload Drag & Drop Area */
+.file-upload-box {
+    border: 2px dashed var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    text-align: center;
+    background: #fafbfc;
+    position: relative;
+    cursor: pointer;
+}
+
+.file-upload-box svg {
+    width: 32px;
+    height: 32px;
+    color: var(--dhd-blue);
+    margin-bottom: 8px;
+}
+
+.file-upload-box input[type="file"] {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 10px;
+}
+
+
+/* =========================================================
+   RESPONSIVE INVENTORY
+   ========================================================= */
+
+@media (max-width: 1300px) {
+    .stats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .col-span-2 {
+        grid-column: span 1;
+    }
+
+    .table-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-input {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,268 @@
+/* =========================================================
+   DHD INTERIOR - CREATE MATERIAL FORM
+   Import / Mengikuti variabel root dari dashboard.css
+   ========================================================= */
+
+@import './dashboard.css';
+
+/* =========================================================
+   PAGE HEADER & BREADCRUMB
+   ========================================================= */
+
+.inventory-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.inventory-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    font-size: 11px;
+    color: var(--text-light);
+}
+
+.breadcrumb a {
+    color: var(--dhd-blue);
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb svg {
+    width: 14px;
+    height: 14px;
+    color: var(--text-light);
+}
+
+.inventory-title h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-dark);
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.inventory-title p {
+    margin-top: 4px;
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+/* =========================================================
+   BUTTON STYLING
+   ========================================================= */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--dhd-blue);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background: var(--dhd-blue-dark);
+}
+
+.btn-outline {
+    background: var(--white);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+.btn-outline:hover {
+    background: var(--dhd-blue-light);
+    color: var(--dhd-blue);
+    border-color: var(--dhd-blue);
+}
+
+.btn-secondary {
+    background: #eef3f8;
+    color: var(--text-dark);
+}
+
+.btn-secondary:hover {
+    background: #dfe6ee;
+}
+
+/* =========================================================
+   FORM CONTAINER & SECTIONS
+   ========================================================= */
+
+.form-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+}
+
+.form-section:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 650;
+    color: var(--dhd-blue);
+}
+
+.section-title svg {
+    width: 18px;
+    height: 18px;
+    color: var(--dhd-blue);
+}
+
+/* =========================================================
+   FORM GRID & INPUT CONTROLS
+   ========================================================= */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.col-span-2 {
+    grid-column: span 2;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.form-group label .required {
+    color: var(--red);
+    margin-left: 2px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--text-dark);
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-light);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--dhd-blue);
+    box-shadow: 0 0 0 3px rgba(47, 67, 102, 0.08);
+}
+
+.form-group select {
+    cursor: pointer;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.error-msg {
+    color: var(--red);
+    font-size: 10px;
+    margin-top: 2px;
+}
+
+/* =========================================================
+   FORM FOOTER ACTIONS
+   ========================================================= */
+
+.form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .col-span-2 {
+        grid-column: span 1;
+    }
+
+    .form-card {
+        padding: 16px;
+    }
+
+    .form-footer {
+        flex-direction: column-reverse;
+        gap: 8px;
+    }
+
+    .form-footer .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
