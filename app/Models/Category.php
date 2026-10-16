@@ -16,7 +16,6 @@ class Category extends Model
         'description',
     ];
 
-    // Relasi ke Material
     public function materials()
     {
         return $this->hasMany(Material::class, 'category_id');

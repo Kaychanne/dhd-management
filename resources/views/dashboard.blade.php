@@ -14,53 +14,27 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
 </head>
-
-
 <body>
-
-
 <div class="dashboard-wrapper">
-
-
-    {{-- =========================================================
-        SIDEBAR
-    ========================================================== --}}
-
     <aside class="sidebar">
-
-
         <div class="sidebar-brand">
-
             <div class="brand-logo">
                 DHD
             </div>
-
             <div class="brand-text">
-
                 <strong>
                     Interior
                 </strong>
-
                 <span>
                     Management System
                 </span>
-
             </div>
-
         </div>
 
-
-
         <nav class="sidebar-menu">
-
-
-            {{-- DASHBOARD --}}
-
             <a
                 href="{{ route('dashboard') }}"
-                class="menu-item active"
-            >
-
+                class="menu-item active">
                 <i data-lucide="layout-dashboard"></i>
 
                 <span>
@@ -68,40 +42,22 @@
                 </span>
 
             </a>
-
-
-
-            {{-- RAP --}}
-
             <a
                 href="#"
-                class="menu-item"
-            >
-
+                class="menu-item">
                 <i data-lucide="chart-no-axes-combined"></i>
-
                 <span>
                     RAP & Anggaran
                 </span>
-
             </a>
-
-
-
-            {{-- INVENTORI --}}
-
             <div class="menu-group">
-
             <a
                 href="{{ route('inventori.index') }}"
-                class="menu-item {{ request()->routeIs('inventori.index') ? 'active' : '' }}"
-            >
+                class="menu-item {{ request()->routeIs('inventori.index') ? 'active' : '' }}">
                 <i data-lucide="package"></i>
-
                 <span>
                     Inventori & Stok
                 </span>
-
                 <i
                     data-lucide="chevron-down"
                     class="arrow"
@@ -110,211 +66,103 @@
 
 
             <div class="submenu">
-
                 <a href="{{ route('inventori.index') }}">
                     Dashboard Inventori
                 </a>
-
                 <a href="#">
                     Master Harga & Supplier
                 </a>
-
                 <a href="#">
                     Pembelian & Stok
                 </a>
-
                 <a href="#">
                     Stok Gudang
                 </a>
-
                 <a href="#">
                     Mutasi Stok
                 </a>
-
                 <a href="#">
                     Stok Opname
                 </a>
-
             </div>
-
         </div>
-
-
-
-            {{-- OPERASIONAL --}}
-
             <a
                 href="#"
-                class="menu-item"
-            >
-
+                class="menu-item">
                 <i data-lucide="wallet"></i>
-
                 <span>
                     Operasional & Finansial
                 </span>
 
             </a>
 
-
-
-            {{-- LAPORAN --}}
-
             <a
                 href="#"
-                class="menu-item"
-            >
-
+                class="menu-item">
                 <i data-lucide="file-text"></i>
-
                 <span>
                     Laporan
                 </span>
-
             </a>
-
-
         </nav>
 
-
-
-        {{-- SIDEBAR FOOTER --}}
-
         <div class="sidebar-footer">
-
-    <div class="orange-line"></div>
-
-    <p>
-        Better Planning.
-    </p>
-
-    <p>
-        Smoother Project.
-    </p>
-
-
-
-    {{-- CHANGE THEME --}}
-
+        <div class="orange-line"></div>
+        <p>Better Planning.</p>
+        <p>Smoother Project.</p>
     <button
         type="button"
         class="theme-button"
-        onclick="changeTheme()"
-    >
-
+        onclick="changeTheme()">
         <i data-lucide="palette"></i>
-
         <span>
             Change Theme
         </span>
-
     </button>
         <form
             method="POST"
             action="{{ route('logout') }}"
-            class="logout-form"
-        >
-
+            class="logout-form">
             @csrf
-
             <button
                 type="submit"
-                class="logout-button"
-            >
-
+                class="logout-button">
                 <i data-lucide="log-out"></i>
-
                 <span>
                     Logout
                 </span>
-
             </button>
-
         </form>
-
     </div>
-
-
-    </aside>
-
-
-
-    {{-- =========================================================
-        MAIN CONTENT
-    ========================================================== --}}
-
-    <main class="main-content">
-
-
-        {{-- =====================================================
-            TOPBAR
-        ====================================================== --}}
-
-        <header class="topbar">
-
-
-            {{-- SEARCH --}}
-
-            <div class="search-box">
-
-                <i data-lucide="search"></i>
-
+</aside>
+<main class="main-content">
+    <header class="topbar">
+        <div class="search-box">
+            <i data-lucide="search"></i>
                 <input
                     type="text"
-                    placeholder="Cari proyek, barang, supplier atau transaksi..."
-                >
-
-            </div>
-
-
-
-            <div class="topbar-right">
-
-
-                {{-- DATE --}}
-
+                    placeholder="Cari proyek, barang, supplier atau transaksi...">
+                </div>
+                <div class="topbar-right">
                 <div class="date-info">
-
                     <i data-lucide="calendar-days"></i>
-
                     <div>
-
                         <strong>
                             {{ now()->translatedFormat('l, d F Y') }}
                         </strong>
-
                         <span>
                             {{ now()->format('H:i') }} WIB
                         </span>
-
                     </div>
-
                 </div>
-
-
-
-                {{-- NOTIFICATION --}}
-
                 <button
                     type="button"
-                    class="notification-button"
-                >
-
+                    class="notification-button">
                     <i data-lucide="bell"></i>
-
                     <span class="notification-dot"></span>
-
                 </button>
-
-
-
-                {{-- PROFILE --}}
-
                 <div class="admin-profile">
-
-
                     <div class="admin-avatar">
-
                         {{ strtoupper(
                             substr(
                                 Auth::user()->name ?? 'AD',
@@ -322,58 +170,21 @@
                                 2
                             )
                         ) }}
-
                     </div>
-
-
                     <span>
-
                         {{ Auth::user()->name ?? 'Admin' }}
-
                     </span>
-
-
                     <i data-lucide="chevron-down"></i>
-
-
                 </div>
-
-
             </div>
-
-
         </header>
-
-
-
-        {{-- =====================================================
-            DASHBOARD CONTENT
-        ====================================================== --}}
-
         <section class="content">
-
-
-            {{-- =================================================
-                KPI CARDS
-            ================================================== --}}
-
             <div class="kpi-grid">
-
-
-                {{-- TOTAL RAP --}}
-
                 <div class="kpi-card">
-
-
                     <div class="kpi-icon">
-
                         <i data-lucide="coins"></i>
-
                     </div>
-
-
                     <div class="kpi-content">
-
                         <span>
                             Total Nilai RAP
                         </span>
@@ -387,32 +198,13 @@
                         </small>
 
                     </div>
-
-
-                    <i
-                        data-lucide="chevron-right"
-                        class="kpi-arrow"
-                    ></i>
-
-
+                    <i data-lucide="chevron-right" class="kpi-arrow"></i>
                 </div>
-
-
-
-                {{-- REALISASI BELANJA --}}
-
                 <div class="kpi-card">
-
-
                     <div class="kpi-icon">
-
                         <i data-lucide="wallet-cards"></i>
-
                     </div>
-
-
                     <div class="kpi-content">
-
                         <span>
                             Realisasi Belanja
                         </span>
@@ -420,181 +212,64 @@
                         <strong>
                             Rp 42.000.000
                         </strong>
-
-
                         <div class="mini-progress">
-
-                            <div
-                                style="width:60%"
-                            ></div>
-
+                            <div style="width:60%"></div>
                         </div>
-
-
-                        <small>
-                            60% dari anggaran efektif
-                        </small>
-
+                        <small>60% dari anggaran efektif</small>
                     </div>
-
-
-                    <i
-                        data-lucide="chevron-right"
-                        class="kpi-arrow"
-                    ></i>
-
-
+                    <i data-lucide="chevron-right" class="kpi-arrow"></i>
                 </div>
-
-
-
-                {{-- TOTAL STOK --}}
-
                 <div class="kpi-card">
-
-
                     <div class="kpi-icon">
-
                         <i data-lucide="package"></i>
-
                     </div>
-
-
                     <div class="kpi-content">
-
                         <span>
                             Total Stok
                         </span>
-
-                        <strong>
-                            256 Item
-                        </strong>
-
+                        <strong>256 Item</strong>
                         <small class="positive">
                             ↗ +12% dari bulan lalu
                         </small>
-
                     </div>
-
-
-                    <i
-                        data-lucide="chevron-right"
-                        class="kpi-arrow"
-                    ></i>
-
-
+                    <i data-lucide="chevron-right" class="kpi-arrow"></i>
                 </div>
-
-
             </div>
-
-
-
-            {{-- =================================================
-                MAIN DASHBOARD GRID
-            ================================================== --}}
-
             <div class="dashboard-grid">
-
-
-                {{-- =================================================
-                    LEFT COLUMN
-                ================================================== --}}
-
                 <div class="left-column">
-
-
-                    {{-- =================================================
-                        PROGRESS PROYEK
-                    ================================================== --}}
-
                     <div class="dashboard-card project-card">
-
-
                         <div class="card-header">
-
-
                             <div>
-
                                 <h2>
-
                                     <i data-lucide="house"></i>
-
                                     Progress Proyek
-
                                 </h2>
-
-
                                 <p>
                                     Pantau perkembangan proyek yang sedang berjalan.
                                 </p>
-
                             </div>
-
-
-                            <a href="#">
-                                Lihat Semua Proyek →
-                            </a>
-
-
+                            <a href="#">Lihat Semua Proyek →</a>
                         </div>
-
-
-
-                        {{-- FILTER --}}
-
                         <div class="project-filter">
-
-
-                            <button
-                                class="filter active"
-                                type="button"
-                            >
+                            <button class="filter active" type="button">
                                 Semua
                             </button>
-
-
-                            <button
-                                class="filter"
-                                type="button"
-                            >
+                            <button class="filter" type="button">
                                 Berjalan
                             </button>
-
-
-                            <button
-                                class="filter"
-                                type="button"
-                            >
+                            <button class="filter" type="button">
                                 Pending
                             </button>
-
-
-                            <button
-                                class="filter"
-                                type="button"
-                            >
+                            <button class="filter"  type="button">
                                 Selesai
                             </button>
-
-
                         </div>
 
-
-
-                        {{-- PROJECT TABLE --}}
-
                         <div class="project-table">
-
-
-                            {{-- HEADER --}}
-
                             <div class="project-row project-head">
-
                                 <span>
                                     Proyek
                                 </span>
-
                                 <span>
                                     Alamat
                                 </span>
@@ -606,316 +281,146 @@
                                 <span>
                                     Status
                                 </span>
-
                                 <span>
                                     Deadline
                                 </span>
 
                             </div>
 
-
-
-                            {{-- PROJECT 1 --}}
-
                             <div class="project-row">
-
-
                                 <span class="project-name">
-
                                     <i data-lucide="house"></i>
-
                                     Rumah Bapak Andi
-
                                 </span>
-
-
                                 <span>
                                     Jl. Melati No. 12, Pontianak
                                 </span>
-
-
                                 <span class="progress-value">
-
                                     65%
-
                                     <span class="progress-bar">
-
-                                        <div
-                                            style="width:65%"
-                                        ></div>
-
+                                        <div style="width:65%"></div>
                                     </span>
-
                                 </span>
-
-
                                 <span>
-
                                     <span class="status running">
                                         Berjalan
                                     </span>
-
                                 </span>
-
-
                                 <span>
                                     15 Okt 2026
                                 </span>
-
-
                             </div>
 
-
-
-                            {{-- PROJECT 2 --}}
-
                             <div class="project-row">
-
-
                                 <span class="project-name">
-
                                     <i data-lucide="house"></i>
-
                                     Rumah Ibu Rina
-
                                 </span>
-
-
                                 <span>
                                     Jl. Anggrek No. 8, Pontianak
                                 </span>
-
-
                                 <span class="progress-value">
-
                                     30%
-
                                     <span class="progress-bar">
-
-                                        <div
-                                            style="width:30%"
-                                        ></div>
-
+                                        <div style="width:30%"></div>
                                     </span>
-
                                 </span>
-
-
                                 <span>
-
                                     <span class="status pending">
                                         Pending
                                     </span>
-
                                 </span>
-
-
                                 <span>
                                     28 Okt 2026
                                 </span>
-
-
                             </div>
 
-
-
-                            {{-- PROJECT 3 --}}
-
                             <div class="project-row">
-
-
                                 <span class="project-name">
-
                                     <i data-lucide="house"></i>
-
                                     Rumah Tuan Hadi
-
                                 </span>
-
-
                                 <span>
                                     Jl. Kamboja No. 5, Pontianak
                                 </span>
-
-
                                 <span class="progress-value">
-
                                     90%
-
                                     <span class="progress-bar">
-
-                                        <div
-                                            style="width:90%"
-                                        ></div>
-
+                                        <div style="width:90%"></div>
                                     </span>
-
                                 </span>
-
-
                                 <span>
-
                                     <span class="status running">
                                         Berjalan
                                     </span>
-
                                 </span>
-
-
                                 <span>
                                     10 Okt 2026
                                 </span>
-
-
                             </div>
-
-
-
-                            {{-- PROJECT 4 --}}
-
                             <div class="project-row">
-
-
                                 <span class="project-name">
-
                                     <i data-lucide="house"></i>
-
                                     Rumah Ibu Sari
-
                                 </span>
-
-
                                 <span>
                                     Jl. Flamboyan No. 20, Pontianak
                                 </span>
-
-
                                 <span class="progress-value">
-
                                     15%
-
                                     <span class="progress-bar">
-
-                                        <div
-                                            style="width:15%"
-                                        ></div>
-
+                                        <div style="width:15%"></div>
                                     </span>
-
                                 </span>
-
-
                                 <span>
-
                                     <span class="status pending">
                                         Pending
                                     </span>
-
                                 </span>
-
-
                                 <span>
                                     5 Nov 2026
                                 </span>
-
-
                             </div>
-
-
                         </div>
-
-
                     </div>
 
-
-
-                    {{-- =================================================
-                        HUTANG & PIUTANG
-                    ================================================== --}}
-
                     <div class="dashboard-card finance-debt-card">
-
-
                         <div class="card-header compact">
-
-
                             <div>
-
                                 <h2>
-
                                     <i data-lucide="wallet-cards"></i>
-
                                     Hutang & Piutang
-
                                 </h2>
-
-
-                                <p>
-                                    Ringkasan tagihan yang perlu diperhatikan.
-                                </p>
-
+                                <p> Ringkasan tagihan yang perlu diperhatikan.</p>
                             </div>
-
-
                             <a href="#">
                                 Lihat Detail →
                             </a>
-
-
                         </div>
-
-
-
                         <div class="debt-receivable-grid">
-
-
-                            {{-- PIUTANG --}}
-
                             <div class="money-summary receivable">
-
-
                                 <div class="money-icon">
-
                                     <i data-lucide="arrow-up-right"></i>
-
                                 </div>
 
 
                                 <div class="money-info">
-
                                     <span>
                                         Total Piutang
                                     </span>
-
                                     <strong>
                                         Rp 18.500.000
                                     </strong>
-
                                     <small>
                                         2 klien aktif
                                     </small>
-
                                 </div>
-
-
                             </div>
-
-
-
-                            {{-- HUTANG --}}
-
                             <div class="money-summary payable">
-
-
                                 <div class="money-icon">
-
                                     <i data-lucide="arrow-down-right"></i>
-
-                                </div>
-
-
+                                   </div>
                                 <div class="money-info">
-
                                     <span>
                                         Total Hutang
                                     </span>
@@ -929,24 +434,13 @@
                                     </small>
 
                                 </div>
-
-
                             </div>
 
 
-
-                            {{-- JATUH TEMPO --}}
-
                             <div class="money-summary due">
-
-
                                 <div class="money-icon">
-
                                     <i data-lucide="calendar-clock"></i>
-
                                 </div>
-
-
                                 <div class="money-info">
 
                                     <span>
@@ -962,73 +456,30 @@
                                     </small>
 
                                 </div>
-
-
                             </div>
-
-
                         </div>
-
-
                     </div>
-
-
                 </div>
 
-
-
-                {{-- =================================================
-                    RIGHT COLUMN
-                ================================================== --}}
-
                 <div class="right-column">
-
-
-                    {{-- =================================================
-                        RINGKASAN KEUANGAN
-                    ================================================== --}}
-
                     <div class="dashboard-card financial-card">
-
-
                         <div class="card-header compact">
-
-
                             <div>
-
                                 <h2>
-
                                     <i data-lucide="chart-no-axes-combined"></i>
-
                                     Ringkasan Keuangan
-
                                 </h2>
-
-
                                 <p>
                                     Kondisi anggaran proyek saat ini.
                                 </p>
 
                             </div>
-
-
                             <a href="#">
                                 Detail →
                             </a>
-
-
                         </div>
-
-
-
                         <div class="financial-content">
-
-
-                            {{-- ANGGARAN EFEKTIF --}}
-
                             <div class="financial-main">
-
-
                                 <div>
 
                                     <span>
@@ -1047,15 +498,8 @@
 
                             </div>
 
-
-
-                            {{-- REALISASI --}}
-
                             <div class="financial-row">
-
-
                                 <div>
-
                                     <span>
                                         Realisasi Belanja
                                     </span>
@@ -1063,24 +507,14 @@
                                     <strong>
                                         Rp 42.000.000
                                     </strong>
-
                                 </div>
 
 
                                 <span class="financial-percent">
                                     60%
                                 </span>
-
-
                             </div>
-
-
-
-                            {{-- PROGRESS BELANJA --}}
-
                             <div class="budget-progress">
-
-
                                 <div class="budget-progress-head">
 
                                     <span>
@@ -1105,10 +539,6 @@
 
                             </div>
 
-
-
-                            {{-- SISA ANGGARAN --}}
-
                             <div class="financial-row remaining">
 
 
@@ -1129,11 +559,6 @@
 
 
                             </div>
-
-
-
-                            {{-- STATUS --}}
-
                             <div class="budget-status">
 
                                 <i data-lucide="circle-check"></i>
@@ -1149,47 +574,17 @@
 
 
                     </div>
-
-
-
-                    {{-- =================================================
-                        QUICK ACTION
-                    ================================================== --}}
-
                     <div class="dashboard-card quick-card">
-
-
                         <div class="card-header compact">
-
-
                             <h2>
-
                                 <i data-lucide="zap"></i>
-
                                 Quick Action
-
                             </h2>
-
-
                         </div>
-
-
-
                         <div class="quick-grid">
-
-
-                            {{-- PEMBELIAN --}}
-
-                            <a
-                                href="#"
-                                class="quick-action"
-                            >
-
+                            <a href="#" class="quick-action">
                                 <i data-lucide="shopping-cart"></i>
-
-
                                 <div>
-
                                     <strong>
                                         Pembelian
                                     </strong>
@@ -1201,19 +596,8 @@
                                 </div>
 
                             </a>
-
-
-
-                            {{-- PROYEK --}}
-
-                            <a
-                                href="#"
-                                class="quick-action"
-                            >
-
+                            <a href="#"class="quick-action">
                                 <i data-lucide="folder-plus"></i>
-
-
                                 <div>
 
                                     <strong>
@@ -1227,19 +611,8 @@
                                 </div>
 
                             </a>
-
-
-
-                            {{-- STOK --}}
-
-                            <a
-                                href="#"
-                                class="quick-action"
-                            >
-
+                            <a href="#" class="quick-action">
                                 <i data-lucide="boxes"></i>
-
-
                                 <div>
 
                                     <strong>
@@ -1253,15 +626,7 @@
                                 </div>
 
                             </a>
-
-
-
-                            {{-- LAPORAN --}}
-
-                            <a
-                                href="#"
-                                class="quick-action"
-                            >
+                            <a href="#" class="quick-action">
 
                                 <i data-lucide="file-chart-column"></i>
 
@@ -1292,47 +657,17 @@
 
             </div>
 
-
-
-            {{-- =================================================
-                FOOTER
-            ================================================== --}}
-
             <footer class="dashboard-footer">
-
                 © {{ date('Y') }} DHD Interior.
                 All rights reserved.
-
             </footer>
-
-
         </section>
-
-
     </main>
-
-
 </div>
 
 
-
-{{-- =========================================================
-    JAVASCRIPT
-========================================================= --}}
-
 <script>
-
-
-    /* LUCIDE */
-
     lucide.createIcons();
-
-
-
-    /* =====================================================
-       INVENTORY SUBMENU
-    ====================================================== */
-
     function toggleInventory() {
 
 
@@ -1352,11 +687,6 @@
 
     }
 
-
-
-    /* =====================================================
-       PROJECT FILTER
-    ====================================================== */
 
     document
         .querySelectorAll('.filter')
@@ -1403,8 +733,6 @@
             );
         }
 
-
-        /* Simpan theme walaupun halaman direfresh */
 
         if (localStorage.getItem('dhd-theme') === 'pink') {
 

@@ -10,15 +10,73 @@
     @vite(['resources/css/inventori.css'])
 
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Styling Tambahan untuk Dropdown Action Menu (3 Titik) */
+        .action-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-menu-action {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 4px;
+            background-color: #ffffff;
+            min-width: 130px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            z-index: 1000;
+            border: 1px solid #eef2f6;
+            overflow: hidden;
+        }
+
+        .dropdown-menu-action.show {
+            display: block;
+        }
+
+        .dropdown-item-action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            color: #334155;
+            text-decoration: none;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            transition: background 0.2s ease;
+        }
+
+        .dropdown-item-action:hover {
+            background-color: #f1f5f9;
+        }
+
+        .dropdown-item-action.delete {
+            color: #ef4444;
+        }
+
+        .dropdown-item-action.delete:hover {
+            background-color: #fef2f2;
+        }
+
+        .dropdown-item-action svg {
+            width: 14px;
+            height: 14px;
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="dashboard-wrapper">
 
-    {{-- =====================================================
-        SIDEBAR
-    ====================================================== --}}
+    {{-- SIDEBAR --}}
     <aside class="sidebar">
         <div class="sidebar-brand">
             <div class="brand-logo">DHD</div>
@@ -96,12 +154,10 @@
     </aside>
 
 
-    {{-- =====================================================
-        MAIN CONTENT
-    ====================================================== --}}
+    {{-- MAIN CONTENT --}}
     <main class="main-content">
 
-        {{-- TOPBAR / NAVBAR --}}
+        {{-- TOPBAR --}}
         <header class="topbar">
             <div class="search-box">
                 <i data-lucide="search"></i>
@@ -135,7 +191,7 @@
         <section class="content">
             <div class="inventory-page">
 
-                {{-- HEADER INVENTORY & FILTER PERIODE --}}
+                {{-- HEADER INVENTORY --}}
                 <div class="inventory-header">
                     <div class="inventory-title">
                         <h1>
@@ -168,9 +224,10 @@
                             </div>
 
                             <div class="select-box">
+                                {{-- MENGGUNAAN ->unique('name') AGAR TIDAK DOUBLE --}}
                                 <select name="category_id">
                                     <option value="">Semua Kategori</option>
-                                    @foreach($categories ?? [] as $category)
+                                    @foreach(collect($categories ?? [])->unique('name') as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
@@ -187,53 +244,35 @@
 
                 {{-- STATISTIC CARDS --}}
                 <div class="stats-grid">
-                    {{-- Total Material --}}
                     <div class="stat-card">
-                        <div class="stat-icon purple">
-                            <i data-lucide="image"></i>
-                        </div>
+                        <div class="stat-icon purple"><i data-lucide="image"></i></div>
                         <div class="stat-details">
                             <span class="stat-label">Total Material</span>
                             <h3 class="stat-value">{{ number_format(count($materials ?? []), 0, ',', '.') }}</h3>
-                            <span class="stat-trend positive">
-                                <i data-lucide="arrow-up-right"></i> 12% dari bulan lalu
-                            </span>
+                            <span class="stat-trend positive"><i data-lucide="arrow-up-right"></i> 12% dari bulan lalu</span>
                         </div>
                     </div>
 
-                    {{-- Total Stok --}}
                     <div class="stat-card">
-                        <div class="stat-icon blue">
-                            <i data-lucide="archive"></i>
-                        </div>
+                        <div class="stat-icon blue"><i data-lucide="archive"></i></div>
                         <div class="stat-details">
                             <span class="stat-label">Total Stok</span>
-                            <h3 class="stat-value">{{ number_format($materials->sum('stok') ?? 0, 0, ',', '.') }}</h3>
-                            <span class="stat-trend positive">
-                                <i data-lucide="arrow-up-right"></i> 8% dari bulan lalu
-                            </span>
+                            <h3 class="stat-value">{{ number_format(collect($materials ?? [])->sum('stok'), 0, ',', '.') }}</h3>
+                            <span class="stat-trend positive"><i data-lucide="arrow-up-right"></i> 8% dari bulan lalu</span>
                         </div>
                     </div>
 
-                    {{-- Nilai Persediaan --}}
                     <div class="stat-card">
-                        <div class="stat-icon green">
-                            <i data-lucide="box"></i>
-                        </div>
+                        <div class="stat-icon green"><i data-lucide="box"></i></div>
                         <div class="stat-details">
                             <span class="stat-label">Nilai Persediaan</span>
                             <h3 class="stat-value">Rp {{ number_format($nilaiPersediaan ?? 485250000, 0, ',', '.') }}</h3>
-                            <span class="stat-trend positive">
-                                <i data-lucide="arrow-up-right"></i> 6% dari bulan lalu
-                            </span>
+                            <span class="stat-trend positive"><i data-lucide="arrow-up-right"></i> 6% dari bulan lalu</span>
                         </div>
                     </div>
 
-                    {{-- Stok Menipis --}}
                     <div class="stat-card">
-                        <div class="stat-icon warning">
-                            <i data-lucide="alert-triangle"></i>
-                        </div>
+                        <div class="stat-icon warning"><i data-lucide="alert-triangle"></i></div>
                         <div class="stat-details">
                             <span class="stat-label">Stok Menipis</span>
                             <h3 class="stat-value">{{ number_format($stokMenipisCount ?? 0, 0, ',', '.') }}</h3>
@@ -241,11 +280,8 @@
                         </div>
                     </div>
 
-                    {{-- Stok Habis --}}
                     <div class="stat-card">
-                        <div class="stat-icon danger">
-                            <i data-lucide="package-x"></i>
-                        </div>
+                        <div class="stat-icon danger"><i data-lucide="package-x"></i></div>
                         <div class="stat-details">
                             <span class="stat-label">Stok Habis</span>
                             <h3 class="stat-value">{{ number_format($stokHabisCount ?? 0, 0, ',', '.') }}</h3>
@@ -253,26 +289,20 @@
                         </div>
                     </div>
 
-                    {{-- Barang Masuk (Bln Ini) --}}
                     <div class="stat-card">
-                        <div class="stat-icon teal">
-                            <i data-lucide="arrow-down-left"></i>
-                        </div>
+                        <div class="stat-icon teal"><i data-lucide="arrow-down-left"></i></div>
                         <div class="stat-details">
                             <span class="stat-label">Barang Masuk (Bln Ini)</span>
                             <h3 class="stat-value">{{ number_format($barangMasukCount ?? 1240, 0, ',', '.') }}</h3>
-                            <span class="stat-trend positive">
-                                <i data-lucide="arrow-up-right"></i> 15% dari bulan lalu
-                            </span>
+                            <span class="stat-trend positive"><i data-lucide="arrow-up-right"></i> 15% dari bulan lalu</span>
                         </div>
                     </div>
                 </div>
 
 
-                {{-- MAIN TABLE CARD CONTAINER --}}
+                {{-- TABLE CARD CONTAINER --}}
                 <div class="table-card">
 
-                    {{-- Table Header & Action Buttons --}}
                     <div class="table-header-action">
                         <div class="table-title">
                             <i data-lucide="layout-grid"></i>
@@ -294,13 +324,13 @@
                         </div>
                     </div>
 
-                    {{-- Filters, Search & Categories Tabs (RAPI DALAM TOOLBAR) --}}
+                    {{-- CATEGORY TABS (MENGGUNAAN UNIQUE UNTUK MENCEGAH KATEGORI DOUBLE) --}}
                     <div class="table-toolbar">
                         <div class="category-tabs">
                             <button type="button" class="tab-btn active" onclick="filterByCategory('', this)">
                                 Semua
                             </button>
-                            @foreach($categories ?? [] as $category)
+                            @foreach(collect($categories ?? [])->unique('name') as $category)
                                 <button type="button" class="tab-btn" onclick="filterByCategory('{{ $category->id }}', this)">
                                     {{ $category->name }}
                                 </button>
@@ -325,7 +355,7 @@
                         </div>
                     </div>
 
-                    {{-- Data Table --}}
+                    {{-- DATA TABLE --}}
                     <div class="table-responsive">
                         <table class="data-table">
                             <thead>
@@ -336,10 +366,7 @@
                                     <th>Kategori</th>
                                     <th>Brand</th>
                                     <th>Warna / Spesifikasi</th>
-                                    <th>
-                                        Satuan 
-                                        <i data-lucide="arrow-down-up"></i>
-                                    </th>
+                                    <th>Satuan <i data-lucide="arrow-down-up"></i></th>
                                     <th>Stok</th>
                                     <th>Min. Stok</th>
                                     <th>Harga Acuan</th>
@@ -381,10 +408,30 @@
                                                 <span class="badge badge-danger">Kritis</span>
                                             @endif
                                         </td>
+
+                                        {{-- AKSI DROPDOWN MENU (3 TITIK) --}}
                                         <td>
-                                            <a href="{{ route('materials.show', $item->id) }}" class="btn-action">
-                                                <i data-lucide="more-horizontal"></i>
-                                            </a>
+                                            <div class="action-dropdown">
+                                                <button type="button" class="btn-action" onclick="toggleDropdown(event, 'dropdown-{{ $item->id }}')">
+                                                    <i data-lucide="more-horizontal"></i>
+                                                </button>
+                                                
+                                                <div id="dropdown-{{ $item->id }}" class="dropdown-menu-action">
+                                                    {{-- OPSI EDIT / UPDATE --}}
+                                                    <a href="{{ Route::has('materials.edit') ? route('materials.edit', $item->id) : url('/materials/' . $item->id . '/edit') }}" class="dropdown-item-action">
+                                                        <i data-lucide="edit-3"></i> Edit
+                                                    </a>
+
+                                                    {{-- OPSI DELETE / HAPUS --}}
+                                                    <form action="{{ Route::has('materials.destroy') ? route('materials.destroy', $item->id) : url('/materials/' . $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus material ini?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="dropdown-item-action delete">
+                                                            <i data-lucide="trash-2"></i> Hapus
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty
@@ -396,13 +443,12 @@
                         </table>
                     </div>
 
-                    {{-- Pagination Footer --}}
+                    {{-- PAGINATION --}}
                     <div class="table-pagination">
                         @if(isset($materials) && method_exists($materials, 'links'))
                             {{ $materials->links() }}
                         @else
                             <span class="pagination-info">Menampilkan 1 - {{ count($materials ?? []) }} dari {{ count($materials ?? []) }} material</span>
-                            
                             <div class="pagination-controls">
                                 <button type="button" class="page-nav" disabled><i data-lucide="chevron-left"></i></button>
                                 <button type="button" class="page-num active">1</button>
@@ -425,7 +471,36 @@
     lucide.createIcons();
 
     // ==========================================
-    // REALTIME SEARCH & CATEGORY FILTER (OPTION A)
+    // DROPDOWN ACTION MENU TOGGLE
+    // ==========================================
+    function toggleDropdown(event, dropdownId) {
+        event.stopPropagation();
+        
+        // Tutup semua dropdown lain yang terbuka
+        const allDropdowns = document.querySelectorAll('.dropdown-menu-action');
+        allDropdowns.forEach(dropdown => {
+            if (dropdown.id !== dropdownId) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Buka/Tutup dropdown yang diklik
+        const targetDropdown = document.getElementById(dropdownId);
+        if (targetDropdown) {
+            targetDropdown.classList.toggle('show');
+        }
+    }
+
+    // Tutup dropdown jika mengklik di luar area dropdown
+    window.addEventListener('click', function() {
+        const allDropdowns = document.querySelectorAll('.dropdown-menu-action');
+        allDropdowns.forEach(dropdown => {
+            dropdown.classList.remove('show');
+        });
+    });
+
+    // ==========================================
+    // REALTIME SEARCH & CATEGORY FILTER
     // ==========================================
     let activeCategoryId = '';
 
@@ -439,15 +514,11 @@
 
         for (let i = 0; i < rows.length; i++) {
             const row = rows[i];
-
-            // Lewati baris jika itu pesan "Belum ada data material"
             if (row.cells.length === 1) continue;
 
-            // Ambil ID Kategori dari atribut data-category
             const rowCategory = row.getAttribute('data-category') || '';
             const rowText = (row.textContent || row.innerText).toLowerCase();
 
-            // Cek apakah baris memenuhi kriteria pencarian teks DAN filter kategori
             const matchesSearch = rowText.includes(filterText);
             const matchesCategory = (activeCategoryId === '' || rowCategory === activeCategoryId);
 
@@ -459,16 +530,13 @@
         }
     }
 
-    // Filter berdasarkan Klik Tab Kategori
     function filterByCategory(categoryId, element) {
         activeCategoryId = categoryId.toString();
 
-        // Update class 'active' pada tombol tab
         const tabs = document.querySelectorAll('.category-tabs .tab-btn');
         tabs.forEach(tab => tab.classList.remove('active'));
         if (element) element.classList.add('active');
 
-        // Jalankan ulang penyaringan
         filterMaterials();
     }
 

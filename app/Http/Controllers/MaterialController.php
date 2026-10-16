@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class MaterialController extends Controller
 {
-    // Halaman Dashboard Inventori
+
     public function index()
     {
         $categories = Category::all();
@@ -18,7 +18,7 @@ class MaterialController extends Controller
         return view('inventori', compact('categories', 'materials'));
     }
 
-    // Halaman Tambah Material
+
     public function create()
     {
         $categories = Category::all();
@@ -32,7 +32,51 @@ class MaterialController extends Controller
         return view('materials.show', compact('material')); 
         
     }
-    // Proses Simpan Data Material
+
+    public function edit($id)
+    {
+        $material = Material::findOrFail($id);
+        $categories = Category::all();
+        $brands = Brand::all();
+
+        return view('materials.edit', compact('material', 'categories', 'brands'));
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        $material = Material::findOrFail($id);
+
+        $validated = $request->validate([
+            'code' => 'required|unique:materials,code,' . $id,
+            'name' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'required',
+            'series' => 'required',
+            'specification' => 'required',
+            'size' => 'required',
+            'color' => 'required',
+            'motif' => 'required',
+            'finish' => 'required',
+            'unit' => 'required',
+            'stok' => 'required|integer|min:0',
+            'minimum_stock' => 'required|numeric',
+            'description' => 'required',
+        ]);
+
+        $material->update($validated);
+
+        return redirect()->route('inventori.index')->with('success', 'Data material berhasil diperbarui!');
+    }
+
+
+    public function destroy($id)
+    {
+        $material = Material::findOrFail($id);
+        $material->delete();
+
+        return redirect()->route('inventori.index')->with('success', 'Material berhasil dihapus!');
+    }
     public function store(Request $request)
     {
         $validated = $request->validate([
