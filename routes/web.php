@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MaterialController;
-
+use App\Http\Controllers\MasterHargaController;
 Route::get('/', function () {
     return redirect()->route('login');
 });
@@ -23,5 +23,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::resource('materials', MaterialController::class);
-
+Route::get('/masterharga', function () {
+    return view('masterharga.masterharga');
+})->name('masterharga.index');
 require __DIR__.'/auth.php';

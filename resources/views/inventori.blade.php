@@ -11,65 +11,7 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <style>
-        /* Styling Tambahan untuk Dropdown Action Menu (3 Titik) */
-        .action-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-menu-action {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 100%;
-            margin-top: 4px;
-            background-color: #ffffff;
-            min-width: 130px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
-            border-radius: 8px;
-            z-index: 1000;
-            border: 1px solid #eef2f6;
-            overflow: hidden;
-        }
-
-        .dropdown-menu-action.show {
-            display: block;
-        }
-
-        .dropdown-item-action {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            color: #334155;
-            text-decoration: none;
-            font-size: 12px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            width: 100%;
-            text-align: left;
-            transition: background 0.2s ease;
-        }
-
-        .dropdown-item-action:hover {
-            background-color: #f1f5f9;
-        }
-
-        .dropdown-item-action.delete {
-            color: #ef4444;
-        }
-
-        .dropdown-item-action.delete:hover {
-            background-color: #fef2f2;
-        }
-
-        .dropdown-item-action svg {
-            width: 14px;
-            height: 14px;
-        }
-    </style>
+    
 </head>
 
 <body>
@@ -107,7 +49,10 @@
                 </a>
 
                 <div class="submenu open">
-                    <a href="#">Master Harga & Supplier</a>
+                    <a href="{{ route('masterharga.index') }}"
+                    class="{{ request()->routeIs('masterharga.*') ? 'active' : '' }}">
+                        Master Harga
+                    </a>
                     <a href="#">Pembelian & Stok</a>
                     <a href="#">Stok Gudang</a>
                     <a href="#">Mutasi Stok</a>
