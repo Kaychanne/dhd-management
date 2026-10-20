@@ -727,128 +727,60 @@
 
 
                 {{-- MATERIAL --}}
-                <div class="form-group">
+                <form method="POST" action="{{ route('masterharga.price.store') }}">
+    @csrf
+    <div class="modal-body">
 
-                    <label>
-                        Material
-                    </label>
+        <!-- PILIH MATERIAL -->
+        <div class="form-group">
+            <label>Material</label>
+            <select name="material_id" required>
+                <option value="">Pilih Material</option>
+                @foreach($materials ?? [] as $material)
+                    <option value="{{ $material->id }}">
+                        {{ $material->code ?? 'MAT-' . str_pad($material->id, 3, '0', STR_PAD_LEFT) }} - {{ $material->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
 
-
-                    <select
-                        name="material_id"
-                        required>
-
-                        <option value="">
-                            Pilih Material
-                        </option>
-
-
-                        @foreach($materials ?? [] as $material)
-
-                            <option value="{{ $material->id }}">
-
-                                {{ $material->code ?? 'MAT-' . str_pad($material->id, 3, '0', STR_PAD_LEFT) }}
-                                -
-                                {{ $material->name }}
-
-                            </option>
-
-                        @endforeach
-
-                    </select>
-
-                </div>
-
-
-                {{-- HARGA + SATUAN --}}
-                <div class="form-row">
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Harga
-                        </label>
-
-
-                        <input
-                            type="number"
-                            name="price"
-                            min="0"
-                            required
-                            placeholder="0">
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Satuan
-                        </label>
-
-
-                        <input
-                            type="text"
-                            name="unit"
-                            placeholder="lembar / m² / pcs">
-
-                    </div>
-
-                </div>
-
-
-                {{-- STATUS --}}
-                <div class="form-group">
-
-                    <label>
-                        Status
-                    </label>
-
-
-                    <select name="status">
-
-                        <option value="active">
-                            Aktif
-                        </option>
-
-                        <option value="inactive">
-                            Nonaktif
-                        </option>
-
-                    </select>
-
-                </div>
-
+        <!-- HARGA & TANGGAL -->
+        <div class="form-row">
+            <div class="form-group">
+                <label>Harga</label>
+                <input type="number" name="price" min="0" required placeholder="0">
             </div>
 
-
-            {{-- MODAL FOOTER --}}
-            <div class="modal-footer">
-
-                <button
-                    type="button"
-                    class="btn btn-outline"
-                    onclick="closePriceModal()">
-
-                    Batal
-
-                </button>
-
-
-                <button
-                    type="submit"
-                    class="btn btn-primary">
-
-                    <i data-lucide="save"></i>
-
-                    Simpan Harga
-
-                </button>
-
+            <div class="form-group">
+                <label>Tanggal Harga</label>
+                <input type="date" name="price_date" value="{{ date('Y-m-d') }}" required>
             </div>
+        </div>
 
-        </form>
+        <!-- IS REFERENCE (Jadikan Harga Acuan) -->
+        <div class="form-group">
+            <label>Harga Acuan (Reference)</label>
+            <select name="is_reference">
+                <option value="1">Ya (Aktif)</option>
+                <option value="0">Tidak</option>
+            </select>
+        </div>
+
+        <!-- CATATAN / NOTES -->
+        <div class="form-group">
+            <label>Catatan / Notes</label>
+            <input type="text" name="notes" placeholder="Contoh: Harga dari Toko A">
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closePriceModal()">Batal</button>
+        <button type="submit" class="btn btn-primary">
+            <i data-lucide="save"></i> Simpan Harga
+        </button>
+    </div>
+</form>
 
     </div>
 
