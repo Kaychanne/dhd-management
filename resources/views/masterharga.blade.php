@@ -7,190 +7,103 @@
 
     <title>DHD Interior - Master Harga</title>
 
-    @vite([
-        'resources/css/masterharga.css'
-    ])
-
+    @vite(['resources/css/masterharga.css'])
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
-
-<div class="dashboard-wrapper">
-
-    {{-- =========================================================
-        SIDEBAR
-    ========================================================== --}}
-    <aside class="sidebar">
-
-        <div class="sidebar-brand">
-            <div class="brand-logo">DHD</div>
-
-            <div class="brand-text">
-                <strong>Interior</strong>
-                <span>Management System</span>
-            </div>
+{{-- SIDEBAR --}}
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-logo">DHD</div>
+        <div class="brand-text">
+            <strong>Interior</strong>
+            <span>Management System</span>
         </div>
+    </div>
 
+    <nav class="sidebar-menu">
+        {{-- DASHBOARD --}}
+        <a href="{{ Route::has('dashboard') ? route('dashboard') : '#' }}" 
+           class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <i data-lucide="layout-dashboard"></i>
+            <span>Dashboard</span>
+        </a>
 
-        <nav class="sidebar-menu">
+        {{-- RAP --}}
+        <a href="#" class="menu-item">
+            <i data-lucide="clipboard-list"></i>
+            <span>RAP & Anggaran</span>
+        </a>
 
-            {{-- DASHBOARD --}}
-            <a href="{{ Route::has('dashboard') ? route('dashboard') : '#' }}"
-               class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-
-                <i data-lucide="layout-dashboard"></i>
-
-                <span>Dashboard</span>
-
-            </a>
-
-
-            {{-- RAP --}}
-            <a href="#"
-               class="menu-item">
-
-                <i data-lucide="clipboard-list"></i>
-
-                <span>RAP & Anggaran</span>
-
-            </a>
-
-
-            {{-- INVENTORI --}}
-            <div class="menu-group">
-
-                <a href="{{ Route::has('inventori.index') ? route('inventori.index') : '#' }}"
-                   class="menu-item">
-
+        {{-- INVENTORI & STOK (MENU GROUP) --}}
+        <div class="menu-group">
+                <a href="{{ route('inventori.index') }}" 
+                   class="menu-item menu-toggle {{ request()->routeIs('masterharga.*', 'supplier.*') ? 'menu-parent-active' : '' }}">
                     <i data-lucide="package"></i>
-
                     <span>Inventori & Stok</span>
-
-                    <i data-lucide="chevron-up"
-                       class="arrow"></i>
-
+                    <i data-lucide="chevron-up" class="arrow"></i>
                 </a>
 
-
-                <div class="submenu open">
-
-                    {{-- MASTER HARGA --}}
-                    <a href="#" class="menu-item active">
-
-                        Master Harga
-
-                    </a>
-
-
-                    <a href="#">
-                        Pembelian & Stok
-                    </a>
-
-
-                    <a href="#">
-                        Stok Gudang
-                    </a>
-
-
-                    <a href="#">
-                        Mutasi Stok
-                    </a>
-
-
-                    <a href="#">
-                        Stok Opname
-                    </a>
-
-                </div>
-
+            <div class="submenu open">
+                <a href="{{ route('masterharga.index') }}"
+                   class="{{ request()->routeIs('masterharga.*') ? 'active' : '' }}">
+                    Master Harga
+                </a>
+                <a href="{{ route('supplier.index') }}" 
+                   class="{{ request()->routeIs('supplier.*') ? 'active' : '' }}">
+                    Supplier
+                </a>
+                <a href="#">Pembelian & Stok</a>
+                <a href="#">Stok Gudang</a>
+                <a href="#">Mutasi Stok</a>
+                <a href="#">Stok Opname</a>
             </div>
-
-
-            {{-- OPERASIONAL --}}
-            <a href="#"
-               class="menu-item">
-
-                <i data-lucide="wallet"></i>
-
-                <span>Operasional & Finansial</span>
-
-            </a>
-
-
-            {{-- LAPORAN --}}
-            <a href="#"
-               class="menu-item">
-
-                <i data-lucide="file-text"></i>
-
-                <span>Laporan</span>
-
-            </a>
-
-
-            {{-- PENGATURAN --}}
-            <a href="#"
-               class="menu-item">
-
-                <i data-lucide="settings"></i>
-
-                <span>Pengaturan</span>
-
-            </a>
-
-        </nav>
-
-
-        {{-- =====================================================
-            SIDEBAR FOOTER
-        ====================================================== --}}
-        <div class="sidebar-footer">
-
-            <div class="orange-line"></div>
-
-            <p>
-                DHD Interior<br>
-                Management System
-            </p>
-
-
-            <button type="button"
-                    class="theme-button"
-                    onclick="changeTheme()">
-
-                <i data-lucide="palette"></i>
-
-                <span>Change Theme</span>
-
-            </button>
-
-
-            @if(Route::has('logout'))
-
-                <form method="POST"
-                      action="{{ route('logout') }}"
-                      class="logout-form">
-
-                    @csrf
-
-                    <button type="submit"
-                            class="logout-button">
-
-                        <i data-lucide="log-out"></i>
-
-                        <span>Logout</span>
-
-                    </button>
-
-                </form>
-
-            @endif
-
         </div>
 
-    </aside>
+        {{-- OPERASIONAL --}}
+        <a href="#" class="menu-item">
+            <i data-lucide="wallet"></i>
+            <span>Operasional & Finansial</span>
+        </a>
 
+        {{-- LAPORAN --}}
+        <a href="#" class="menu-item">
+            <i data-lucide="file-text"></i>
+            <span>Laporan</span>
+        </a>
+
+        {{-- PENGATURAN --}}
+        <a href="#" class="menu-item">
+            <i data-lucide="settings"></i>
+            <span>Pengaturan</span>
+        </a>
+    </nav>
+
+    {{-- SIDEBAR FOOTER --}}
+    <div class="sidebar-footer">
+        <div class="orange-line"></div>
+        <p>
+            DHD Interior<br>
+            Management System
+        </p>
+
+        <div class="footer-actions">
+            <button type="button" class="theme-button" onclick="changeTheme()">
+                <i data-lucide="palette"></i>
+                <span>Change Theme</span>
+            </button>
+
+            <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}" class="logout-form">
+                @csrf
+                <button type="submit" class="logout-button">
+                    <i data-lucide="log-out"></i>
+                    <span>Logout</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</aside>
 
     {{-- =========================================================
         MAIN CONTENT
@@ -460,195 +373,84 @@
 
 
                             <tbody>
-
                             @forelse($prices ?? [] as $price)
-
                                 <tr>
-
-
                                     {{-- CHECKBOX --}}
                                     <td>
-
-                                        <input
-                                            type="checkbox"
-                                            class="row-check"
-                                            value="{{ $price->id }}">
-
+                                        <input type="checkbox" class="row-check" value="{{ $price->id }}">
                                     </td>
 
-
-                                    {{-- KODE --}}
+                                    {{-- KODE MATERIAL --}}
                                     <td>
-
-                                        {{ $price->material_code ?? '-' }}
-
+                                        {{ $price->material?->code ?? ('MAT-' . str_pad($price->material_id ?? 0, 3, '0', STR_PAD_LEFT)) }}
                                     </td>
 
-
-                                    {{-- MATERIAL --}}
+                                    {{-- MATERIAL & SUPPLIER --}}
                                     <td>
-
                                         <div class="material-name">
-
-                                            <div class="material-mini-icon">
-
-                                                <i data-lucide="package"></i>
-
                                             </div>
-
-                                            <span>
-
-                                                {{ $price->material_name ?? '-' }}
-
-                                            </span>
-
+                                            <div>
+                                                <strong>{{ $price->material?->name ?? '-' }}</strong>
+                                                @if($price->supplier)
+                                                    <br><small style="color: #8b98aa;">{{ $price->supplier->name }}</small>
+                                                @endif
+                                            </div>
                                         </div>
-
                                     </td>
-
 
                                     {{-- KATEGORI --}}
                                     <td>
-
-                                        {{ $price->category_name ?? '-' }}
-
+                                        {{ $price->material?->category?->name ?? '-' }}
                                     </td>
-
 
                                     {{-- HARGA --}}
                                     <td class="price-value">
-
-                                        Rp
-                                        {{ number_format($price->price ?? 0, 0, ',', '.') }}
-
+                                        Rp {{ number_format($price->price ?? 0, 0, ',', '.') }}
                                     </td>
-
 
                                     {{-- SATUAN --}}
                                     <td>
-
-                                        {{ $price->unit ?? '-' }}
-
+                                        {{ $price->material?->unit ?? '-' }}
                                     </td>
-
 
                                     {{-- STATUS --}}
                                     <td>
-
-                                        @if(($price->status ?? 'active') === 'active')
-
-                                            <span class="badge badge-success">
-                                                Aktif
-                                            </span>
-
+                                        @if(($price->is_reference ?? 1) == 1)
+                                            <span class="badge badge-success">Aktif</span>
                                         @else
-
-                                            <span class="badge badge-danger">
-                                                Nonaktif
-                                            </span>
-
+                                            <span class="badge badge-danger">Nonaktif</span>
                                         @endif
-
                                     </td>
-
 
                                     {{-- AKSI --}}
                                     <td>
-
                                         <div class="action-dropdown">
-
-
-                                            <button
-                                                type="button"
-                                                class="btn-action"
-                                                onclick="toggleDropdown(event, 'price-{{ $price->id }}')">
-
+                                            <button type="button" class="btn-action" onclick="toggleDropdown(event, 'price-{{ $price->id }}')">
                                                 <i data-lucide="more-horizontal"></i>
-
                                             </button>
 
+                                            <div id="price-{{ $price->id }}" class="dropdown-menu-action">
 
-                                            <div
-                                                id="price-{{ $price->id }}"
-                                                class="dropdown-menu-action">
-
-
-                                                {{-- DETAIL --}}
-                                                <button
-                                                    type="button"
-                                                    class="dropdown-item-action"
-                                                    onclick="showPriceDetail(
-                                                        '{{ addslashes($price->material_name ?? '-') }}',
-                                                        '{{ $price->material_code ?? '-' }}',
-                                                        '{{ $price->category_name ?? '-' }}',
-                                                        '{{ $price->price ?? 0 }}',
-                                                        '{{ $price->unit ?? '-' }}'
-                                                    )">
-
-                                                    <i data-lucide="eye"></i>
-
-                                                    Detail
-
+                                                <button type="button" class="dropdown-item-action" onclick="editPrice({{ $price->id }})">
+                                                    <i data-lucide="edit-3"></i> Edit
                                                 </button>
 
-
-                                                {{-- EDIT --}}
-                                                <button
-                                                    type="button"
-                                                    class="dropdown-item-action"
-                                                    onclick="editPrice({{ $price->id }})">
-
-                                                    <i data-lucide="edit-3"></i>
-
-                                                    Edit
-
+                                                <button type="button" class="dropdown-item-action delete" onclick="deletePrice({{ $price->id }})">
+                                                    <i data-lucide="trash-2"></i> Hapus
                                                 </button>
-
-
-                                                {{-- DELETE --}}
-                                                <button
-                                                    type="button"
-                                                    class="dropdown-item-action delete"
-                                                    onclick="deletePrice({{ $price->id }})">
-
-                                                    <i data-lucide="trash-2"></i>
-
-                                                    Hapus
-
-                                                </button>
-
                                             </div>
-
                                         </div>
-
                                     </td>
-
                                 </tr>
-
-
                             @empty
-
                                 <tr>
-
-                                    <td colspan="8"
-                                        class="empty-state">
-
+                                    <td colspan="8" class="empty-state">
                                         <i data-lucide="package-open"></i>
-
-                                        <strong>
-                                            Belum ada data harga
-                                        </strong>
-
-                                        <span>
-                                            Data harga material belum tersedia.
-                                        </span>
-
+                                        <strong>Belum ada data harga</strong>
+                                        <span>Data harga material belum tersedia.</span>
                                     </td>
-
                                 </tr>
-
                             @endforelse
-
                             </tbody>
 
                         </table>
@@ -731,48 +533,61 @@
     @csrf
     <div class="modal-body">
 
-        <!-- PILIH MATERIAL -->
-        <div class="form-group">
-            <label>Material</label>
-            <select name="material_id" required>
-                <option value="">Pilih Material</option>
-                @foreach($materials ?? [] as $material)
-                    <option value="{{ $material->id }}">
-                        {{ $material->code ?? 'MAT-' . str_pad($material->id, 3, '0', STR_PAD_LEFT) }} - {{ $material->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-
-        <!-- HARGA & TANGGAL -->
-        <div class="form-row">
-            <div class="form-group">
-                <label>Harga</label>
-                <input type="number" name="price" min="0" required placeholder="0">
-            </div>
-
-            <div class="form-group">
-                <label>Tanggal Harga</label>
-                <input type="date" name="price_date" value="{{ date('Y-m-d') }}" required>
-            </div>
-        </div>
-
-        <!-- IS REFERENCE (Jadikan Harga Acuan) -->
-        <div class="form-group">
-            <label>Harga Acuan (Reference)</label>
-            <select name="is_reference">
-                <option value="1">Ya (Aktif)</option>
-                <option value="0">Tidak</option>
-            </select>
-        </div>
-
-        <!-- CATATAN / NOTES -->
-        <div class="form-group">
-            <label>Catatan / Notes</label>
-            <input type="text" name="notes" placeholder="Contoh: Harga dari Toko A">
-        </div>
-
+    <!-- PILIH MATERIAL -->
+    <div class="form-group">
+        <label>Material</label>
+        <select name="material_id" required>
+            <option value="">Pilih Material</option>
+            @foreach($materials ?? [] as $material)
+                <option value="{{ $material->id }}">
+                    {{ $material->code ?? 'MAT-' . str_pad($material->id, 3, '0', STR_PAD_LEFT) }} - {{ $material->name }}
+                </option>
+            @endforeach
+        </select>
     </div>
+
+    <!-- PILIH SUPPLIER -->
+    <div class="form-group">
+        <label>Supplier</label>
+        <select name="supplier_id" required>
+            <option value="">Pilih Supplier</option>
+            @foreach($suppliers ?? [] as $sup)
+                <option value="{{ $sup->id }}">
+                    {{ $sup->name }} {{ $sup->contact_person ? '('.$sup->contact_person.')' : '' }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <!-- HARGA & TANGGAL -->
+    <div class="form-row">
+        <div class="form-group">
+            <label>Harga</label>
+            <input type="number" name="price" min="0" required placeholder="0">
+        </div>
+
+        <div class="form-group">
+            <label>Tanggal Harga</label>
+            <input type="date" name="price_date" value="{{ date('Y-m-d') }}" required>
+        </div>
+    </div>
+
+    <!-- HARGA ACUAN -->
+    <div class="form-group">
+        <label>Harga Acuan (Reference)</label>
+        <select name="is_reference">
+            <option value="1">Ya (Aktif)</option>
+            <option value="0">Tidak</option>
+        </select>
+    </div>
+
+    <!-- CATATAN -->
+    <div class="form-group">
+        <label>Catatan / Notes</label>
+        <input type="text" name="notes" placeholder="Catatan tambahan...">
+    </div>
+
+</div>
 
     <div class="modal-footer">
         <button type="button" class="btn btn-outline" onclick="closePriceModal()">Batal</button>

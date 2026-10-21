@@ -1,3 +1,4 @@
+<?php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,9 +27,9 @@ class MasterHarga extends Model
         return $this->belongsTo(Material::class, 'material_id');
     }
 
-    // Relasi ke tabel suppliers (jika ada model Supplier)
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
 }
+?>

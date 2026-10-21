@@ -15,74 +15,83 @@
 </head>
 
 <body>
+{{-- SIDEBAR --}}
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-logo">DHD</div>
+        <div class="brand-text">
+            <strong>Interior</strong>
+            <span>Management System</span>
+        </div>
+    </div>
 
-<div class="dashboard-wrapper">
+    <nav class="sidebar-menu">
+        {{-- DASHBOARD --}}
+        <a href="{{ Route::has('dashboard') ? route('dashboard') : '#' }}" 
+           class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <i data-lucide="layout-dashboard"></i>
+            <span>Dashboard</span>
+        </a>
 
-    {{-- SIDEBAR --}}
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <div class="brand-logo">DHD</div>
-            <div class="brand-text">
-                <strong>Interior</strong>
-                <span>Management System</span>
+        {{-- RAP --}}
+        <a href="#" class="menu-item">
+            <i data-lucide="clipboard-list"></i>
+            <span>RAP & Anggaran</span>
+        </a>
+
+        {{-- INVENTORI & STOK (MENU GROUP) --}}
+        <div class="menu-group">
+            <a href="{{ route('inventori.index') }}" 
+               class="menu-item menu-toggle active{{ request()->routeIs('masterharga.*', 'supplier.*') ? 'active' : '' }}">
+                <i data-lucide="package"></i>
+                <span>Inventori & Stok</span>
+                <i data-lucide="chevron-up" class="arrow"></i>
+            </a>
+
+            <div class="submenu open">
+                <a href="{{ route('masterharga.index') }}"
+                   class="{{ request()->routeIs('masterharga.*') ? 'active' : '' }}">
+                    Master Harga
+                </a>
+                <a href="{{ route('supplier.index') }}" 
+                   class="{{ request()->routeIs('supplier.*') ? 'active' : '' }}">
+                    Supplier
+                </a>
+                <a href="#">Pembelian & Stok</a>
+                <a href="#">Stok Gudang</a>
+                <a href="#">Mutasi Stok</a>
+                <a href="#">Stok Opname</a>
             </div>
         </div>
 
-        <nav class="sidebar-menu">
-            <a href="{{ Route::has('dashboard') ? route('dashboard') : '#' }}" 
-               class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                <i data-lucide="layout-dashboard"></i>
-                <span>Dashboard</span>
-            </a>
+        {{-- OPERASIONAL --}}
+        <a href="#" class="menu-item">
+            <i data-lucide="wallet"></i>
+            <span>Operasional & Finansial</span>
+        </a>
 
-            <a href="#" class="menu-item">
-                <i data-lucide="clipboard-list"></i>
-                <span>RAP & Anggaran</span>
-            </a>
+        {{-- LAPORAN --}}
+        <a href="#" class="menu-item">
+            <i data-lucide="file-text"></i>
+            <span>Laporan</span>
+        </a>
 
-            <div class="menu-group">
-                <a href="{{ Route::has('inventori.index') ? route('inventori.index') : '#' }}" 
-                   class="menu-item {{ request()->routeIs('inventori.*') || request()->routeIs('materials.*') ? 'active' : '' }}">
-                    <i data-lucide="package"></i>
-                    <span>Inventori & Stok</span>
-                    <i data-lucide="chevron-up" class="arrow"></i>
-                </a>
+        {{-- PENGATURAN --}}
+        <a href="#" class="menu-item">
+            <i data-lucide="settings"></i>
+            <span>Pengaturan</span>
+        </a>
+    </nav>
 
-                <div class="submenu open">
-                    <a href="{{ route('masterharga.index') }}"
-                    class="{{ request()->routeIs('masterharga.*') ? 'active' : '' }}">
-                        Master Harga
-                    </a>
-                    <a href="#">Pembelian & Stok</a>
-                    <a href="#">Stok Gudang</a>
-                    <a href="#">Mutasi Stok</a>
-                    <a href="#">Stok Opname</a>
-                </div>
-            </div>
+    {{-- SIDEBAR FOOTER --}}
+    <div class="sidebar-footer">
+        <div class="orange-line"></div>
+        <p>
+            DHD Interior<br>
+            Management System
+        </p>
 
-            <a href="#" class="menu-item">
-                <i data-lucide="wallet"></i>
-                <span>Operasional & Finansial</span>
-            </a>
-
-            <a href="#" class="menu-item">
-                <i data-lucide="file-text"></i>
-                <span>Laporan</span>
-            </a>
-
-            <a href="#" class="menu-item">
-                <i data-lucide="settings"></i>
-                <span>Pengaturan</span>
-            </a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <div class="orange-line"></div>
-            <p>
-                DHD Interior<br>
-                Management System
-            </p>
-
+        <div class="footer-actions">
             <button type="button" class="theme-button" onclick="changeTheme()">
                 <i data-lucide="palette"></i>
                 <span>Change Theme</span>
@@ -96,8 +105,8 @@
                 </button>
             </form>
         </div>
-    </aside>
-
+    </div>
+</aside>
 
     {{-- MAIN CONTENT --}}
     <main class="main-content">

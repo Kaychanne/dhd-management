@@ -13,105 +13,19 @@
 </head>
 
 <body>
-
-<div class="dashboard-wrapper">
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <div class="brand-logo">DHD</div>
-            <div class="brand-text">
-                <strong>Interior</strong>
-                <span>Management System</span>
-            </div>
+{{-- SIDEBAR --}}
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-logo">DHD</div>
+        <div class="brand-text">
+            <strong>Interior</strong>
+            <span>Management System</span>
         </div>
-        <nav class="sidebar-menu">
-            <a href="{{ Route::has('dashboard') ? route('dashboard') : '#' }}" class="menu-item">
-                <i data-lucide="layout-dashboard"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="#" class="menu-item">
-                <i data-lucide="clipboard-list"></i>
-                <span>RAP & Anggaran</span>
-            </a>
-            <div class="menu-group">
-                <a href="{{ Route::has('inventori.index') ? route('inventori.index') : '#' }}" class="menu-item active">
-                    <i data-lucide="package"></i>
-                    <span>Inventori & Stok</span>
-                    <i data-lucide="chevron-up" class="arrow"></i>
-                </a>
-
-                <div class="submenu open">
-                    <a href="#">Master Harga & Supplier</a>
-                    <a href="#">Pembelian & Stok</a>
-                    <a href="#">Stok Gudang</a>
-                    <a href="#">Mutasi Stok</a>
-                    <a href="#">Stok Opname</a>
-                </div>
-            </div>
-
-            <a href="#" class="menu-item">
-                <i data-lucide="wallet"></i>
-                <span>Operasional & Finansial</span>
-            </a>
-            <a href="#" class="menu-item">
-                <i data-lucide="file-text"></i>
-                <span>Laporan</span>
-            </a>
-            <a href="#" class="menu-item">
-                <i data-lucide="settings"></i>
-                <span>Pengaturan</span>
-            </a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <div class="orange-line"></div>
-            <p>DHD Interior<br>Management System</p>
-            <button type="button" class="theme-button" onclick="changeTheme()">
-                <i data-lucide="palette"></i>
-                <span>Change Theme</span>
-            </button>
-            <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}" class="logout-form">
-                @csrf
-                <button type="submit" class="logout-button">
-                    <i data-lucide="log-out"></i>
-                    <span>Logout</span>
-                </button>
-            </form>
-        </div>
-    </aside>
-
-    <main class="main-content">
-        <header class="topbar">
-            <div class="search-box">
-                <i data-lucide="search"></i>
-                <input type="text" placeholder="Cari proyek, barang, supplier atau transaksi...">
-            </div>
-
-            <div class="topbar-right">
-                <div class="date-info">
-                    <i data-lucide="calendar-days"></i>
-                    <div>
-                        <strong id="currentDate">Thursday, 08 October 2026</strong>
-                        <span id="currentTime">13:06 WIB</span>
-                    </div>
-                </div>
-
-                <button class="notification-button">
-                    <i data-lucide="bell"></i>
-                    <span class="notification-dot"></span>
-                </button>
-
-                <div class="admin-profile">
-                    <div class="admin-avatar">ST</div>
-                    <span>Steven</span>
-                    <i data-lucide="chevron-down"></i>
-                </div>
-            </div>
-        </header>
-
-        <section class="content">
-            <div class="inventory-page">
-
+    </div>
+</aside>
                 {{-- HEADER PAGE --}}
+    <main class="main-content">
+        <section class="content">
                 <div class="inventory-header">
                     <div class="inventory-title">
                         <div class="breadcrumb">

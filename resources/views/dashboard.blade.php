@@ -15,124 +15,96 @@
 
 </head>
 <body>
-<div class="dashboard-wrapper">
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <div class="brand-logo">
-                DHD
-            </div>
-            <div class="brand-text">
-                <strong>
-                    Interior
-                </strong>
-                <span>
-                    Management System
-                </span>
-            </div>
+{{-- SIDEBAR --}}
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-logo">DHD</div>
+        <div class="brand-text">
+            <strong>Interior</strong>
+            <span>Management System</span>
         </div>
+    </div>
 
-        <nav class="sidebar-menu">
-            <a
-                href="{{ route('dashboard') }}"
-                class="menu-item active">
-                <i data-lucide="layout-dashboard"></i>
+    <nav class="sidebar-menu">
+        {{-- DASHBOARD --}}
+        <a href="{{ Route::has('dashboard') ? route('dashboard') : '#' }}" 
+           class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <i data-lucide="layout-dashboard"></i>
+            <span>Dashboard</span>
+        </a>
 
-                <span>
-                    Dashboard
-                </span>
+        {{-- RAP --}}
+        <a href="#" class="menu-item">
+            <i data-lucide="clipboard-list"></i>
+            <span>RAP & Anggaran</span>
+        </a>
 
-            </a>
-            <a
-                href="#"
-                class="menu-item">
-                <i data-lucide="chart-no-axes-combined"></i>
-                <span>
-                    RAP & Anggaran
-                </span>
-            </a>
-            <div class="menu-group">
-            <a
-                href="{{ route('inventori.index') }}"
-                class="menu-item {{ request()->routeIs('inventori.index') ? 'active' : '' }}">
+        {{-- INVENTORI & STOK (MENU GROUP) --}}
+        <div class="menu-group">
+            <a href="{{ route('inventori.index') }}" 
+               class="menu-item menu-toggle {{ request()->routeIs('masterharga.*', 'supplier.*') ? 'active' : '' }}">
                 <i data-lucide="package"></i>
-                <span>
-                    Inventori & Stok
-                </span>
-                <i
-                    data-lucide="chevron-down"
-                    class="arrow"
-                ></i>
+                <span>Inventori & Stok</span>
+                <i data-lucide="chevron-up" class="arrow"></i>
             </a>
 
-
-            <div class="submenu">
-                <a href="{{ route('inventori.index') }}">
-                    Dashboard Inventori
+            <div class="submenu open">
+                <a href="{{ route('masterharga.index') }}"
+                   class="{{ request()->routeIs('masterharga.*') ? 'active' : '' }}">
+                    Master Harga
                 </a>
-                <a href="#">
-                    Master Harga & Supplier
+                <a href="{{ route('supplier.index') }}" 
+                   class="{{ request()->routeIs('supplier.*') ? 'active' : '' }}">
+                    Supplier
                 </a>
-                <a href="#">
-                    Pembelian & Stok
-                </a>
-                <a href="#">
-                    Stok Gudang
-                </a>
-                <a href="#">
-                    Mutasi Stok
-                </a>
-                <a href="#">
-                    Stok Opname
-                </a>
+                <a href="#">Pembelian & Stok</a>
+                <a href="#">Stok Gudang</a>
+                <a href="#">Mutasi Stok</a>
+                <a href="#">Stok Opname</a>
             </div>
         </div>
-            <a
-                href="#"
-                class="menu-item">
-                <i data-lucide="wallet"></i>
-                <span>
-                    Operasional & Finansial
-                </span>
 
-            </a>
+        {{-- OPERASIONAL --}}
+        <a href="#" class="menu-item">
+            <i data-lucide="wallet"></i>
+            <span>Operasional & Finansial</span>
+        </a>
 
-            <a
-                href="#"
-                class="menu-item">
-                <i data-lucide="file-text"></i>
-                <span>
-                    Laporan
-                </span>
-            </a>
-        </nav>
+        {{-- LAPORAN --}}
+        <a href="#" class="menu-item">
+            <i data-lucide="file-text"></i>
+            <span>Laporan</span>
+        </a>
 
-        <div class="sidebar-footer">
+        {{-- PENGATURAN --}}
+        <a href="#" class="menu-item">
+            <i data-lucide="settings"></i>
+            <span>Pengaturan</span>
+        </a>
+    </nav>
+
+    {{-- SIDEBAR FOOTER --}}
+    <div class="sidebar-footer">
         <div class="orange-line"></div>
-        <p>Better Planning.</p>
-        <p>Smoother Project.</p>
-    <button
-        type="button"
-        class="theme-button"
-        onclick="changeTheme()">
-        <i data-lucide="palette"></i>
-        <span>
-            Change Theme
-        </span>
-    </button>
-        <form
-            method="POST"
-            action="{{ route('logout') }}"
-            class="logout-form">
-            @csrf
-            <button
-                type="submit"
-                class="logout-button">
-                <i data-lucide="log-out"></i>
-                <span>
-                    Logout
-                </span>
+        <p>
+            DHD Interior<br>
+            Management System
+        </p>
+
+        <div class="footer-actions">
+            <button type="button" class="theme-button" onclick="changeTheme()">
+                <i data-lucide="palette"></i>
+                <span>Change Theme</span>
             </button>
-        </form>
+
+            <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}" class="logout-form">
+                @csrf
+                <button type="submit" class="logout-button">
+                    <i data-lucide="log-out"></i>
+                    <span>Logout</span>
+                </button>
+            </form>
+        </div>
     </div>
 </aside>
 <main class="main-content">

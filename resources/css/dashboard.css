@@ -92,6 +92,10 @@ svg {
 }
 
 
+/* =========================================================
+   SIDEBAR STYLING
+   ========================================================= */
+
 .sidebar {
     position: fixed;
 
@@ -112,24 +116,23 @@ svg {
 }
 
 
-
 .sidebar-brand {
-    height: 98px;
+    height: 80px;
 
-    padding: 20px 25px;
+    padding: 0 24px;
 
     display: flex;
     align-items: center;
 
-    gap: 13px;
+    gap: 12px;
 
     border-bottom: 1px solid var(--border);
 }
 
 
 .brand-logo {
-    width: 50px;
-    height: 50px;
+    width: 42px;
+    height: 42px;
 
     border-radius: 10px;
 
@@ -143,6 +146,8 @@ svg {
 
     font-size: 16px;
     font-weight: 700;
+
+    box-shadow: 0 4px 10px rgba(47, 67, 102, 0.2);
 }
 
 
@@ -150,16 +155,17 @@ svg {
     display: flex;
     flex-direction: column;
 
-    gap: 2px;
+    gap: 1px;
 }
 
 
 .brand-text strong {
     color: var(--dhd-blue);
 
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: 700;
 
-    letter-spacing: 0.4px;
+    letter-spacing: 0.3px;
 }
 
 
@@ -167,106 +173,124 @@ svg {
     color: var(--text-light);
 
     font-size: 10px;
+    font-weight: 500;
 }
 
 
 .sidebar-menu {
-    padding: 20px 13px;
+    padding: 16px 12px;
 
     display: flex;
     flex-direction: column;
 
-    gap: 6px;
+    gap: 4px;
 
     overflow-y: auto;
+
+    flex: 1;
 }
 
 
 .menu-item {
+    position: relative;
+
     width: 100%;
 
-    min-height: 54px;
+    min-height: 44px;
 
-    padding: 0 16px;
+    padding: 0 14px;
 
-    border-radius: 9px;
+    border-radius: 8px;
 
     display: flex;
     align-items: center;
 
-    gap: 15px;
+    gap: 12px;
 
-    color: #53647e;
+    color: #475569;
+
+    font-size: 13px;
+
+    font-weight: 500;
 
     cursor: pointer;
 
-    transition:
-        background 0.2s ease,
-        color 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 
 .menu-item svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
 
-    stroke-width: 1.7;
+    stroke-width: 1.8;
 
-    transition:
-        stroke-width 0.2s ease,
-        transform 0.2s ease;
+    color: #64748b;
+
+    transition: all 0.2s ease;
+
+    flex-shrink: 0;
 }
 
 
 .menu-item:hover {
-    background: #f3f6fa;
+    background: #f1f5f9;
 
     color: var(--dhd-blue);
 }
 
 
 .menu-item:hover svg {
-    stroke-width: 2.4;
+    color: var(--dhd-blue);
+
+    stroke-width: 2.2;
 }
 
 
 .menu-item.active {
     background: var(--dhd-blue);
-
     color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(47, 67, 102, 0.25);
 }
 
 
 .menu-item.active svg {
-    stroke-width: 2.1;
+    color: white;
+
+    stroke-width: 2.2;
 }
 
 
-.menu-item span {
-    font-size: 14px;
+/* Induk Menu Aktif Saat Submenu Dibuka */
+.menu-item.menu-parent-active {
+    background: #2c415e;
+    color: white;
+    font-weight: 600;
 }
 
 
-.menu-toggle {
-    text-align: left;
+.menu-item.menu-parent-active svg {
+    color: white;
 }
 
 
-.menu-toggle .arrow {
-    width: 15px;
-    height: 15px;
+.menu-item.menu-parent-active .arrow {
+    display: none !important;
+}
 
+
+.menu-item .arrow {
+    width: 14px;
+    height: 14px;
     margin-left: auto;
-
-    transition:
-        transform 0.2s ease;
+    transition: transform 0.2s ease;
 }
 
 
 .menu-toggle.expanded .arrow {
     transform: rotate(180deg);
 }
-
 
 
 .menu-group {
@@ -277,7 +301,9 @@ svg {
 .submenu {
     display: none;
 
-    padding: 4px 0 6px 48px;
+    padding: 4px 0 4px 28px;
+
+    margin-top: 2px;
 }
 
 
@@ -291,55 +317,173 @@ svg {
 
 
 .submenu a {
-    padding: 10px 12px;
-
-    border-radius: 7px;
-
-    color: var(--text);
-
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: #64748b;
     font-size: 12px;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease;
+    font-weight: 500;
+    transition: all 0.2s ease;
 }
 
 
 .submenu a:hover {
-    background: var(--dhd-blue-light);
+    background: #f1f5f9;
 
     color: var(--dhd-blue);
 }
 
 
-.sidebar-footer {
-    margin-top: auto;
+/* Teks Submenu Aktif */
+.submenu a.active {
+    color: #2563eb;
 
-    padding: 20px 25px 25px;
+    font-weight: 600;
+
+    background: transparent;
+
+    position: relative;
+}
+
+
+.submenu a.active::before {
+    content: '';
+
+    position: absolute;
+
+    left: -10px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 4px;
+
+    height: 16px;
+
+    background: #2563eb;
+
+    border-radius: 2px;
+}
+
+
+/* Sidebar Footer */
+.sidebar-footer {
+    padding: 16px 20px;
+
+    border-top: 1px solid var(--border);
+
+    background: var(--white);
 }
 
 
 .orange-line {
-    width: 30px;
+    width: 24px;
+
     height: 3px;
 
     background: var(--dhd-orange);
 
-    border-radius: 3px;
+    border-radius: 2px;
 
-    margin-bottom: 9px;
+    margin-bottom: 6px;
 }
 
 
 .sidebar-footer p {
-    color: #8794a7;
+    color: #94a3b8;
 
     font-size: 11px;
 
-    line-height: 1.5;
+    line-height: 1.4;
+
+    margin-bottom: 12px;
 }
 
 
+.footer-actions {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+
+.theme-button,
+.logout-button {
+    width: 100%;
+
+    height: 36px;
+
+    padding: 0 12px;
+
+    border-radius: 6px;
+
+    border: 1px solid var(--border);
+
+    background: #f8fafc;
+
+    color: #475569;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+.theme-button svg,
+.logout-button svg {
+    width: 15px;
+
+    height: 15px;
+
+    stroke-width: 1.7;
+}
+
+
+.theme-button:hover {
+    background: #f1f5f9;
+
+    color: var(--dhd-blue);
+
+    border-color: var(--dhd-blue-light);
+}
+
+
+.logout-form {
+    width: 100%;
+}
+
+
+.logout-button {
+    color: #ef4444;
+
+    background: #fef2f2;
+
+    border-color: #fee2e2;
+}
+
+
+.logout-button:hover {
+    background: #fee2e2;
+
+    color: #dc2626;
+}
+
+
+/* =========================================================
+   MAIN CONTENT & TOPBAR
+   ========================================================= */
 
 .main-content {
     margin-left: 250px;
@@ -349,6 +493,7 @@ svg {
     min-height: 100vh;
 
     display: flex;
+
     flex-direction: column;
 }
 
@@ -369,13 +514,13 @@ svg {
     border-bottom: 1px solid var(--border);
 
     display: flex;
+
     align-items: center;
 
     justify-content: space-between;
 
     gap: 25px;
 }
-
 
 
 .search-box {
@@ -390,6 +535,7 @@ svg {
     border-radius: 25px;
 
     display: flex;
+
     align-items: center;
 
     padding: 0 17px;
@@ -400,6 +546,7 @@ svg {
 
 .search-box svg {
     width: 20px;
+
     height: 20px;
 
     color: var(--dhd-blue);
@@ -412,6 +559,7 @@ svg {
     width: 100%;
 
     border: 0;
+
     outline: 0;
 
     background: transparent;
@@ -429,6 +577,7 @@ svg {
 
 .topbar-right {
     display: flex;
+
     align-items: center;
 
     gap: 26px;
@@ -437,6 +586,7 @@ svg {
 
 .date-info {
     display: flex;
+
     align-items: center;
 
     gap: 10px;
@@ -445,6 +595,7 @@ svg {
 
 .date-info > svg {
     width: 20px;
+
     height: 20px;
 
     color: var(--dhd-blue);
@@ -453,6 +604,7 @@ svg {
 
 .date-info div {
     display: flex;
+
     flex-direction: column;
 
     gap: 2px;
@@ -473,15 +625,17 @@ svg {
 }
 
 
-
 .notification-button {
     position: relative;
 
     width: 38px;
+
     height: 38px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     color: var(--dhd-blue);
@@ -492,6 +646,7 @@ svg {
 
 .notification-button svg {
     width: 21px;
+
     height: 21px;
 
     stroke-width: 1.8;
@@ -509,9 +664,11 @@ svg {
     position: absolute;
 
     top: 5px;
+
     right: 5px;
 
     width: 6px;
+
     height: 6px;
 
     border-radius: 50%;
@@ -524,6 +681,7 @@ svg {
 
 .admin-profile {
     display: flex;
+
     align-items: center;
 
     gap: 10px;
@@ -536,6 +694,7 @@ svg {
 
 .admin-avatar {
     width: 43px;
+
     height: 43px;
 
     border-radius: 50%;
@@ -545,7 +704,9 @@ svg {
     color: white;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     font-weight: 600;
@@ -561,6 +722,7 @@ svg {
 
 .admin-profile > svg {
     width: 15px;
+
     height: 15px;
 }
 
@@ -571,18 +733,21 @@ svg {
     padding: 24px 26px 25px;
 
     display: flex;
+
     flex-direction: column;
 
     gap: 16px;
 }
 
 
+/* =========================================================
+   DASHBOARD CARDS & KPI GRID
+   ========================================================= */
 
 .kpi-grid {
     display: grid;
 
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 
     gap: 16px;
 }
@@ -602,6 +767,7 @@ svg {
     box-shadow: var(--shadow);
 
     display: flex;
+
     align-items: center;
 
     gap: 14px;
@@ -612,6 +778,7 @@ svg {
 
 .kpi-icon {
     width: 48px;
+
     height: 48px;
 
     border-radius: 10px;
@@ -621,7 +788,9 @@ svg {
     color: var(--dhd-blue);
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     flex-shrink: 0;
@@ -630,6 +799,7 @@ svg {
 
 .kpi-icon svg {
     width: 23px;
+
     height: 23px;
 
     stroke-width: 1.6;
@@ -640,6 +810,7 @@ svg {
     min-width: 0;
 
     display: flex;
+
     flex-direction: column;
 
     gap: 4px;
@@ -678,9 +849,11 @@ svg {
     position: absolute;
 
     top: 18px;
+
     right: 17px;
 
     width: 15px;
+
     height: 15px;
 
     color: #a8b5c6;
@@ -689,6 +862,7 @@ svg {
 
 .mini-progress {
     width: 110px;
+
     height: 5px;
 
     margin-top: 1px;
@@ -710,13 +884,10 @@ svg {
 }
 
 
-
 .dashboard-grid {
     display: grid;
 
-    grid-template-columns:
-        minmax(0, 2fr)
-        minmax(310px, 0.9fr);
+    grid-template-columns: minmax(0, 2fr) minmax(310px, 0.9fr);
 
     gap: 16px;
 
@@ -727,13 +898,13 @@ svg {
 .left-column,
 .right-column {
     display: flex;
+
     flex-direction: column;
 
     gap: 16px;
 
     min-width: 0;
 }
-
 
 
 .dashboard-card {
@@ -753,6 +924,7 @@ svg {
     padding: 18px 20px 12px;
 
     display: flex;
+
     align-items: flex-start;
 
     justify-content: space-between;
@@ -768,6 +940,7 @@ svg {
 
 .card-header h2 {
     display: flex;
+
     align-items: center;
 
     gap: 8px;
@@ -782,6 +955,7 @@ svg {
 
 .card-header h2 svg {
     width: 18px;
+
     height: 18px;
 
     color: var(--dhd-blue);
@@ -813,7 +987,6 @@ svg {
 .card-header a:hover {
     text-decoration: underline;
 }
-
 
 
 .project-card {
@@ -863,7 +1036,6 @@ svg {
 }
 
 
-
 .project-table {
     width: 100%;
 
@@ -878,12 +1050,7 @@ svg {
 
     display: grid;
 
-    grid-template-columns:
-        1.25fr
-        1.25fr
-        0.9fr
-        0.75fr
-        0.75fr;
+    grid-template-columns: 1.25fr 1.25fr 0.9fr 0.75fr 0.75fr;
 
     align-items: center;
 
@@ -920,6 +1087,7 @@ svg {
 
 .project-name {
     display: flex;
+
     align-items: center;
 
     gap: 8px;
@@ -932,6 +1100,7 @@ svg {
 
 .project-name svg {
     width: 16px;
+
     height: 16px;
 
     color: var(--dhd-blue);
@@ -940,10 +1109,9 @@ svg {
 }
 
 
-
-
 .progress-value {
     display: flex !important;
+
     align-items: center;
 
     gap: 8px;
@@ -952,6 +1120,7 @@ svg {
 
 .progress-bar {
     width: 52px;
+
     height: 5px;
 
     border-radius: 5px;
@@ -971,7 +1140,6 @@ svg {
 
     border-radius: inherit;
 }
-
 
 
 .status {
@@ -1003,8 +1171,6 @@ svg {
 }
 
 
-
-
 .finance-debt-card {
     padding-bottom: 4px;
 }
@@ -1013,8 +1179,7 @@ svg {
 .debt-receivable-grid {
     display: grid;
 
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 
     gap: 12px;
 
@@ -1032,6 +1197,7 @@ svg {
     border: 1px solid #e7ecf2;
 
     display: flex;
+
     align-items: center;
 
     gap: 12px;
@@ -1055,12 +1221,15 @@ svg {
 
 .money-icon {
     width: 38px;
+
     height: 38px;
 
     border-radius: 9px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     flex-shrink: 0;
@@ -1090,6 +1259,7 @@ svg {
 
 .money-icon svg {
     width: 19px;
+
     height: 19px;
 }
 
@@ -1098,6 +1268,7 @@ svg {
     min-width: 0;
 
     display: flex;
+
     flex-direction: column;
 
     gap: 3px;
@@ -1127,7 +1298,6 @@ svg {
 }
 
 
-
 .financial-card {
     overflow: hidden;
 }
@@ -1138,8 +1308,6 @@ svg {
 }
 
 
-/* MAIN BUDGET */
-
 .financial-main {
     padding: 14px;
 
@@ -1148,6 +1316,7 @@ svg {
     background: #f5f7fa;
 
     display: flex;
+
     align-items: center;
 
     justify-content: space-between;
@@ -1158,6 +1327,7 @@ svg {
 
 .financial-main div {
     display: flex;
+
     flex-direction: column;
 
     gap: 4px;
@@ -1180,17 +1350,18 @@ svg {
 
 .financial-main > svg {
     width: 23px;
+
     height: 23px;
 
     color: var(--dhd-blue);
 }
 
 
-
 .financial-row {
     padding: 14px 3px;
 
     display: flex;
+
     align-items: center;
 
     justify-content: space-between;
@@ -1201,6 +1372,7 @@ svg {
 
 .financial-row div {
     display: flex;
+
     flex-direction: column;
 
     gap: 3px;
@@ -1232,9 +1404,9 @@ svg {
     color: var(--green);
 
     width: 19px;
+
     height: 19px;
 }
-
 
 
 .budget-progress {
@@ -1267,6 +1439,7 @@ svg {
 
 .budget-bar {
     width: 100%;
+
     height: 7px;
 
     border-radius: 10px;
@@ -1286,7 +1459,6 @@ svg {
 }
 
 
-
 .budget-status {
     margin-top: 10px;
 
@@ -1299,6 +1471,7 @@ svg {
     color: #318c67;
 
     display: flex;
+
     align-items: center;
 
     gap: 7px;
@@ -1307,6 +1480,7 @@ svg {
 
 .budget-status svg {
     width: 15px;
+
     height: 15px;
 
     flex-shrink: 0;
@@ -1318,7 +1492,6 @@ svg {
 }
 
 
-
 .quick-card {
     padding-bottom: 18px;
 }
@@ -1327,8 +1500,7 @@ svg {
 .quick-grid {
     display: grid;
 
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
     gap: 9px;
 
@@ -1346,6 +1518,7 @@ svg {
     border-radius: 8px;
 
     display: flex;
+
     align-items: center;
 
     gap: 10px;
@@ -1368,6 +1541,7 @@ svg {
 
 .quick-action > svg {
     width: 19px;
+
     height: 19px;
 
     color: var(--dhd-blue);
@@ -1389,6 +1563,7 @@ svg {
     min-width: 0;
 
     display: flex;
+
     flex-direction: column;
 
     gap: 3px;
@@ -1409,8 +1584,6 @@ svg {
 }
 
 
-
-
 .dashboard-footer {
     text-align: center;
 
@@ -1420,7 +1593,6 @@ svg {
 
     padding: 5px 0 4px;
 }
-
 
 
 .dashboard-card svg,
@@ -1438,14 +1610,14 @@ svg {
 }
 
 
+/* =========================================================
+   RESPONSIVE DESIGN
+   ========================================================= */
 
 @media (max-width: 1200px) {
-
-
     .sidebar {
         width: 225px;
     }
-
 
     .main-content {
         margin-left: 225px;
@@ -1453,50 +1625,36 @@ svg {
         width: calc(100% - 225px);
     }
 
-
     .topbar {
         padding: 0 20px;
     }
-
 
     .content {
         padding: 20px;
     }
 
-
     .dashboard-grid {
-        grid-template-columns:
-            minmax(0, 1.7fr)
-            minmax(285px, 0.9fr);
+        grid-template-columns: minmax(0, 1.7fr) minmax(285px, 0.9fr);
     }
-
 
     .kpi-card {
         padding: 16px;
     }
 
-
     .kpi-content strong {
         font-size: 16px;
     }
 
-
     .date-info {
         display: none;
     }
-
 }
 
 
-
-
 @media (max-width: 950px) {
-
-
     .sidebar {
         width: 210px;
     }
-
 
     .main-content {
         margin-left: 210px;
@@ -1504,70 +1662,54 @@ svg {
         width: calc(100% - 210px);
     }
 
-
     .kpi-grid {
-        grid-template-columns:
-            repeat(3, minmax(180px, 1fr));
+        grid-template-columns: repeat(3, minmax(180px, 1fr));
 
         overflow-x: auto;
 
         padding-bottom: 2px;
     }
 
-
     .kpi-card {
         min-width: 180px;
     }
-
 
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
 
-
     .right-column {
         display: grid;
 
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
 
         align-items: start;
     }
-
 
     .financial-card {
         grid-column: span 1;
     }
 
-
     .quick-card {
         grid-column: span 1;
     }
 
-
     .debt-receivable-grid {
-        grid-template-columns:
-            repeat(3, minmax(180px, 1fr));
+        grid-template-columns: repeat(3, minmax(180px, 1fr));
 
         overflow-x: auto;
     }
 
-
     .money-summary {
         min-width: 180px;
     }
-
 }
 
 
-
 @media (max-width: 700px) {
-
-
     body {
         font-size: 12px;
     }
-
 
     .sidebar {
         position: relative;
@@ -1581,11 +1723,9 @@ svg {
         border-bottom: 1px solid var(--border);
     }
 
-
     .dashboard-wrapper {
         display: block;
     }
-
 
     .sidebar-brand {
         height: 75px;
@@ -1593,23 +1733,19 @@ svg {
         padding: 12px 18px;
     }
 
-
     .sidebar-menu {
         display: none;
     }
 
-
     .sidebar-footer {
         display: none;
     }
-
 
     .main-content {
         margin-left: 0;
 
         width: 100%;
     }
-
 
     .topbar {
         position: sticky;
@@ -1623,42 +1759,36 @@ svg {
         gap: 10px;
     }
 
-
     .search-box {
         width: 100%;
 
         height: 40px;
     }
 
-
     .topbar-right {
         gap: 8px;
     }
 
-
     .date-info {
         display: none;
     }
-
 
     .admin-profile > span,
     .admin-profile > svg {
         display: none;
     }
 
-
     .admin-avatar {
         width: 38px;
+
         height: 38px;
     }
-
 
     .content {
         padding: 15px;
 
         gap: 14px;
     }
-
 
     .kpi-grid {
         display: flex;
@@ -1670,18 +1800,15 @@ svg {
         scrollbar-width: thin;
     }
 
-
     .kpi-card {
         min-width: 245px;
     }
-
 
     .dashboard-grid {
         grid-template-columns: 1fr;
 
         gap: 14px;
     }
-
 
     .right-column {
         display: flex;
@@ -1691,7 +1818,6 @@ svg {
         gap: 14px;
     }
 
-
     .debt-receivable-grid {
         display: flex;
 
@@ -1700,29 +1826,25 @@ svg {
         padding-bottom: 12px;
     }
 
-
     .money-summary {
         min-width: 230px;
     }
-
 
     .card-header {
         padding: 15px 15px 11px;
     }
 
-
     .project-table {
         padding: 0 15px 10px;
     }
 
-
     .project-filter {
         padding-left: 15px;
+
         padding-right: 15px;
 
         overflow-x: auto;
     }
-
 
     .quick-grid {
         padding: 0 15px;
@@ -1730,34 +1852,26 @@ svg {
         gap: 8px;
     }
 
-
     .dashboard-footer {
         padding-bottom: 15px;
     }
-
 }
 
 
-
-
 @media (max-width: 450px) {
-
-
     .brand-text strong {
         font-size: 16px;
     }
 
-
     .brand-logo {
         width: 43px;
+
         height: 43px;
     }
-
 
     .kpi-card {
         min-width: 225px;
     }
-
 
     .quick-action {
         min-height: 62px;
@@ -1765,137 +1879,15 @@ svg {
         padding: 9px;
     }
 
-
     .money-summary {
         min-width: 215px;
     }
-
 }
 
 
-
-.logout-form {
-    margin-top: 20px;
-
-    width: 100%;
-}
-
-
-.logout-button {
-    width: 100%;
-
-    min-height: 44px;
-
-    padding: 0 14px;
-
-    border: 1px solid #edf0f4;
-
-    border-radius: 8px;
-
-    background: #fafbfc;
-
-    color: #7d8999;
-
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    cursor: pointer;
-
-    font-size: 12px;
-
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease;
-}
-
-
-.logout-button svg {
-    width: 18px;
-    height: 18px;
-
-    stroke-width: 1.7;
-
-    transition:
-        stroke-width 0.2s ease;
-}
-
-
-.logout-button:hover {
-    background: #fff3f3;
-
-    border-color: #f2d7d7;
-
-    color: #c95757;
-}
-
-
-.logout-button:hover svg {
-    stroke-width: 2.4;
-}
-
-
-.theme-button {
-    width: 100%;
-
-    min-height: 44px;
-
-    padding: 0 14px;
-
-    margin-top: 15px;
-
-    border: 1px solid #edf0f4;
-
-    border-radius: 8px;
-
-    background: #fafbfc;
-
-    color: #7d8999;
-
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    cursor: pointer;
-
-    font-size: 12px;
-
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease;
-}
-
-
-.theme-button svg {
-    width: 18px;
-    height: 18px;
-
-    stroke-width: 1.7;
-
-    transition:
-        stroke-width 0.2s ease;
-}
-
-
-.theme-button:hover {
-    background: #fff0f7;
-
-    border-color: #f2c9dc;
-
-    color: #d86a9d;
-}
-
-
-.theme-button:hover svg {
-    stroke-width: 2.4;
-}
-
-
-
+/* =========================================================
+   PINK THEME OVERRIDES
+   ========================================================= */
 
 body.pink-theme {
     --dhd-blue: #d86a9d;
@@ -1904,7 +1896,6 @@ body.pink-theme {
 
     --dhd-orange: #e59e2c;
 }
-
 
 
 body.pink-theme .sidebar {
@@ -1920,7 +1911,6 @@ body.pink-theme .brand-logo {
 body.pink-theme .brand-text strong {
     color: #d86a9d;
 }
-
 
 
 body.pink-theme .menu-item.active {
@@ -1940,18 +1930,24 @@ body.pink-theme .submenu a:hover {
 }
 
 
+body.pink-theme .submenu a.active {
+    color: #d86a9d;
+}
+
+
+body.pink-theme .submenu a.active::before {
+    background: #d86a9d;
+}
+
+
 body.pink-theme .search-box svg {
     color: #d86a9d;
 }
 
 
-
-
 body.pink-theme .admin-avatar {
     background: #d86a9d;
 }
-
-
 
 
 body.pink-theme .kpi-icon {
@@ -1964,7 +1960,6 @@ body.pink-theme .kpi-icon {
 body.pink-theme .kpi-arrow {
     color: #d86a9d;
 }
-
 
 
 body.pink-theme .project-name svg {
@@ -1982,8 +1977,6 @@ body.pink-theme .filter.active {
 
     border-color: #d86a9d;
 }
-
-
 
 
 body.pink-theme .financial-main > svg {
@@ -2006,8 +1999,6 @@ body.pink-theme .budget-bar div {
 }
 
 
-
-
 body.pink-theme .quick-action > svg {
     color: #d86a9d;
 }
@@ -2016,8 +2007,6 @@ body.pink-theme .quick-action > svg {
 body.pink-theme .quick-action:hover {
     border-color: #d86a9d;
 }
-
-
 
 
 body.pink-theme .theme-button {

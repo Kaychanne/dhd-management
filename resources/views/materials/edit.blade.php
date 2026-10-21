@@ -24,31 +24,11 @@
                 <span>Management System</span>
             </div>
         </div>
-        <nav class="sidebar-menu">
-            <a href="{{ Route::has('dashboard') ? route('dashboard') : '#' }}" class="menu-item">
-                <i data-lucide="layout-dashboard"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="{{ Route::has('inventori.index') ? route('inventori.index') : '#' }}" class="menu-item active">
-                <i data-lucide="package"></i>
-                <span>Inventori & Stok</span>
-            </a>
-        </nav>
+
     </aside>
 
     <main class="main-content">
-        <header class="topbar">
-            <div class="search-box">
-                <i data-lucide="search"></i>
-                <input type="text" placeholder="Cari proyek, barang, supplier...">
-            </div>
-            <div class="topbar-right">
-                <div class="admin-profile">
-                    <div class="admin-avatar">ST</div>
-                    <span>Steven</span>
-                </div>
-            </div>
-        </header>
+
 
         <section class="content">
             <div class="inventory-page">

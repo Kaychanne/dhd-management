@@ -1,25 +1,743 @@
-@import './dashboard.css';
+:root {
+    --dhd-blue: #2f4366;
+    --dhd-blue-dark: #243653;
+    --dhd-blue-light: #eef3f9;
 
-.menu-group .menu-item.menu-parent-active,
-.menu-group .menu-item.active {
-    background-color: #2c415e;
-    color: #ffffff;
+    --dhd-orange: #e59e2c;
+    --dhd-orange-light: #fff5e4;
+
+    --green: #3ca477;
+    --green-light: #e9f7f0;
+
+    --red: #dc6b6b;
+    --red-light: #fff0f0;
+
+    --yellow: #e6a23c;
+    --yellow-light: #fff6e5;
+
+    --text-dark: #24344f;
+    --text: #53627a;
+    --text-light: #8b98aa;
+
+    --border: #dfe6ef;
+    --background: #f6f8fb;
+    --white: #ffffff;
+
+    --shadow: 0 2px 10px rgba(36, 54, 83, 0.04);
+
+    --radius: 10px;
+}
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+html {
+    min-height: 100%;
+}
+
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background: var(--background);
+
+    color: var(--text-dark);
+
+    font-size: 13px;
+}
+
+
+button,
+input {
+    font-family: inherit;
+}
+
+
+button {
+    border: 0;
+    background: none;
+}
+
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+svg {
+    width: 18px;
+    height: 18px;
+}
+
+
+
+.dashboard-wrapper {
+    display: flex;
+
+    min-height: 100vh;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   SIDEBAR STYLING
+   ========================================================= */
+
+.sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 250px;
+    height: 100vh;
+
+    background: var(--white);
+
+    border-right: 1px solid var(--border);
+
+    display: flex;
+    flex-direction: column;
+
+    z-index: 100;
+}
+
+
+.sidebar-brand {
+    height: 80px;
+
+    padding: 0 24px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+.brand-logo {
+    width: 42px;
+    height: 42px;
+
     border-radius: 10px;
-    padding: 10px 14px;
+
+    background: var(--dhd-blue);
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    box-shadow: 0 4px 10px rgba(47, 67, 102, 0.2);
+}
+
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1px;
+}
+
+
+.brand-text strong {
+    color: var(--dhd-blue);
+
+    font-size: 16px;
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+}
+
+
+.brand-text span {
+    color: var(--text-light);
+
+    font-size: 10px;
+    font-weight: 500;
+}
+
+
+.sidebar-menu {
+    padding: 16px 12px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    overflow-y: auto;
+
+    flex: 1;
+}
+
+
+.menu-item {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 44px;
+
+    padding: 0 14px;
+
+    border-radius: 8px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    color: #475569;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+.menu-item svg {
+    width: 18px;
+    height: 18px;
+
+    stroke-width: 1.8;
+
+    color: #64748b;
+
+    transition: all 0.2s ease;
+
+    flex-shrink: 0;
+}
+
+
+.menu-item:hover {
+    background: #f1f5f9;
+
+    color: var(--dhd-blue);
+}
+
+
+.menu-item:hover svg {
+    color: var(--dhd-blue);
+
+    stroke-width: 2.2;
+}
+
+
+.menu-item.active {
+    background: var(--dhd-blue);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(47, 67, 102, 0.25);
+}
+
+
+.menu-item.active svg {
+    color: white;
+
+    stroke-width: 2.2;
+}
+
+
+/* Induk Menu Aktif Saat Submenu Dibuka */
+.menu-item.menu-parent-active {
+    background: #2c415e;
+    color: white;
     font-weight: 600;
 }
 
-.menu-group .menu-item.menu-parent-active .arrow,
-.menu-group .menu-item.active .arrow {
+
+.menu-item.menu-parent-active svg {
+    color: white;
+}
+
+
+.menu-item.menu-parent-active .arrow {
     display: none !important;
 }
 
-.submenu a.active {
-    color: #2563eb;
-    font-weight: 600;
-    background: transparent;
+
+.menu-item .arrow {
+    width: 14px;
+    height: 14px;
+    margin-left: auto;
+    transition: transform 0.2s ease;
 }
 
+
+.menu-toggle.expanded .arrow {
+    transform: rotate(180deg);
+}
+
+
+.menu-group {
+    width: 100%;
+}
+
+
+.submenu {
+    display: none;
+
+    padding: 4px 0 4px 28px;
+
+    margin-top: 2px;
+}
+
+
+.submenu.open {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.submenu a {
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+
+.submenu a:hover {
+    background: #f1f5f9;
+
+    color: var(--dhd-blue);
+}
+
+
+/* Teks Submenu Aktif */
+.submenu a.active {
+    color: #2563eb;
+
+    font-weight: 600;
+
+    background: transparent;
+
+    position: relative;
+}
+
+
+.submenu a.active::before {
+    content: '';
+
+    position: absolute;
+
+    left: -10px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 4px;
+
+    height: 16px;
+
+    background: #2563eb;
+
+    border-radius: 2px;
+}
+
+
+/* Sidebar Footer */
+.sidebar-footer {
+    padding: 16px 20px;
+
+    border-top: 1px solid var(--border);
+
+    background: var(--white);
+}
+
+
+.orange-line {
+    width: 24px;
+
+    height: 3px;
+
+    background: var(--dhd-orange);
+
+    border-radius: 2px;
+
+    margin-bottom: 6px;
+}
+
+
+.sidebar-footer p {
+    color: #94a3b8;
+
+    font-size: 11px;
+
+    line-height: 1.4;
+
+    margin-bottom: 12px;
+}
+
+
+.footer-actions {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+
+.theme-button,
+.logout-button {
+    width: 100%;
+
+    height: 36px;
+
+    padding: 0 12px;
+
+    border-radius: 6px;
+
+    border: 1px solid var(--border);
+
+    background: #f8fafc;
+
+    color: #475569;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+.theme-button svg,
+.logout-button svg {
+    width: 15px;
+
+    height: 15px;
+
+    stroke-width: 1.7;
+}
+
+
+.theme-button:hover {
+    background: #f1f5f9;
+
+    color: var(--dhd-blue);
+
+    border-color: var(--dhd-blue-light);
+}
+
+
+.logout-form {
+    width: 100%;
+}
+
+
+.logout-button {
+    color: #ef4444;
+
+    background: #fef2f2;
+
+    border-color: #fee2e2;
+}
+
+
+.logout-button:hover {
+    background: #fee2e2;
+
+    color: #dc2626;
+}
+
+
+/* =========================================================
+   MAIN CONTENT & TOPBAR
+   ========================================================= */
+
+.main-content {
+    margin-left: 250px;
+
+    width: calc(100% - 250px);
+
+    min-height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.topbar {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 90;
+
+    min-height: 82px;
+
+    padding: 0 28px;
+
+    background: var(--white);
+
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 25px;
+}
+
+
+.search-box {
+    width: min(550px, 55%);
+
+    height: 44px;
+
+    border: 1px solid #dce4ee;
+
+    background: #f8fafc;
+
+    border-radius: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 17px;
+
+    gap: 12px;
+}
+
+
+.search-box svg {
+    width: 20px;
+
+    height: 20px;
+
+    color: var(--dhd-blue);
+
+    flex-shrink: 0;
+}
+
+
+.search-box input {
+    width: 100%;
+
+    border: 0;
+
+    outline: 0;
+
+    background: transparent;
+
+    color: var(--text-dark);
+
+    font-size: 13px;
+}
+
+
+.search-box input::placeholder {
+    color: #8b98aa;
+}
+
+
+.topbar-right {
+    display: flex;
+
+    align-items: center;
+
+    gap: 26px;
+}
+
+
+.date-info {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.date-info > svg {
+    width: 20px;
+
+    height: 20px;
+
+    color: var(--dhd-blue);
+}
+
+
+.date-info div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.date-info strong {
+    font-size: 12px;
+
+    color: var(--text-dark);
+}
+
+
+.date-info span {
+    color: var(--text-light);
+
+    font-size: 10px;
+}
+
+
+.notification-button {
+    position: relative;
+
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: var(--dhd-blue);
+
+    cursor: pointer;
+}
+
+
+.notification-button svg {
+    width: 21px;
+
+    height: 21px;
+
+    stroke-width: 1.8;
+
+    transition: stroke-width 0.2s ease;
+}
+
+
+.notification-button:hover svg {
+    stroke-width: 2.5;
+}
+
+
+.notification-dot {
+    position: absolute;
+
+    top: 5px;
+
+    right: 5px;
+
+    width: 6px;
+
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: var(--dhd-orange);
+
+    border: 1px solid white;
+}
+
+
+.admin-profile {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    white-space: nowrap;
+
+    color: var(--text-dark);
+}
+
+
+.admin-avatar {
+    width: 43px;
+
+    height: 43px;
+
+    border-radius: 50%;
+
+    background: var(--dhd-blue);
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-weight: 600;
+
+    font-size: 12px;
+}
+
+
+.admin-profile > span {
+    font-size: 13px;
+}
+
+
+.admin-profile > svg {
+    width: 15px;
+
+    height: 15px;
+}
+
+
+.content {
+    width: 100%;
+
+    padding: 24px 26px 25px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 16px;
+}
 .master-page {
     display: flex;
     flex-direction: column;
@@ -236,23 +954,6 @@
 
 .data-table tbody tr:hover {
     background: #fbfcfd;
-}
-
-.material-mini-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    background: #f1f5f9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--dhd-blue);
-    flex-shrink: 0;
-}
-
-.material-mini-icon svg {
-    width: 16px;
-    height: 16px;
 }
 
 .price-value {

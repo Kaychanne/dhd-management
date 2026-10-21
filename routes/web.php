@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MasterHargaController;
+use App\Http\Controllers\SupplierController;
 Route::get('/', function () {
     return redirect()->route('login');
 });
@@ -23,7 +24,12 @@ Route::middleware('auth')->group(function () {
 
 
 Route::resource('materials', MaterialController::class);
-Route::get('/masterharga', function () {
-    return view('masterharga.masterharga');
-})->name('masterharga.index');
+Route::get('/masterharga', [MasterHargaController::class, 'index'])->name('masterharga.index');
+
+Route::post('/masterharga/store', [MasterHargaController::class, 'store'])->name('masterharga.price.store');
+Route::delete('/masterharga/{id}', [MasterHargaController::class, 'destroy'])->name('masterharga.price.destroy');
+
+Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier.index');
+Route::post('/supplier/store', [SupplierController::class, 'store'])->name('supplier.store');
+Route::delete('/supplier/{id}', [SupplierController::class, 'destroy'])->name('supplier.destroy');
 require __DIR__.'/auth.php';
