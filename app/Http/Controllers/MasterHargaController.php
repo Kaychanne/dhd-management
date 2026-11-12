@@ -10,37 +10,111 @@ class MasterHargaController extends Controller
 {
     public function index()
     {
-        $prices = MasterHarga::with(['material.category', 'supplier'])
-            ->latest('price_date')
-            ->get();
+        $prices = MasterHarga::with([
+            'material.category',
+            'material.brand',
+            'supplier'
+        ])->latest('price_date')->get();
+
         $totalMaterials = Material::count();
-        $totalPrices    = MasterHarga::count();
-        $materials      = Material::all();
-        $suppliers      = Supplier::all();
-        return view('masterharga', compact('prices', 'totalMaterials', 'totalPrices', 'materials', 'suppliers'));
+        $totalPrices = MasterHarga::count();
+
+        return view('masterharga', compact(
+            'prices',
+            'totalMaterials',
+            'totalPrices'
+        ));
     }
 
+    // HALAMAN TAMBAH HARGA
+    public function create()
+    {
+        $materials = Material::with([
+            'category',
+            'brand'
+        ])->orderBy('name')->get();
+
+        $suppliers = Supplier::orderBy('name')->get();
+
+        return view('masterharga.create', compact(
+            'materials',
+            'suppliers'
+        ));
+    }
+
+    // SIMPAN HARGA BARU
     public function store(Request $request)
     {
-        $request->validate([
-            'material_id'  => 'required|exists:materials,id',
-            'supplier_id'  => 'required|exists:supplier,id',
-            'price'        => 'required|numeric|min:0',
-            'price_date'   => 'required|date',
-            'is_reference' => 'nullable|boolean',
-            'notes'        => 'nullable|string',
+        $validated = $request->validate([
+            'material_id' => 'required|exists:materials,id',
+            'supplier_id' => 'required|exists:supplier,id',
+            'price' => 'required|numeric|min:0',
+            'price_date' => 'required|date',
+            'is_reference' => 'required|boolean',
+            'notes' => 'nullable|string',
         ]);
 
-        MasterHarga::create([
-            'material_id'  => $request->material_id,
-            'supplier_id'  => $request->supplier_id,
-            'price'        => $request->price,
-            'price_date'   => $request->price_date,
-            'is_reference' => $request->is_reference ?? 1,
-            'notes'        => $request->notes,
+        MasterHarga::create($validated);
+
+        return redirect()
+            ->route('masterharga.index')
+            ->with('success', 'Data harga berhasil ditambahkan!');
+    }
+
+    // HALAMAN EDIT HARGA
+    public function edit($id)
+    {
+        $price = MasterHarga::with([
+            'material.category',
+            'material.brand',
+            'supplier'
+        ])->findOrFail($id);
+
+        $materials = Material::with([
+            'category',
+            'brand'
+        ])->orderBy('name')->get();
+
+        $suppliers = Supplier::orderBy('name')->get();
+
+        return view('masterharga.edit', compact(
+            'price',
+            'materials',
+            'suppliers'
+        ));
+    }
+
+    // UPDATE HARGA
+    public function update(Request $request, $id)
+    {
+        $price = MasterHarga::findOrFail($id);
+
+        $validated = $request->validate([
+            'material_id' => 'required|exists:materials,id',
+            'supplier_id' => 'required|exists:supplier,id',
+            'price' => 'required|numeric|min:0',
+            'price_date' => 'required|date',
+            'is_reference' => 'required|boolean',
+            'notes' => 'nullable|string',
         ]);
 
-        return redirect()->back()->with('success', 'Data harga berhasil disimpan!');
+        $price->update($validated);
+
+        return redirect()
+            ->route('masterharga.index')
+            ->with('success', 'Data harga berhasil diperbarui!');
+    }
+
+    // HAPUS HARGA
+    public function destroy($id)
+    {
+        $price = MasterHarga::findOrFail($id);
+
+        $price->delete();
+
+        return redirect()
+            ->route('masterharga.index')
+            ->with('success', 'Data harga berhasil dihapus!');
     }
 }
 ?>

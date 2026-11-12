@@ -139,7 +139,10 @@
                 </div>
 
                 {{-- FORM EDIT MASTER HARGA --}}
-                <form action="{{ route('masterharga.price.update', $price->id) }}" method="POST" class="form-card">
+                <form
+                    action="{{ route('masterharga.price.update', $price->id) }}"
+                    method="POST"
+                >
                     @csrf
                     @method('PUT')
 

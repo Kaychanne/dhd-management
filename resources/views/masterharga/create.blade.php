@@ -151,23 +151,32 @@
                                 Informasi Material & Supplier
                             </h3>
 
-                            <div class="form-grid">
+                            <div class="form-grid">                   
+                            <div class="form-group">
+                                <label for="material_id">
+                                    Pilih Material <span class="required">*</span>
+                                </label>
 
-                                {{-- Material ID --}}
-                                <div class="form-group">
-                                    <label for="material_id">Pilih Material <span class="required">*</span></label>
-                                    <select id="material_id" name="material_id" required>
-                                        <option value="">-- Pilih Material --</option>
-                                        @foreach($materials ?? [] as $material)
-                                            <option value="{{ $material->id }}" {{ old('material_id') == $material->id ? 'selected' : '' }}>
-                                                {{ $material->code ?? 'MAT-' . str_pad($material->id, 3, '0', STR_PAD_LEFT) }} - {{ $material->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('material_id')
-                                        <span class="error-msg">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                                <select id="material_id" name="material_id" required>
+                                    <option value="">-- Pilih Material --</option>
+
+                                    @foreach($materials as $material)
+                                        <option
+                                            value="{{ $material->id }}"
+                                            {{ old('material_id') == $material->id ? 'selected' : '' }}
+                                        >
+                                            {{ $material->code }}
+                                            - {{ $material->name }}
+                                            - {{ $material->category?->name ?? 'Tanpa Kategori' }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('material_id')
+                                    <span class="error-msg">{{ $message }}</span>
+                                @enderror
+                            </div>
+
 
                                 {{-- Supplier ID --}}
                                 <div class="form-group">

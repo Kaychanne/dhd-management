@@ -10,7 +10,6 @@ class Supplier extends Model
 
     protected $table = 'supplier';
 
-    // WAJIB: Matikan timestamps otomatis karena tabel tidak punya created_at & updated_at
     public $timestamps = false;
 
     protected $fillable = [
@@ -26,4 +25,3 @@ class Supplier extends Model
         return $this->hasMany(MasterHarga::class, 'supplier_id');
     }
 }
-?>

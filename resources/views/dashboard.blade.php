@@ -57,10 +57,14 @@
                    class="{{ request()->routeIs('supplier.*') ? 'active' : '' }}">
                     Supplier
                 </a>
-                <a href="#">Pembelian & Stok</a>
-                <a href="#">Stok Gudang</a>
-                <a href="#">Mutasi Stok</a>
-                <a href="#">Stok Opname</a>
+                <a href="{{ route('pembelianstok.index') }}" 
+                   class="{{ request()->routeIs('pembelianstok.*') ? 'active' : '' }}">
+                    Pembelian & stok
+                </a>
+                <a href="{{ route('stokgudang.index') }}"
+                class="{{ request()->routeIs('stokgudang.*') ? 'active' : '' }}">
+                    Stok Gudang
+                </a>
             </div>
         </div>
 
@@ -70,11 +74,10 @@
             <span>Operasional & Finansial</span>
         </a>
 
-        {{-- LAPORAN --}}
-        <a href="#" class="menu-item">
-            <i data-lucide="file-text"></i>
-            <span>Laporan</span>
-        </a>
+        <a href="{{ route('laporan.index') }}" class="menu-item">
+                <i data-lucide="file-text"></i>
+                <span>Laporan</span>
+            </a>
 
         {{-- PENGATURAN --}}
         <a href="#" class="menu-item">
@@ -107,49 +110,37 @@
         </div>
     </div>
 </aside>
-<main class="main-content">
-    <header class="topbar">
-        <div class="search-box">
-            <i data-lucide="search"></i>
-                <input
-                    type="text"
-                    placeholder="Cari proyek, barang, supplier atau transaksi...">
-                </div>
-                <div class="topbar-right">
+{{-- MAIN CONTENT --}}
+    <main class="main-content">
+        {{-- TOPBAR --}}
+        <header class="topbar">
+            <div class="search-box">
+                <i data-lucide="search"></i>
+                <input type="text" id="globalSearch" placeholder="Cari supplier...">
+            </div>
+
+            <div class="topbar-right">
                 <div class="date-info">
                     <i data-lucide="calendar-days"></i>
                     <div>
-                        <strong>
-                            {{ now()->translatedFormat('l, d F Y') }}
-                        </strong>
-                        <span>
-                            {{ now()->format('H:i') }} WIB
-                        </span>
+                        <strong id="currentDate"></strong>
+                        <span id="currentTime"></span>
                     </div>
                 </div>
-                <button
-                    type="button"
-                    class="notification-button">
+
+                <button type="button" class="notification-button">
                     <i data-lucide="bell"></i>
                     <span class="notification-dot"></span>
                 </button>
+
                 <div class="admin-profile">
-                    <div class="admin-avatar">
-                        {{ strtoupper(
-                            substr(
-                                Auth::user()->name ?? 'AD',
-                                0,
-                                2
-                            )
-                        ) }}
-                    </div>
-                    <span>
-                        {{ Auth::user()->name ?? 'Admin' }}
-                    </span>
+                    <div class="admin-avatar">ST</div>
+                    <span>Steven</span>
                     <i data-lucide="chevron-down"></i>
                 </div>
             </div>
         </header>
+
         <section class="content">
             <div class="kpi-grid">
                 <div class="kpi-card">

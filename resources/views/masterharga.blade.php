@@ -54,10 +54,17 @@
                    class="{{ request()->routeIs('supplier.*') ? 'active' : '' }}">
                     Supplier
                 </a>
-                <a href="#">Pembelian & Stok</a>
-                <a href="#">Stok Gudang</a>
-                <a href="#">Mutasi Stok</a>
-                <a href="#">Stok Opname</a>
+                <a href="{{ route('pembelianstok.index') }}" 
+                   class="{{ request()->routeIs('pembelianstok.*') ? 'active' : '' }}">
+                    Pembelian & Stok
+                </a>
+                
+                <a href="{{ route('stokgudang.index') }}"
+                class="{{ request()->routeIs('stokgudang.*') ? 'active' : '' }}">
+                    Stok Gudang
+                </a>
+
+
             </div>
         </div>
 
@@ -67,11 +74,10 @@
             <span>Operasional & Finansial</span>
         </a>
 
-        {{-- LAPORAN --}}
-        <a href="#" class="menu-item">
-            <i data-lucide="file-text"></i>
-            <span>Laporan</span>
-        </a>
+        <a href="{{ route('laporan.index') }}" class="menu-item">
+                <i data-lucide="file-text"></i>
+                <span>Laporan</span>
+            </a>
 
         {{-- PENGATURAN --}}
         <a href="#" class="menu-item">
@@ -104,16 +110,7 @@
         </div>
     </div>
 </aside>
-
-    {{-- =========================================================
-        MAIN CONTENT
-    ========================================================== --}}
     <main class="main-content">
-
-
-        {{-- =====================================================
-            TOPBAR
-        ====================================================== --}}
         <header class="topbar">
 
             <div class="search-box">
@@ -176,18 +173,9 @@
 
         </header>
 
-
-        {{-- =====================================================
-            CONTENT
-        ====================================================== --}}
         <section class="content">
 
             <div class="master-page">
-
-
-                {{-- =================================================
-                    PAGE HEADER
-                ================================================== --}}
                 <div class="master-header">
 
                     <div class="master-title">
@@ -210,28 +198,16 @@
 
                     <div class="master-header-actions">
 
-                        <button type="button"
-                                class="btn btn-primary"
-                                onclick="openPriceModal()">
-
+                        <<a href="{{ route('masterharga.create') }}"
+                        class="btn btn-primary">
                             <i data-lucide="plus"></i>
-
                             Tambah Harga
-
-                        </button>
+                        </a>
 
                     </div>
 
                 </div>
-
-
-                {{-- =================================================
-                    STATISTIC
-                ================================================== --}}
                 <div class="master-stats">
-
-
-                    {{-- TOTAL MATERIAL --}}
                     <div class="master-stat-card">
 
                         <div class="master-stat-icon purple">
@@ -255,9 +231,6 @@
                         </div>
 
                     </div>
-
-
-                    {{-- TOTAL HARGA --}}
                     <div class="master-stat-card">
 
                         <div class="master-stat-icon green">
@@ -283,15 +256,7 @@
                     </div>
 
                 </div>
-
-
-                {{-- =================================================
-                    TABLE
-                ================================================== --}}
                 <div class="table-card">
-
-
-                    {{-- TABLE HEADER --}}
                     <div class="table-header-action">
 
 
@@ -304,9 +269,6 @@
                             </h2>
 
                         </div>
-
-
-                        {{-- SEARCH --}}
                         <div class="master-search">
 
                             <i data-lucide="search"></i>
@@ -375,17 +337,12 @@
                             <tbody>
                             @forelse($prices ?? [] as $price)
                                 <tr>
-                                    {{-- CHECKBOX --}}
                                     <td>
                                         <input type="checkbox" class="row-check" value="{{ $price->id }}">
                                     </td>
-
-                                    {{-- KODE MATERIAL --}}
                                     <td>
                                         {{ $price->material?->code ?? ('MAT-' . str_pad($price->material_id ?? 0, 3, '0', STR_PAD_LEFT)) }}
                                     </td>
-
-                                    {{-- MATERIAL & SUPPLIER --}}
                                     <td>
                                         <div class="material-name">
                                             </div>
@@ -397,23 +354,16 @@
                                             </div>
                                         </div>
                                     </td>
-
-                                    {{-- KATEGORI --}}
                                     <td>
                                         {{ $price->material?->category?->name ?? '-' }}
                                     </td>
-
-                                    {{-- HARGA --}}
                                     <td class="price-value">
                                         Rp {{ number_format($price->price ?? 0, 0, ',', '.') }}
                                     </td>
-
-                                    {{-- SATUAN --}}
                                     <td>
                                         {{ $price->material?->unit ?? '-' }}
                                     </td>
 
-                                    {{-- STATUS --}}
                                     <td>
                                         @if(($price->is_reference ?? 1) == 1)
                                             <span class="badge badge-success">Aktif</span>
@@ -421,8 +371,6 @@
                                             <span class="badge badge-danger">Nonaktif</span>
                                         @endif
                                     </td>
-
-                                    {{-- AKSI --}}
                                     <td>
                                         <div class="action-dropdown">
                                             <button type="button" class="btn-action" onclick="toggleDropdown(event, 'price-{{ $price->id }}')">
@@ -435,9 +383,19 @@
                                                     <i data-lucide="edit-3"></i> Edit
                                                 </button>
 
-                                                <button type="button" class="dropdown-item-action delete" onclick="deletePrice({{ $price->id }})">
-                                                    <i data-lucide="trash-2"></i> Hapus
-                                                </button>
+                                                <form
+                                                    action="{{ route('masterharga.price.destroy', $price->id) }}"
+                                                    method="POST"
+                                                    onsubmit="return confirm('Yakin ingin menghapus data harga ini?')"
+                                                >
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button type="submit" class="dropdown-item-action delete">
+                                                        <i data-lucide="trash-2"></i>
+                                                        Hapus
+                                                    </button>
+                                                </form>
                                             </div>
                                         </div>
                                     </td>
@@ -467,18 +425,9 @@
 
 </div>
 
-
-{{-- =========================================================
-    MODAL TAMBAH HARGA
-========================================================== --}}
 <div class="modal-overlay"
      id="priceModal">
-
-
     <div class="master-modal">
-
-
-        {{-- MODAL HEADER --}}
         <div class="modal-header">
 
             <div>
@@ -515,9 +464,6 @@
             </button>
 
         </div>
-
-
-        {{-- FORM --}}
         <form
             method="POST"
             action="{{ Route::has('masterharga.price.store') ? route('masterharga.price.store') : '#' }}">
@@ -527,13 +473,10 @@
 
             <div class="modal-body">
 
-
-                {{-- MATERIAL --}}
                 <form method="POST" action="{{ route('masterharga.price.store') }}">
     @csrf
     <div class="modal-body">
 
-    <!-- PILIH MATERIAL -->
     <div class="form-group">
         <label>Material</label>
         <select name="material_id" required>
@@ -546,7 +489,6 @@
         </select>
     </div>
 
-    <!-- PILIH SUPPLIER -->
     <div class="form-group">
         <label>Supplier</label>
         <select name="supplier_id" required>
@@ -558,8 +500,6 @@
             @endforeach
         </select>
     </div>
-
-    <!-- HARGA & TANGGAL -->
     <div class="form-row">
         <div class="form-group">
             <label>Harga</label>
@@ -572,7 +512,6 @@
         </div>
     </div>
 
-    <!-- HARGA ACUAN -->
     <div class="form-group">
         <label>Harga Acuan (Reference)</label>
         <select name="is_reference">
@@ -581,7 +520,6 @@
         </select>
     </div>
 
-    <!-- CATATAN -->
     <div class="form-group">
         <label>Catatan / Notes</label>
         <input type="text" name="notes" placeholder="Catatan tambahan...">
@@ -600,11 +538,6 @@
     </div>
 
 </div>
-
-
-{{-- =========================================================
-    MODAL DETAIL
-========================================================== --}}
 <div class="modal-overlay"
      id="detailModal">
 
@@ -735,52 +668,8 @@
     </div>
 
 </div>
-
-
-{{-- =========================================================
-    JAVASCRIPT
-========================================================== --}}
 <script>
-
-    /* =========================================================
-       LUCIDE
-    ========================================================== */
-
     lucide.createIcons();
-
-
-    /* =========================================================
-       TAMBAH HARGA MODAL
-    ========================================================== */
-
-    function openPriceModal()
-    {
-        const modal =
-            document.getElementById('priceModal');
-
-        if(modal)
-        {
-            modal.classList.add('show');
-        }
-    }
-
-
-    function closePriceModal()
-    {
-        const modal =
-            document.getElementById('priceModal');
-
-        if(modal)
-        {
-            modal.classList.remove('show');
-        }
-    }
-
-
-    /* =========================================================
-       DETAIL
-    ========================================================== */
-
     function showPriceDetail(
         material,
         code,
@@ -820,11 +709,6 @@
             .classList.remove('show');
     }
 
-
-    /* =========================================================
-       SEARCH
-    ========================================================== */
-
     function searchHarga()
     {
         const input =
@@ -853,10 +737,6 @@
     }
 
 
-    /* =========================================================
-       GLOBAL SEARCH
-    ========================================================== */
-
     const globalSearch =
         document.getElementById('globalSearch');
 
@@ -884,11 +764,6 @@
             }
         );
     }
-
-
-    /* =========================================================
-       DROPDOWN
-    ========================================================== */
 
     function toggleDropdown(event, id)
     {
@@ -929,11 +804,7 @@
                 });
         }
     );
-
-
-    /* =========================================================
-       DELETE
-    ========================================================== */
+    
 
     function deletePrice(id)
     {
@@ -944,15 +815,6 @@
             return;
         }
 
-
-        /*
-         * Belum melakukan request DELETE karena
-         * route delete belum ditentukan.
-         *
-         * Setelah route/controller dibuat,
-         * bagian ini tinggal diarahkan ke route tersebut.
-         */
-
         alert(
             'Data ID ' +
             id +
@@ -961,40 +823,13 @@
     }
 
 
-    /* =========================================================
-       EDIT
-    ========================================================== */
+   function editPrice(id) {
+    const editUrl = @json(route('masterharga.price.edit', ':id'));
 
-    function editPrice(id)
-    {
-        /*
-         * Tombol edit sementara diarahkan ke route
-         * jika route masterharga.price.edit tersedia.
-         */
-
-        const editUrl =
-            @json(Route::has('masterharga.price.edit')
-                ? route('masterharga.price.edit', ':id')
-                : '');
-
-        if(editUrl)
-        {
-            window.location.href =
-                editUrl.replace(':id', id);
-
-            return;
-        }
+    window.location.href = editUrl.replace(':id', id);
+}
 
 
-        alert(
-            'Route edit harga belum dibuat.'
-        );
-    }
-
-
-    /* =========================================================
-       CHECK ALL
-    ========================================================== */
 
     const checkAll =
         document.getElementById('checkAll');
@@ -1017,10 +852,6 @@
         );
     }
 
-
-    /* =========================================================
-       THEME
-    ========================================================== */
 
     function changeTheme()
     {
@@ -1058,10 +889,6 @@
         }
     );
 
-
-    /* =========================================================
-       DATE & TIME
-    ========================================================== */
 
     function updateDateTime()
     {
@@ -1115,11 +942,6 @@
         updateDateTime,
         1000
     );
-
-
-    /* =========================================================
-       CLOSE MODAL KLIK LUAR
-    ========================================================== */
 
     document
         .querySelectorAll('.modal-overlay')

@@ -50,10 +50,15 @@
                        class="{{ request()->routeIs('supplier.*') ? 'active' : '' }}">
                         Supplier
                     </a>
-                    <a href="#">Pembelian & Stok</a>
-                    <a href="#">Stok Gudang</a>
-                    <a href="#">Mutasi Stok</a>
-                    <a href="#">Stok Opname</a>
+                    <a href="{{ route('pembelianstok.index') }}" 
+                        class="{{ request()->routeIs('pembelianstok.*') ? 'active' : '' }}">
+                        Pembelian & Stok
+                    </a>
+                    
+                    <a href="{{ route('stokgudang.index') }}"
+                        class="{{ request()->routeIs('stokgudang.*') ? 'active' : '' }}">
+                        Stok Gudang
+                    </a>
                 </div>
             </div>
 
@@ -62,7 +67,7 @@
                 <span>Operasional & Finansial</span>
             </a>
 
-            <a href="#" class="menu-item">
+            <a href="{{ route('laporan.index') }}" class="menu-item">
                 <i data-lucide="file-text"></i>
                 <span>Laporan</span>
             </a>
@@ -142,10 +147,10 @@
                     </div>
 
                     <div class="master-header-actions">
-                        <button type="button" class="btn btn-primary" onclick="openSupplierModal()">
+                        <<a href="{{ route('supplier.create') }}" class="btn btn-primary">
                             <i data-lucide="plus"></i>
                             Tambah Supplier
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -227,7 +232,11 @@
                                                         '{{ addslashes($supplier->email ?? '') }}',
                                                         '{{ addslashes($supplier->address ?? '') }}'
                                                     )">
-                                                        <i data-lucide="edit-3"></i> Edit
+                                                        <a href="{{ route('supplier.edit', $supplier->id) }}"
+                                                            class="dropdown-item-action">
+                                                                <i data-lucide="edit-3"></i>
+                                                                Edit
+                                                            </a>
                                                     </button>
 
                                                     {{-- HAPUS --}}
@@ -263,7 +272,7 @@
     </main>
 </div>
 
-{{-- MODAL TAMBAH SUPPLIER --}}
+{{-- MODAL TAMBAH SUPPLIER
 <div class="modal-overlay" id="supplierModal">
     <div class="master-modal">
         <div class="modal-header">
@@ -319,18 +328,10 @@
             </div>
         </form>
     </div>
-</div>
+</div> --}}
 
 <script>
     lucide.createIcons();
-
-    function openSupplierModal() {
-        document.getElementById('supplierModal')?.classList.add('show');
-    }
-
-    function closeSupplierModal() {
-        document.getElementById('supplierModal')?.classList.remove('show');
-    }
 
     function searchSupplier() {
         const input = document.getElementById('supplierSearch');

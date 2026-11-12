@@ -57,10 +57,14 @@
                    class="{{ request()->routeIs('supplier.*') ? 'active' : '' }}">
                     Supplier
                 </a>
-                <a href="#">Pembelian & Stok</a>
-                <a href="#">Stok Gudang</a>
-                <a href="#">Mutasi Stok</a>
-                <a href="#">Stok Opname</a>
+                <a href="{{ route('pembelianstok.index') }}" 
+                   class="{{ request()->routeIs('pembelianstok.*') ? 'active' : '' }}">
+                    Pembelian & stok
+                </a>
+                <a href="{{ route('stokgudang.index') }}"
+                class="{{ request()->routeIs('stokgudang.*') ? 'active' : '' }}">
+                    Stok Gudang
+                </a>
             </div>
         </div>
 
@@ -70,11 +74,10 @@
             <span>Operasional & Finansial</span>
         </a>
 
-        {{-- LAPORAN --}}
-        <a href="#" class="menu-item">
-            <i data-lucide="file-text"></i>
-            <span>Laporan</span>
-        </a>
+        <a href="{{ route('laporan.index') }}" class="menu-item">
+                <i data-lucide="file-text"></i>
+                <span>Laporan</span>
+            </a>
 
         {{-- PENGATURAN --}}
         <a href="#" class="menu-item">
@@ -424,38 +427,25 @@
 <script>
     lucide.createIcons();
 
-    // ==========================================
-    // DROPDOWN ACTION MENU TOGGLE
-    // ==========================================
     function toggleDropdown(event, dropdownId) {
         event.stopPropagation();
-        
-        // Tutup semua dropdown lain yang terbuka
         const allDropdowns = document.querySelectorAll('.dropdown-menu-action');
         allDropdowns.forEach(dropdown => {
             if (dropdown.id !== dropdownId) {
                 dropdown.classList.remove('show');
             }
         });
-
-        // Buka/Tutup dropdown yang diklik
         const targetDropdown = document.getElementById(dropdownId);
         if (targetDropdown) {
             targetDropdown.classList.toggle('show');
         }
     }
-
-    // Tutup dropdown jika mengklik di luar area dropdown
     window.addEventListener('click', function() {
         const allDropdowns = document.querySelectorAll('.dropdown-menu-action');
         allDropdowns.forEach(dropdown => {
             dropdown.classList.remove('show');
         });
     });
-
-    // ==========================================
-    // REALTIME SEARCH & CATEGORY FILTER
-    // ==========================================
     let activeCategoryId = '';
 
     function filterMaterials() {
@@ -493,10 +483,6 @@
 
         filterMaterials();
     }
-
-    // ==========================================
-    // THEME & DATE TIME
-    // ==========================================
     function changeTheme() {
         document.body.classList.toggle('pink-theme');
         localStorage.setItem('dhd-theme', document.body.classList.contains('pink-theme') ? 'pink' : 'default');

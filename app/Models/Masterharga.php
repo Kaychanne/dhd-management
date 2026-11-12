@@ -8,10 +8,11 @@ class MasterHarga extends Model
 {
     use HasFactory;
 
-    // Menentukan nama tabel di database
     protected $table = 'material_price';
 
-    // Kolom yang dapat diisi
+    // Tabel material_price tidak menggunakan timestamps
+    public $timestamps = false;
+
     protected $fillable = [
         'material_id',
         'supplier_id',
@@ -21,7 +22,12 @@ class MasterHarga extends Model
         'notes',
     ];
 
-    // Relasi ke tabel materials
+    protected $casts = [
+        'price' => 'decimal:2',
+        'price_date' => 'date',
+        'is_reference' => 'boolean',
+    ];
+
     public function material()
     {
         return $this->belongsTo(Material::class, 'material_id');
@@ -32,4 +38,3 @@ class MasterHarga extends Model
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
 }
-?>
