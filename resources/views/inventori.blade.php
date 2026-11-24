@@ -26,18 +26,18 @@
     </div>
 
     <nav class="sidebar-menu">
-        {{-- DASHBOARD --}}
+        {{-- DASHBOARD
         <a href="{{ Route::has('dashboard') ? route('dashboard') : '#' }}" 
            class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <i data-lucide="layout-dashboard"></i>
             <span>Dashboard</span>
-        </a>
+        </a> --}}
 
-        {{-- RAP --}}
+        {{-- RAP
         <a href="#" class="menu-item">
             <i data-lucide="clipboard-list"></i>
             <span>RAP & Anggaran</span>
-        </a>
+        </a> --}}
 
         {{-- INVENTORI & STOK (MENU GROUP) --}}
         <div class="menu-group">
@@ -68,22 +68,22 @@
             </div>
         </div>
 
-        {{-- OPERASIONAL --}}
+        {{-- OPERASIONAL
         <a href="#" class="menu-item">
             <i data-lucide="wallet"></i>
             <span>Operasional & Finansial</span>
-        </a>
+        </a> --}}
 
         <a href="{{ route('laporan.index') }}" class="menu-item">
                 <i data-lucide="file-text"></i>
                 <span>Laporan</span>
             </a>
 
-        {{-- PENGATURAN --}}
+        {{-- PENGATURAN
         <a href="#" class="menu-item">
             <i data-lucide="settings"></i>
             <span>Pengaturan</span>
-        </a>
+        </a> --}}
     </nav>
 
     {{-- SIDEBAR FOOTER --}}

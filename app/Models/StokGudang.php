@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class StokGudang extends Model
 {
+    use HasFactory;
+
     protected $table = 'inventory_transactions';
 
     public $timestamps = false;
@@ -23,13 +25,11 @@ class StokGudang extends Model
         'notes',
     ];
 
-    // Relasi ke material
     public function material()
     {
         return $this->belongsTo(Material::class, 'material_id');
     }
 
-    // Relasi ke supplier
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');

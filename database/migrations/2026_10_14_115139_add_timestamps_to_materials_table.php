@@ -6,23 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('materials', function (Blueprint $table) {
-            $table->timestamps();
-        });
+        if (!Schema::hasColumn('materials', 'created_at')) {
+            Schema::table('materials', function (Blueprint $table) {
+                $table->timestamp('created_at')->nullable();
+            });
+        }
+
+        if (!Schema::hasColumn('materials', 'updated_at')) {
+            Schema::table('materials', function (Blueprint $table) {
+                $table->timestamp('updated_at')->nullable();
+            });
+        }
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::table('materials', function (Blueprint $table) {
-            //
-        });
+        // Tidak menghapus timestamps karena kolom sudah ada sebelumnya.
     }
 };

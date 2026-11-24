@@ -1627,3 +1627,385 @@ body.pink-theme .stokgudang-stat-icon.blue {
         margin-left: auto;
     }
 }
+
+
+/* =========================================================
+   PENYESUAIAN DENGAN stokgudang.blade.php
+   Nama selector di bawah mengikuti class yang benar-benar
+   digunakan pada file Blade.
+   ========================================================= */
+
+/* Area halaman */
+.stokgudang-page {
+    width: 100%;
+    min-width: 0;
+}
+
+/* Notifikasi */
+.alert-success,
+.alert-error {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 15px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 550;
+}
+
+.alert-success {
+    color: #25845d;
+    background: var(--green-light);
+    border-color: #ccebdc;
+}
+
+.alert-error {
+    color: #c74747;
+    background: var(--red-light);
+    border-color: #f4d0d0;
+}
+
+.alert-success svg,
+.alert-error svg {
+    width: 17px;
+    height: 17px;
+    flex: 0 0 17px;
+}
+
+/* Kategori gudang: sesuai .category-section pada Blade */
+.category-section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px 20px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.category-heading h2 {
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.category-heading p {
+    margin-top: 4px;
+    color: var(--text-light);
+    font-size: 11px;
+}
+
+.category-list {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.category-card {
+    min-width: 0;
+    min-height: 76px;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: #fff;
+    color: var(--text);
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.35;
+    transition: border-color .2s ease, background .2s ease,
+                color .2s ease, transform .2s ease;
+}
+
+.category-card svg {
+    width: 21px;
+    height: 21px;
+    color: var(--dhd-blue);
+}
+
+.category-card:hover {
+    border-color: var(--dhd-blue);
+    background: var(--dhd-blue-light);
+    color: var(--dhd-blue);
+    transform: translateY(-1px);
+}
+
+.category-card.active {
+    border-color: var(--dhd-blue);
+    background: var(--dhd-blue);
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(47, 67, 102, .15);
+}
+
+.category-card.active svg {
+    color: #fff;
+}
+
+/* Filter periode: sesuai form dan class di Blade */
+.stock-filter {
+    padding: 16px 20px;
+    background: #fbfcfe;
+    border-bottom: 1px solid var(--border);
+}
+
+.stock-filter-form {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.filter-item {
+    min-width: 145px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-item label {
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 650;
+}
+
+.filter-item select,
+.filter-item input {
+    width: 100%;
+    min-height: 36px;
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    outline: none;
+    background: #fff;
+    color: var(--text-dark);
+    font-family: inherit;
+    font-size: 12px;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.filter-item select:focus,
+.filter-item input:focus {
+    border-color: var(--dhd-blue);
+    box-shadow: 0 0 0 3px rgba(47, 67, 102, .08);
+}
+
+.btn-filter,
+.btn-reset {
+    min-height: 36px;
+    padding: 8px 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 650;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.btn-filter {
+    background: var(--dhd-blue);
+    color: #fff;
+}
+
+.btn-filter:hover {
+    background: var(--dhd-blue-dark);
+}
+
+.btn-filter svg {
+    width: 14px;
+    height: 14px;
+}
+
+.btn-reset {
+    border-color: var(--border);
+    background: #fff;
+    color: var(--text);
+}
+
+.btn-reset:hover {
+    border-color: var(--dhd-blue);
+    background: var(--dhd-blue-light);
+    color: var(--dhd-blue);
+}
+
+.period-information {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    color: var(--text-light);
+    font-size: 11px;
+}
+
+.period-information svg {
+    width: 14px;
+    height: 14px;
+    color: var(--dhd-blue);
+}
+
+.period-information strong {
+    color: var(--text-dark);
+    font-weight: 650;
+}
+
+/* Area tabel dan pencarian */
+.table-card {
+    min-width: 0;
+}
+
+.table-header-action {
+    flex-wrap: wrap;
+}
+
+.stokgudang-search {
+    margin-left: auto;
+}
+
+/* Kolom masuk dan keluar */
+.stokgudang-data-table .stock-in {
+    color: #269568;
+    font-weight: 650;
+}
+
+.stokgudang-data-table .stock-out {
+    color: #d45c5c;
+    font-weight: 650;
+}
+
+/* Status stok sesuai markup Blade */
+.stock-status {
+    min-width: 72px;
+    padding: 5px 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.status-safe {
+    background: var(--green-light);
+    color: #25845d;
+}
+
+.status-low {
+    background: var(--yellow-light);
+    color: #b7791f;
+}
+
+.status-empty {
+    background: var(--red-light);
+    color: #c74747;
+}
+
+/* Pastikan dropdown berada di atas isi tabel */
+.stokgudang-data-table td:last-child {
+    position: relative;
+    overflow: visible;
+}
+
+.stokgudang-data-table .action-dropdown {
+    position: relative;
+}
+
+.stokgudang-data-table .dropdown-menu-action {
+    top: calc(100% + 4px);
+    right: 0;
+    z-index: 100;
+}
+
+/* Tampilan tablet */
+@media (max-width: 1100px) {
+    .category-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .stock-filter-form {
+        align-items: stretch;
+    }
+
+    .filter-item {
+        flex: 1 1 180px;
+    }
+}
+
+/* Tampilan ponsel */
+@media (max-width: 640px) {
+    .category-section {
+        padding: 14px;
+    }
+
+    .category-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .category-card {
+        min-height: 70px;
+        padding: 10px 7px;
+        font-size: 10px;
+    }
+
+    .stock-filter {
+        padding: 14px;
+    }
+
+    .stock-filter-form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .filter-item {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .btn-filter,
+    .btn-reset {
+        width: 100%;
+    }
+
+    .period-information {
+        line-height: 1.5;
+    }
+
+    .stokgudang-search {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .table-header-action {
+        padding: 15px;
+    }
+
+    .alert-success,
+    .alert-error {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 380px) {
+    .stock-filter-form {
+        grid-template-columns: 1fr;
+    }
+
+    .category-list {
+        grid-template-columns: 1fr 1fr;
+    }
+}

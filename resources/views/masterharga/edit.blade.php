@@ -25,14 +25,14 @@
             </div>
         </div>
         <nav class="sidebar-menu">
-            <a href="{{ Route::has('dashboard') ? route('dashboard') : '#' }}" class="menu-item">
+            {{-- <a href="{{ Route::has('dashboard') ? route('dashboard') : '#' }}" class="menu-item">
                 <i data-lucide="layout-dashboard"></i>
                 <span>Dashboard</span>
             </a>
             <a href="#" class="menu-item">
                 <i data-lucide="clipboard-list"></i>
                 <span>RAP & Anggaran</span>
-            </a>
+            </a> --}}
             <div class="menu-group">
                 <a href="{{ route('inventori.index') }}" class="menu-item menu-toggle {{ request()->routeIs('masterharga.*', 'supplier.*') ? 'menu-parent-active' : '' }}">
                     <i data-lucide="package"></i>
@@ -54,18 +54,18 @@
                 </div>
             </div>
 
-            <a href="#" class="menu-item">
+            {{-- <a href="#" class="menu-item">
                 <i data-lucide="wallet"></i>
                 <span>Operasional & Finansial</span>
-            </a>
+            </a> --}}
             <a href="#" class="menu-item">
                 <i data-lucide="file-text"></i>
                 <span>Laporan</span>
             </a>
-            <a href="#" class="menu-item">
+            {{-- <a href="#" class="menu-item">
                 <i data-lucide="settings"></i>
                 <span>Pengaturan</span>
-            </a>
+            </a> --}}
         </nav>
 
         <div class="sidebar-footer">

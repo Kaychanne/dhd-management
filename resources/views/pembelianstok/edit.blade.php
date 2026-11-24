@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -6,46 +5,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>DHD Interior - Edit Pembelian Stok</title>
+    <title>DHD Interior - Edit Pembelian</title>
 
     @vite(['resources/css/inventori.css'])
+
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        .item-box {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            background: #fcfdfe;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .item-calc-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: var(--dhd-blue-light);
+            color: var(--text-dark);
+            font-size: 12px;
+        }
+
+        .alert-box-error {
+            padding: 14px 16px;
+            border-radius: 10px;
+            background: var(--red-light);
+            border: 1px solid #f5c2c2;
+            color: #b43c3c;
+            font-size: 12px;
+        }
+
+        .alert-box-error ul {
+            margin-top: 6px;
+            padding-left: 18px;
+        }
+    </style>
 </head>
 
 <body>
 
-@php
-    // Mendukung pembelian dengan beberapa item.
-    $purchaseItems = old('items');
-
-    if (!$purchaseItems) {
-        $purchaseItems = isset($purchase->items)
-            ? $purchase->items->values()->all()
-            : [$purchase];
-    }
-
-    $purchaseDate = old(
-        'purchase_date',
-        $purchase->purchase_date ?? $purchase->transaction_date ?? ''
-    );
-
-    $invoiceNumber = old(
-        'invoice_number',
-        $purchase->invoice_number ?? $purchase->reference_number ?? ''
-    );
-
-    $supplierId = old('supplier_id', $purchase->supplier_id ?? '');
-
-    $shippingCost = old(
-        'shipping_cost',
-        $purchase->shipping_cost ?? 0
-    );
-
-    $notes = old('notes', $purchase->notes ?? '');
-@endphp
-
 <div class="dashboard-wrapper">
-
     {{-- SIDEBAR --}}
     <aside class="sidebar">
         <div class="sidebar-brand">
@@ -55,84 +63,45 @@
                 <span>Management System</span>
             </div>
         </div>
-
         <nav class="sidebar-menu">
-
-            <a href="{{ Route::has('dashboard') ? route('dashboard') : '#' }}"
-               class="menu-item">
-                <i data-lucide="layout-dashboard"></i>
-                <span>Dashboard</span>
-            </a>
-
-            <a href="#" class="menu-item">
-                <i data-lucide="clipboard-list"></i>
-                <span>RAP & Anggaran</span>
-            </a>
-
             <div class="menu-group">
-
-                <a href="{{ route('inventori.index') }}"
-                   class="menu-item menu-toggle menu-parent-active">
+                <a href="{{ route('inventori.index') }}" class="menu-item menu-toggle menu-parent-active">
                     <i data-lucide="package"></i>
-                    <span>Inventori & Stok</span>
+                    <span>Inventori &amp; Stok</span>
                     <i data-lucide="chevron-up" class="arrow"></i>
                 </a>
 
                 <div class="submenu open">
-
                     <a href="{{ route('masterharga.index') }}">
                         Master Harga
                     </a>
-
                     <a href="{{ route('supplier.index') }}">
                         Supplier
                     </a>
-
-                    <a href="{{ route('pembelianstok.index') }}"
-                       class="active">
-                        Pembelian & Stok
+                    <a href="{{ route('pembelianstok.index') }}" class="active">
+                        Pembelian &amp; Stok
                     </a>
-
-                    <a href="#">Stok Gudang</a>
-                    <a href="#">Mutasi Stok</a>
-                    <a href="#">Stok Opname</a>
-
+                    <a href="{{ route('stokgudang.index') }}">
+                        Stok Gudang
+                    </a>
                 </div>
             </div>
 
-            <a href="#" class="menu-item">
-                <i data-lucide="wallet"></i>
-                <span>Operasional & Finansial</span>
-            </a>
-
-            <a href="#" class="menu-item">
+            <a href="{{ route('laporan.index') }}" class="menu-item">
                 <i data-lucide="file-text"></i>
                 <span>Laporan</span>
             </a>
-
-            <a href="#" class="menu-item">
-                <i data-lucide="settings"></i>
-                <span>Pengaturan</span>
-            </a>
-
         </nav>
 
         <div class="sidebar-footer">
             <div class="orange-line"></div>
-
             <p>DHD Interior<br>Management System</p>
-
-            <button type="button" class="theme-button"
-                    onclick="changeTheme()">
+            <button type="button" class="theme-button" onclick="changeTheme()">
                 <i data-lucide="palette"></i>
                 <span>Change Theme</span>
             </button>
-
-            <form method="POST"
-                  action="{{ Route::has('logout') ? route('logout') : '#' }}"
-                  class="logout-form">
+            <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}" class="logout-form">
                 @csrf
-
                 <button type="submit" class="logout-button">
                     <i data-lucide="log-out"></i>
                     <span>Logout</span>
@@ -141,24 +110,17 @@
         </div>
     </aside>
 
-
     {{-- MAIN CONTENT --}}
     <main class="main-content">
-
-        {{-- TOPBAR --}}
         <header class="topbar">
-
             <div class="search-box">
                 <i data-lucide="search"></i>
-                <input type="text"
-                       placeholder="Cari proyek, barang, supplier...">
+                <input type="text" placeholder="Cari proyek, barang, supplier atau transaksi...">
             </div>
 
             <div class="topbar-right">
-
                 <div class="date-info">
                     <i data-lucide="calendar-days"></i>
-
                     <div>
                         <strong id="currentDate"></strong>
                         <span id="currentTime"></span>
@@ -171,750 +133,343 @@
                 </button>
 
                 <div class="admin-profile">
-                    <div class="admin-avatar">ST</div>
-                    <span>Steven</span>
+                    <div class="admin-avatar">{{ strtoupper(substr(auth()->user()->name ?? 'ST', 0, 2)) }}</div>
+                    <span>{{ auth()->user()->name ?? 'Steven' }}</span>
                     <i data-lucide="chevron-down"></i>
                 </div>
-
             </div>
         </header>
 
-
-        {{-- CONTENT --}}
         <section class="content">
-
             <div class="inventory-page">
 
                 {{-- HEADER PAGE --}}
                 <div class="inventory-header">
-
                     <div class="inventory-title">
-
                         <div class="breadcrumb">
-                            <a href="{{ route('pembelianstok.index') }}">
-                                Pembelian & Stok
-                            </a>
-
+                            <a href="{{ route('pembelianstok.index') }}">Pembelian &amp; Stok</a>
                             <i data-lucide="chevron-right"></i>
-
                             <span>Edit Pembelian</span>
                         </div>
-
-                        <h1>Edit Pembelian Stok</h1>
-
-                        <p>
-                            Perbarui informasi transaksi pembelian dan
-                            detail barang yang masuk ke gudang.
-                        </p>
-
+                        <h1>Edit Pembelian</h1>
+                        <p>Perbarui informasi transaksi pembelian, proyek, dan rincian barang masuk.</p>
                     </div>
 
                     <div class="header-action">
-
-                        <a href="{{ route('pembelianstok.index') }}"
-                           class="btn btn-secondary">
+                        <a href="{{ route('pembelianstok.index') }}" class="btn btn-secondary">
                             <i data-lucide="arrow-left"></i>
                             Kembali
                         </a>
-
                     </div>
-
                 </div>
 
+                @if ($errors->any())
+                    <div class="alert-box-error">
+                        <strong>Periksa kembali data pembelian:</strong>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                @php($firstItem = $purchase->items->first())
 
                 {{-- FORM EDIT PEMBELIAN --}}
-                <form action="{{ route('pembelianstok.update', $purchase->id) }}"
-                      method="POST"
-                      class="form-card">
-
+                <form action="{{ route('pembelianstok.update', $purchase->id) }}" method="POST" class="form-card" id="purchaseEditForm">
                     @csrf
                     @method('PUT')
 
                     <div class="form-body">
 
-                        {{-- SEKSI 1: INFORMASI TRANSAKSI --}}
+                        {{-- SEKSI 1: INFORMASI PEMBELIAN & PROYEK --}}
                         <div class="form-section">
-
                             <h3 class="section-title">
-                                <i data-lucide="receipt"></i>
-                                Informasi Transaksi Pembelian
+                                <i data-lucide="file-text"></i>
+                                Informasi Pembelian &amp; Proyek
                             </h3>
 
                             <div class="form-grid">
-
-                                {{-- Tanggal Pembelian --}}
                                 <div class="form-group">
-
                                     <label for="purchase_date">
-                                        Tanggal Pembelian
-                                        <span class="required">*</span>
+                                        Tanggal Pembelian <span class="required">*</span>
                                     </label>
-
                                     <input
                                         type="date"
                                         id="purchase_date"
                                         name="purchase_date"
-                                        value="{{ $purchaseDate }}"
+                                        value="{{ old('purchase_date', optional($purchase->purchase_date)->format('Y-m-d') ?? $purchase->purchase_date) }}"
                                         required
                                     >
-
                                     @error('purchase_date')
                                         <span class="error-msg">{{ $message }}</span>
                                     @enderror
-
                                 </div>
 
-
-                                {{-- Nomor Invoice --}}
                                 <div class="form-group">
-
-                                    <label for="invoice_number">
-                                        Nomor Invoice / Referensi
-                                    </label>
-
+                                    <label for="invoice_number">No. Nota / Invoice</label>
                                     <input
                                         type="text"
                                         id="invoice_number"
                                         name="invoice_number"
-                                        value="{{ $invoiceNumber }}"
-                                        placeholder="Contoh: INV-001"
+                                        value="{{ old('invoice_number', $purchase->invoice_number) }}"
+                                        placeholder="Nomor invoice"
                                     >
-
                                     @error('invoice_number')
                                         <span class="error-msg">{{ $message }}</span>
                                     @enderror
-
                                 </div>
 
-
-                                {{-- Supplier --}}
-                                <div class="form-group col-span-2">
-
+                                <div class="form-group">
                                     <label for="supplier_id">
-                                        Supplier / Asal Pembelian
-                                        <span class="required">*</span>
+                                        Pilih Supplier <span class="required">*</span>
                                     </label>
-
-                                    <select
-                                        name="supplier_id"
-                                        id="supplier_id"
-                                        required
-                                    >
-                                        <option value="">
-                                            -- Pilih Supplier --
-                                        </option>
-
-                                        @foreach($suppliers as $supplier)
-
-                                            <option
-                                                value="{{ $supplier->id }}"
-                                                {{ (string) $supplierId === (string) $supplier->id ? 'selected' : '' }}
-                                            >
+                                    <select id="supplier_id" name="supplier_id" required>
+                                        <option value="">-- Pilih Supplier --</option>
+                                        @foreach($suppliers ?? [] as $supplier)
+                                            <option value="{{ $supplier->id }}" {{ old('supplier_id', $purchase->supplier_id) == $supplier->id ? 'selected' : '' }}>
                                                 {{ $supplier->name }}
                                             </option>
-
                                         @endforeach
                                     </select>
-
                                     @error('supplier_id')
                                         <span class="error-msg">{{ $message }}</span>
                                     @enderror
-
                                 </div>
 
-                            </div>
-                        </div>
-
-
-                        {{-- SEKSI 2: DETAIL BARANG --}}
-                        <div class="form-section">
-
-                            <h3 class="section-title">
-                                <i data-lucide="package"></i>
-                                Detail Barang yang Dibeli
-                            </h3>
-
-                            <p style="margin-bottom: 20px; color: #777;">
-                                Pilih harga dari master harga atau gunakan
-                                input manual untuk barang yang belum terdaftar.
-                            </p>
-
-                            <div id="purchaseItems">
-
-                                @foreach($purchaseItems as $index => $item)
-
-                                    <div class="purchase-item-row">
-
-                                        <div class="form-grid">
-
-                                            {{-- Pilihan Sumber Harga --}}
-                                            <div class="form-group col-span-2">
-
-                                                <label>
-                                                    Sumber Harga
-                                                    <span class="required">*</span>
-                                                </label>
-
-                                                <select
-                                                    name="items[{{ $index }}][price_mode]"
-                                                    class="price-mode"
-                                                    onchange="changePriceMode(this)"
-                                                    required
-                                                >
-                                                    <option
-                                                        value="master"
-                                                        {{ old("items.$index.price_mode", $item->price_mode ?? 'master') === 'master' ? 'selected' : '' }}
-                                                    >
-                                                        Gunakan Master Harga
-                                                    </option>
-
-                                                    <option
-                                                        value="manual"
-                                                        {{ old("items.$index.price_mode", $item->price_mode ?? 'master') === 'manual' ? 'selected' : '' }}
-                                                    >
-                                                        Input Manual
-                                                    </option>
-                                                </select>
-
-                                            </div>
-
-
-                                            {{-- Master Harga --}}
-                                            <div class="form-group master-price-group">
-
-                                                <label>Master Harga Barang</label>
-
-                                                <select
-                                                    name="items[{{ $index }}][price_id]"
-                                                    class="master-price"
-                                                    onchange="selectMasterPrice(this)"
-                                                >
-                                                    <option value="">
-                                                        -- Pilih Harga Barang --
-                                                    </option>
-
-                                                    @foreach($prices as $price)
-
-                                                        <option
-                                                            value="{{ $price->id }}"
-                                                            data-material="{{ $price->material_id }}"
-                                                            data-price="{{ $price->price }}"
-                                                            data-name="{{ $price->material_name }}"
-                                                            {{ (string) old("items.$index.price_id", $item->price_id ?? '') === (string) $price->id ? 'selected' : '' }}
-                                                        >
-                                                            {{ $price->material_name }}
-                                                            - Rp {{ number_format($price->price, 0, ',', '.') }}
-                                                        </option>
-
-                                                    @endforeach
-
-                                                </select>
-
-                                            </div>
-
-
-                                            {{-- Material --}}
-                                            <div class="form-group manual-material-group">
-
-                                                <label>Nama Material</label>
-
-                                                <select
-                                                    name="items[{{ $index }}][material_id]"
-                                                    class="material-select"
-                                                >
-                                                    <option value="">
-                                                        -- Pilih Material --
-                                                    </option>
-
-                                                    @foreach($prices->unique('material_id') as $price)
-
-                                                        <option
-                                                            value="{{ $price->material_id }}"
-                                                            {{ (string) old("items.$index.material_id", $item->material_id ?? '') === (string) $price->material_id ? 'selected' : '' }}
-                                                        >
-                                                            {{ $price->material_name }}
-                                                            ({{ $price->material_code }})
-                                                        </option>
-
-                                                    @endforeach
-
-                                                </select>
-
-                                            </div>
-
-
-                                            {{-- Harga Satuan --}}
-                                            <div class="form-group">
-
-                                                <label>Harga Satuan (Rp)</label>
-
-                                                <input
-                                                    type="number"
-                                                    name="items[{{ $index }}][price]"
-                                                    class="unit-price"
-                                                    min="0"
-                                                    step="0.01"
-                                                    value="{{ old("items.$index.price", $item->unit_price ?? $item->price ?? '') }}"
-                                                    placeholder="Masukkan harga"
-                                                    required
-                                                >
-
-                                            </div>
-
-
-                                            {{-- Jumlah --}}
-                                            <div class="form-group">
-
-                                                <label>Jumlah Barang</label>
-
-                                                <input
-                                                    type="number"
-                                                    name="items[{{ $index }}][quantity]"
-                                                    class="item-quantity"
-                                                    min="0.01"
-                                                    step="0.01"
-                                                    value="{{ old("items.$index.quantity", $item->quantity ?? '') }}"
-                                                    placeholder="Masukkan jumlah"
-                                                    required
-                                                >
-
-                                            </div>
-
-                                        </div>
-
-                                        <div class="item-row-footer">
-
-                                            <span class="item-subtotal">
-                                                Subtotal: Rp 0
-                                            </span>
-
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline remove-item"
-                                                onclick="removeItem(this)"
-                                            >
-                                                <i data-lucide="trash-2"></i>
-                                                Hapus Barang
-                                            </button>
-
-                                        </div>
-
-                                        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-
-                                    </div>
-
-                                @endforeach
-
-                            </div>
-
-
-                            <button type="button"
-                                    class="btn btn-secondary"
-                                    onclick="addItem()">
-
-                                <i data-lucide="plus"></i>
-                                Tambah Barang
-
-                            </button>
-
-                        </div>
-
-
-                        {{-- SEKSI 3: ONGKIR DAN CATATAN --}}
-                        <div class="form-section">
-
-                            <h3 class="section-title">
-                                <i data-lucide="calculator"></i>
-                                Biaya Pengiriman & Perhitungan
-                            </h3>
-
-                            <div class="form-grid">
-
-                                {{-- Ongkir --}}
                                 <div class="form-group">
+                                    <label for="project_name">Nama Proyek</label>
+                                    <input
+                                        type="text"
+                                        id="project_name"
+                                        name="project_name"
+                                        value="{{ old('project_name', $purchase->project_name) }}"
+                                        placeholder="Contoh: Springwood 8I atau Stok Gudang"
+                                    >
+                                    @error('project_name')
+                                        <span class="error-msg">{{ $message }}</span>
+                                    @enderror
+                                </div>
 
-                                    <label for="shipping_cost">
-                                        Total Ongkos Kirim (Rp)
-                                    </label>
-
+                                <div class="form-group">
+                                    <label for="shipping_cost">Total Ongkos Kirim (Rp)</label>
                                     <input
                                         type="number"
+                                        step="1"
+                                        min="0"
                                         id="shipping_cost"
                                         name="shipping_cost"
-                                        min="0"
-                                        step="0.01"
-                                        value="{{ $shippingCost }}"
-                                        placeholder="Contoh: 50000"
+                                        value="{{ old('shipping_cost', $purchase->shipping_cost ?? 0) }}"
+                                        oninput="calculateEditTotal()"
                                     >
-
                                     @error('shipping_cost')
                                         <span class="error-msg">{{ $message }}</span>
                                     @enderror
-
                                 </div>
 
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select id="status" name="status">
+                                        <option value="Tercatat" {{ old('status', $purchase->status) == 'Tercatat' ? 'selected' : '' }}>Tercatat</option>
+                                        <option value="Diproses" {{ old('status', $purchase->status) == 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                                        <option value="Selesai" {{ old('status', $purchase->status) == 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                                    </select>
+                                    @error('status')
+                                        <span class="error-msg">{{ $message }}</span>
+                                    @enderror
+                                </div>
 
-                                {{-- Catatan --}}
                                 <div class="form-group col-span-2">
-
-                                    <label for="notes">
-                                        Catatan Pembelian
-                                    </label>
-
+                                    <label for="notes">Catatan Tambahan</label>
                                     <textarea
                                         id="notes"
                                         name="notes"
-                                        rows="4"
-                                        placeholder="Tambahkan keterangan pembelian..."
-                                    >{{ $notes }}</textarea>
-
+                                        rows="3"
+                                        placeholder="Tuliskan catatan pembelian atau keterangan proyek..."
+                                    >{{ old('notes', $purchase->notes) }}</textarea>
                                     @error('notes')
                                         <span class="error-msg">{{ $message }}</span>
                                     @enderror
-
                                 </div>
-
                             </div>
+                        </div>
 
+                        {{-- SEKSI 2: RINCIAN BARANG --}}
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i data-lucide="package"></i>
+                                Rincian Barang
+                            </h3>
 
-                            {{-- RINGKASAN HARGA --}}
-                            <div class="purchase-summary">
+                            <div class="item-box">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Sumber Harga <span class="required">*</span></label>
+                                        <select name="items[0][price_mode]" id="price_mode" onchange="toggleEditSource()" required>
+                                            <option value="master" {{ old('items.0.price_mode', $purchase->price_mode) === 'master' ? 'selected' : '' }}>Master Harga</option>
+                                            <option value="manual" {{ old('items.0.price_mode', $purchase->price_mode) === 'manual' ? 'selected' : '' }}>Input Manual</option>
+                                        </select>
+                                    </div>
 
-                                <div class="summary-row">
-                                    <span>Total Jumlah Barang</span>
-                                    <strong id="totalQuantity">0</strong>
+                                    <div class="form-group" id="editMasterField">
+                                        <label>Material &amp; Harga Acuan</label>
+                                        <select name="items[0][price_id]" id="price_id" onchange="selectEditPrice()">
+                                            <option value="">-- Pilih Material &amp; Harga --</option>
+                                            @foreach($prices ?? [] as $price)
+                                                <option
+                                                    value="{{ $price->id }}"
+                                                    data-material-id="{{ $price->material_id }}"
+                                                    data-price="{{ $price->price }}"
+                                                    data-unit="{{ $price->material_unit }}"
+                                                    {{ old('items.0.price_id', $purchase->price_id) == $price->id ? 'selected' : '' }}
+                                                >
+                                                    {{ $price->material_code ?: 'MAT-'.$price->material_id }} - {{ $price->material_name }} (Rp {{ number_format($price->price, 0, ',', '.') }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group" id="editMaterialField">
+                                        <label>Material <span class="required">*</span></label>
+                                        <select name="items[0][material_id]" id="material_id">
+                                            <option value="">-- Pilih Material --</option>
+                                            @foreach($materials ?? [] as $material)
+                                                <option value="{{ $material->id }}" {{ old('items.0.material_id', $firstItem->material_id ?? '') == $material->id ? 'selected' : '' }}>
+                                                    {{ $material->code ?: 'MAT-'.$material->id }} - {{ $material->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Harga Satuan (Rp) <span class="required">*</span></label>
+                                        <input
+                                            type="number"
+                                            name="items[0][price]"
+                                            id="item_price"
+                                            min="0"
+                                            step="0.01"
+                                            value="{{ old('items.0.price', $purchase->price ?? ($firstItem->unit_price ?? 0)) }}"
+                                            required
+                                            oninput="calculateEditTotal()"
+                                        >
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Jumlah <span class="required">*</span></label>
+                                        <input
+                                            type="number"
+                                            name="items[0][quantity]"
+                                            id="item_quantity"
+                                            min="0.01"
+                                            step="0.01"
+                                            value="{{ old('items.0.quantity', $firstItem->quantity ?? 1) }}"
+                                            required
+                                            oninput="calculateEditTotal()"
+                                        >
+                                    </div>
                                 </div>
 
-                                <div class="summary-row">
-                                    <span>Total Harga Barang</span>
-                                    <strong id="totalItems">Rp 0</strong>
+                                <div class="item-calc-bar">
+                                    <span>Subtotal Barang: <strong id="editSubtotal">Rp 0</strong></span>
+                                    <span>Estimasi Total: <strong id="editGrandTotal">Rp 0</strong></span>
                                 </div>
-
-                                <div class="summary-row">
-                                    <span>Ongkos Kirim</span>
-                                    <strong id="totalShipping">Rp 0</strong>
-                                </div>
-
-                                <hr>
-
-                                <div class="summary-row grand-total">
-                                    <span>Total Pembelian</span>
-                                    <strong id="grandTotal">Rp 0</strong>
-                                </div>
-
-                                <div class="summary-row">
-                                    <span>Estimasi HPP / Unit</span>
-                                    <strong id="estimatedHpp">Rp 0</strong>
-                                </div>
-
                             </div>
-
                         </div>
 
                     </div>
 
-
-                    {{-- FOOTER BUTTON --}}
+                    {{-- FORM FOOTER / BUTTONS --}}
                     <div class="form-footer">
-
-                        <a href="{{ route('pembelianstok.index') }}"
-                           class="btn btn-outline">
-                            Batal
-                        </a>
-
+                        <a href="{{ route('pembelianstok.index') }}" class="btn btn-outline">Batal</a>
                         <button type="submit" class="btn btn-primary">
-
                             <i data-lucide="save"></i>
-                            Perbarui Pembelian
-
+                            Simpan Perubahan
                         </button>
-
                     </div>
 
                 </form>
 
             </div>
-
         </section>
-
     </main>
-
 </div>
 
-
-{{-- JAVASCRIPT --}}
 <script>
-
     lucide.createIcons();
 
-    // THEME
+    const editMoney = value => 'Rp ' + (Number(value) || 0).toLocaleString('id-ID', { maximumFractionDigits: 2 });
+
+    function toggleEditSource() {
+        const master = document.getElementById('price_mode').value === 'master';
+        document.getElementById('editMasterField').hidden = !master;
+        document.getElementById('editMaterialField').hidden = master;
+        document.getElementById('price_id').disabled = !master;
+        document.getElementById('material_id').disabled = master;
+        document.getElementById('price_id').required = master;
+        document.getElementById('material_id').required = !master;
+    }
+
+    function selectEditPrice() {
+        const option = document.getElementById('price_id').selectedOptions[0];
+        if (option && option.value) {
+            document.getElementById('item_price').value = option.dataset.price || 0;
+        }
+        calculateEditTotal();
+    }
+
+    function calculateEditTotal() {
+        const price = Number(document.getElementById('item_price')?.value) || 0;
+        const qty = Number(document.getElementById('item_quantity')?.value) || 0;
+        const shipping = Number(document.getElementById('shipping_cost')?.value) || 0;
+        const subtotal = price * qty;
+        document.getElementById('editSubtotal').textContent = editMoney(subtotal);
+        document.getElementById('editGrandTotal').textContent = editMoney(subtotal + shipping);
+    }
+
     function changeTheme() {
         document.body.classList.toggle('pink-theme');
-
-        localStorage.setItem(
-            'dhd-theme',
-            document.body.classList.contains('pink-theme')
-                ? 'pink'
-                : 'default'
-        );
+        if (document.body.classList.contains('pink-theme')) {
+            localStorage.setItem('dhd-theme', 'pink');
+        } else {
+            localStorage.setItem('dhd-theme', 'default');
+        }
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-
-        if (localStorage.getItem('dhd-theme') === 'pink') {
+        const theme = localStorage.getItem('dhd-theme');
+        if (theme === 'pink') {
             document.body.classList.add('pink-theme');
         }
-
-        document.querySelectorAll('.purchase-item-row').forEach(row => {
-            initializeItem(row);
-        });
-
-        calculateTotal();
-        updateDateTime();
-
+        toggleEditSource();
+        calculateEditTotal();
     });
 
-
-    // DATE AND TIME
     function updateDateTime() {
-
         const now = new Date();
+        const dateElement = document.getElementById('currentDate');
+        const timeElement = document.getElementById('currentTime');
 
-        document.getElementById('currentDate').textContent =
-            now.toLocaleDateString('id-ID', {
+        if (dateElement) {
+            dateElement.textContent = now.toLocaleDateString('id-ID', {
                 weekday: 'long',
                 day: '2-digit',
                 month: 'long',
                 year: 'numeric'
             });
+        }
 
-        document.getElementById('currentTime').textContent =
-            now.toLocaleTimeString('id-ID', {
+        if (timeElement) {
+            timeElement.textContent = now.toLocaleTimeString('id-ID', {
                 hour: '2-digit',
                 minute: '2-digit'
             }) + ' WIB';
-
+        }
     }
 
+    updateDateTime();
     setInterval(updateDateTime, 1000);
-
-
-    // FORMAT RUPIAH
-    function rupiah(value) {
-
-        return 'Rp ' + Number(value || 0).toLocaleString('id-ID');
-
-    }
-
-
-    // INITIALIZE ITEM
-    function initializeItem(row) {
-
-        const mode = row.querySelector('.price-mode');
-
-        const master = row.querySelector('.master-price');
-        const material = row.querySelector('.material-select');
-
-        if (mode.value === 'master' && master.value) {
-            const selected = master.options[master.selectedIndex];
-
-            if (selected) {
-                material.value = selected.dataset.material || '';
-            }
-        }
-
-        changePriceMode(mode, false);
-
-        row.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', calculateTotal);
-        });
-
-        row.querySelector('.master-price').addEventListener(
-            'change',
-            calculateTotal
-        );
-
-    }
-
-
-    // CHANGE PRICE MODE
-    function changePriceMode(select, reset = true) {
-
-        const row = select.closest('.purchase-item-row');
-
-        const masterGroup = row.querySelector('.master-price-group');
-        const manualGroup = row.querySelector('.manual-material-group');
-
-        const master = row.querySelector('.master-price');
-        const material = row.querySelector('.material-select');
-        const price = row.querySelector('.unit-price');
-
-        const isMaster = select.value === 'master';
-
-        masterGroup.style.display = isMaster ? 'block' : 'none';
-        manualGroup.style.display = isMaster ? 'none' : 'block';
-
-        master.disabled = !isMaster;
-        material.disabled = isMaster;
-
-        material.required = !isMaster;
-        master.required = isMaster;
-
-        if (reset) {
-
-            if (isMaster) {
-                material.value = '';
-                price.value = '';
-            } else {
-                master.value = '';
-                price.value = '';
-            }
-
-        }
-
-        if (isMaster && master.value) {
-            selectMasterPrice(master);
-        }
-
-        calculateTotal();
-
-    }
-
-
-    // SELECT MASTER PRICE
-    function selectMasterPrice(select) {
-
-        const row = select.closest('.purchase-item-row');
-
-        const option = select.options[select.selectedIndex];
-
-        if (!option || !option.value) return;
-
-        row.querySelector('.material-select').value =
-            option.dataset.material || '';
-
-        row.querySelector('.unit-price').value =
-            option.dataset.price || '';
-
-        calculateTotal();
-
-    }
-
-
-    // ADD NEW ITEM
-    function addItem() {
-
-        const container = document.getElementById('purchaseItems');
-
-        const index = Date.now();
-
-        const firstRow = container.querySelector('.purchase-item-row');
-
-        const newRow = firstRow.cloneNode(true);
-
-        newRow.querySelectorAll('input').forEach(input => {
-            input.value = '';
-        });
-
-        newRow.querySelectorAll('select').forEach(select => {
-            select.selectedIndex = 0;
-        });
-
-        newRow.querySelectorAll('[name]').forEach(element => {
-
-            element.name = element.name.replace(
-                /items\[[^\]]+\]/,
-                `items[${index}]`
-            );
-
-        });
-
-        container.appendChild(newRow);
-
-        initializeItem(newRow);
-
-        lucide.createIcons();
-
-        calculateTotal();
-
-    }
-
-
-    // REMOVE ITEM
-    function removeItem(button) {
-
-        const rows = document.querySelectorAll('.purchase-item-row');
-
-        if (rows.length <= 1) {
-            alert('Minimal harus ada satu barang pembelian!');
-            return;
-        }
-
-        button.closest('.purchase-item-row').remove();
-
-        calculateTotal();
-
-    }
-
-
-    // CALCULATE TOTAL
-    function calculateTotal() {
-
-        let totalQuantity = 0;
-        let totalItems = 0;
-
-        document.querySelectorAll('.purchase-item-row').forEach(row => {
-
-            const price = Number(
-                row.querySelector('.unit-price').value
-            ) || 0;
-
-            const quantity = Number(
-                row.querySelector('.item-quantity').value
-            ) || 0;
-
-            const subtotal = price * quantity;
-
-            totalQuantity += quantity;
-            totalItems += subtotal;
-
-            row.querySelector('.item-subtotal').textContent =
-                'Subtotal: ' + rupiah(subtotal);
-
-        });
-
-        const shipping = Number(
-            document.getElementById('shipping_cost').value
-        ) || 0;
-
-        const grandTotal = totalItems + shipping;
-
-        const hpp = totalQuantity > 0
-            ? grandTotal / totalQuantity
-            : 0;
-
-        document.getElementById('totalQuantity').textContent =
-            totalQuantity.toLocaleString('id-ID');
-
-        document.getElementById('totalItems').textContent =
-            rupiah(totalItems);
-
-        document.getElementById('totalShipping').textContent =
-            rupiah(shipping);
-
-        document.getElementById('grandTotal').textContent =
-            rupiah(grandTotal);
-
-        document.getElementById('estimatedHpp').textContent =
-            rupiah(hpp);
-
-    }
-
-    document.getElementById('shipping_cost').addEventListener(
-        'input',
-        calculateTotal
-    );
-
 </script>
 
 </body>

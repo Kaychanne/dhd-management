@@ -1,1186 +1,235 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>DHD Interior - Pembelian Stok</title>
-
-    @vite(['resources/css/masterharga.css'])
+    <title>DHD Interior - Pembelian & Stok</title>
+    @vite(['resources/css/pembelianstok.css', 'resources/css/pembelianstok.css'])
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-
 <body>
-{{-- SIDEBAR --}}
 <aside class="sidebar">
     <div class="sidebar-brand">
         <div class="brand-logo">DHD</div>
-        <div class="brand-text">
-            <strong>Interior</strong>
-            <span>Management System</span>
-        </div>
+        <div class="brand-text"><strong>Interior</strong><span>Management System</span></div>
     </div>
-
     <nav class="sidebar-menu">
-        {{-- DASHBOARD --}}
-        <a href="{{ Route::has('dashboard') ? route('dashboard') : '#' }}" 
-           class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-            <i data-lucide="layout-dashboard"></i>
-            <span>Dashboard</span>
-        </a>
-
-        {{-- RAP --}}
-        <a href="#" class="menu-item">
-            <i data-lucide="clipboard-list"></i>
-            <span>RAP & Anggaran</span>
-        </a>
-
-        {{-- INVENTORI & STOK (MENU GROUP) --}}
-        
-<div class="menu-group">
-    <a href="{{ route('inventori.index') }}"
-       class="menu-item menu-toggle {{ request()->routeIs('masterharga.*', 'supplier.*', 'pembelianstok.*') ? 'menu-parent-active' : '' }}">
-        <i data-lucide="package"></i>
-        <span>Inventori & Stok</span>
-        <i data-lucide="chevron-up" class="arrow"></i>
-    </a>
-
-    <div class="submenu open">
-        <a href="{{ route('masterharga.index') }}"
-           class="{{ request()->routeIs('masterharga.*') ? 'active' : '' }}">
-            Master Harga
-        </a>
-
-        <a href="{{ route('supplier.index') }}"
-           class="{{ request()->routeIs('supplier.*') ? 'active' : '' }}">
-            Supplier
-        </a>
-
-        <a href="{{ route('pembelianstok.index') }}" 
-            class="{{ request()->routeIs('pembelianstok.*') ? 'active' : '' }}">
-            Pembelian & Stok
-        </a>
-                
-        <a href="{{ route('stokgudang.index') }}"
-            class="{{ request()->routeIs('stokgudang.*') ? 'active' : '' }}">
-            Stok Gudang
-        </a>
-    </div>
-</div>
-
-
-        {{-- OPERASIONAL --}}
-        <a href="#" class="menu-item">
-            <i data-lucide="wallet"></i>
-            <span>Operasional & Finansial</span>
-        </a>
-
-        <a href="{{ route('laporan.index') }}" class="menu-item">
-                <i data-lucide="file-text"></i>
-                <span>Laporan</span>
+        <div class="menu-group">
+            <a href="{{ route('inventori.index') }}" class="menu-item menu-toggle menu-parent-active">
+                <i data-lucide="package"></i><span>Inventori & Stok</span>
             </a>
-
-        {{-- PENGATURAN --}}
-        <a href="#" class="menu-item">
-            <i data-lucide="settings"></i>
-            <span>Pengaturan</span>
-        </a>
+            <div class="submenu open">
+                <a href="{{ route('masterharga.index') }}">Master Harga</a>
+                <a href="{{ route('supplier.index') }}">Supplier</a>
+                <a href="{{ route('pembelianstok.index') }}" class="active">Pembelian & Stok</a>
+                <a href="{{ route('stokgudang.index') }}">Stok Gudang</a>
+            </div>
+        </div>
+        <a href="{{ route('laporan.index') }}" class="menu-item"><i data-lucide="file-text"></i><span>Laporan</span></a>
     </nav>
-
-    {{-- SIDEBAR FOOTER --}}
     <div class="sidebar-footer">
         <div class="orange-line"></div>
-        <p>
-            DHD Interior<br>
-            Management System
-        </p>
-
+        <p>DHD Interior<br>Management System</p>
         <div class="footer-actions">
-            <button type="button" class="theme-button" onclick="changeTheme()">
-                <i data-lucide="palette"></i>
-                <span>Change Theme</span>
-            </button>
-
-            <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}" class="logout-form">
-                @csrf
-                <button type="submit" class="logout-button">
-                    <i data-lucide="log-out"></i>
-                    <span>Logout</span>
-                </button>
-            </form>
+            <button type="button" class="theme-button" onclick="changeTheme()"><i data-lucide="palette"></i><span>Change Theme</span></button>
+            <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="logout-button"><i data-lucide="log-out"></i><span>Logout</span></button></form>
         </div>
     </div>
 </aside>
 
-    <main class="main-content">
+<main class="main-content">
+    <header class="topbar">
+        <div class="search-box"><i data-lucide="search"></i><input id="globalSearch" type="search" placeholder="Cari invoice, supplier, material, atau proyek..."></div>
+        <div class="topbar-right">
+            <div class="date-info"><i data-lucide="calendar-days"></i><div><strong id="currentDate"></strong><span id="currentTime"></span></div></div>
+            <button class="notification-button" type="button"><i data-lucide="bell"></i><span class="notification-dot"></span></button>
+            <div class="admin-profile"><div class="admin-avatar">{{ strtoupper(substr(auth()->user()->name ?? 'ST', 0, 2)) }}</div><span>{{ auth()->user()->name ?? 'Admin' }}</span><i data-lucide="chevron-down"></i></div>
+        </div>
+    </header>
 
-        <header class="topbar">
-
-            <div class="search-box">
-
-                <i data-lucide="search"></i>
-
-                <input
-                    type="text"
-                    id="globalSearch"
-                    placeholder="Cari material..."
-                >
-
+    <section class="content purchase-page">
+        <div class="purchase-heading">
+            <div>
+                <h1><i data-lucide="shopping-cart"></i> Pembelian & Stok</h1>
+                <p>Catat pembelian material, biaya distribusi, dan barang masuk ke gudang.</p>
             </div>
-
-
-            <div class="topbar-right">
-
-
-                {{-- DATE --}}
-                <div class="date-info">
-
-                    <i data-lucide="calendar-days"></i>
-
-                    <div>
-
-                        <strong id="currentDate"></strong>
-
-                        <span id="currentTime"></span>
-
-                    </div>
-
-                </div>
-
-
-                {{-- NOTIFICATION --}}
-                <button type="button"
-                        class="notification-button">
-
-                    <i data-lucide="bell"></i>
-
-                    <span class="notification-dot"></span>
-
-                </button>
-
-
-                {{-- ADMIN --}}
-                <div class="admin-profile">
-
-                    <div class="admin-avatar">
-                        ST
-                    </div>
-
-                    <span>Steven</span>
-
-                    <i data-lucide="chevron-down"></i>
-
-                </div>
-
-            </div>
-
-        </header>
-        <section class="content">
-            <div class="master-page purchase-page">
-                <div class="master-header">
-                    <div class="master-title">
-                        <h1><i data-lucide="shopping-cart"></i> Pembelian &amp; Stok</h1>
-                        <p>Catat barang masuk, kelola pembelian dari supplier, dan hitung harga pokok barang secara otomatis.</p>
-                    </div>
-                    <div class="master-header-actions">
-                        <button type="button" class="btn btn-primary" onclick="showPurchaseTab('form')">
-                            <a href="{{ route('pembelianstok.create') }}" class="btn-primary">
-                                <i class="fas fa-plus"></i>
-                                Tambah Pembelian
-                            </a>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="master-stats">
-                    <div class="master-stat-card">
-                        <div class="master-stat-icon purple"><i data-lucide="package-plus"></i></div>
-                        <div><span>Total Barang Masuk</span><strong>{{ number_format($totalIncoming ?? 0, 0, ',', '.') }}</strong><small>Unit tercatat</small></div>
-                    </div>
-                    <div class="master-stat-card">
-                        <div class="master-stat-icon green"><i data-lucide="receipt"></i></div>
-                        <div><span>Total Transaksi</span><strong>{{ number_format($totalPurchases ?? 0, 0, ',', '.') }}</strong><small>Transaksi pembelian</small></div>
-                    </div>
-                    <div class="master-stat-card">
-                        <div class="master-stat-icon purple"><i data-lucide="truck"></i></div>
-                        <div><span>Total Ongkir</span><strong>Rp {{ number_format($totalShipping ?? 0, 0, ',', '.') }}</strong><small>Biaya distribusi</small></div>
-                    </div>
-                </div>
-
-
-                <section class="purchase-panel" id="purchaseFormPanel" role="tabpanel" aria-labelledby="tabForm" hidden>
-                <form method="POST" action="{{ Route::has('pembelian.store') ? route('pembelian.store') : '#' }}" id="purchaseForm">
-                    @csrf
-                    <div class="table-card purchase-form-card">
-                        <div class="table-header-action">
-                            <div class="table-title"><i data-lucide="file-plus-2"></i><h2>Informasi Pembelian</h2></div>
-                        </div>
-                        <div class="purchase-fields">
-                            <div class="form-group">
-                                <label for="purchase_date">Tanggal Pembelian</label>
-                                <input id="purchase_date" type="date" name="purchase_date" value="{{ old('purchase_date', date('Y-m-d')) }}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="invoice_number">No. Nota / Invoice</label>
-                                <input id="invoice_number" type="text" name="invoice_number" value="{{ old('invoice_number') }}" placeholder="Contoh: INV-001">
-                            </div>
-                            <div class="form-group">
-                                <label for="supplier_id">Supplier / Toko Asal</label>
-                                <select id="supplier_id" name="supplier_id">
-                                    <option value="">Pilih supplier atau toko</option>
-                                    @foreach($suppliers ?? [] as $supplier)
-                                        <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="shipping_cost">Total Ongkos Kirim (Rp)</label>
-                                <input id="shipping_cost" type="number" name="shipping_cost" min="0" step="1" value="{{ old('shipping_cost', 0) }}" placeholder="0" oninput="calculatePurchaseTotals()">
-                            </div>
-                            <div class="form-group purchase-notes">
-                                <label for="notes">Catatan</label>
-                                <input id="notes" type="text" name="notes" value="{{ old('notes') }}" placeholder="Catatan pembelian (opsional)">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="table-card purchase-items-card">
-                        <div class="table-header-action">
-                            <div class="table-title"><i data-lucide="list-checks"></i><h2>Barang Masuk</h2></div>
-                            <div class="purchase-source-note">Pilih dari master harga atau gunakan input manual.</div>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="data-table master-data-table purchase-table" id="purchaseTable">
-                                <thead><tr>
-                                    <th>No.</th><th>Sumber Data</th><th>Material / Barang</th><th>Harga Barang (Rp)</th><th>Jumlah</th><th>Satuan</th><th>Subtotal (Rp)</th><th>Harga Pokok / Unit (Rp)</th><th>Aksi</th>
-                                </tr></thead>
-                                <tbody id="purchaseItems">
-                                    <tr class="purchase-row">
-                                        <td class="row-number">1</td>
-                                        <td><select class="source-select" name="items[0][source]" onchange="toggleItemSource(this)" aria-label="Sumber data"><option value="master">Master Harga</option><option value="manual">Input Manual</option></select>
-                                            <select class="master-material" name="items[0][price_id]" onchange="fillMasterPrice(this)"><option value="">Pilih material</option>@foreach($prices ?? [] as $price)<option value="{{ $price->id }}" data-name="{{ $price->material?->name ?? '' }}" data-price="{{ $price->price ?? 0 }}" data-unit="{{ $price->material?->unit ?? '' }}">{{ $price->material?->code ?? 'MAT-' . str_pad($price->material_id ?? 0, 3, '0', STR_PAD_LEFT) }} - {{ $price->material?->name ?? 'Material' }} (Rp {{ number_format($price->price ?? 0, 0, ',', '.') }})</option>@endforeach</select>
-                                        </td>
-                                        <td><input class="manual-name" type="text" name="items[0][material_name]" placeholder="Nama barang" disabled><input class="manual-unit" type="hidden" name="items[0][unit]" value=""></td>
-                                        <td><input class="item-price" type="number" name="items[0][price]" min="0" step="1" value="0" oninput="calculatePurchaseTotals()" required></td>
-                                        <td><input class="item-quantity" type="number" name="items[0][quantity]" min="1" step="1" value="1" oninput="calculatePurchaseTotals()" required></td>
-                                        <td><input class="item-unit" type="text" name="items[0][unit_display]" placeholder="Unit" value="" required></td>
-                                        <td class="item-subtotal">Rp 0</td>
-                                        <td class="item-cost">Rp 0</td>
-                                        <td><button type="button" class="btn-action remove-row" onclick="removePurchaseRow(this)" title="Hapus baris"><i data-lucide="trash-2"></i></button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="purchase-summary">
-                            <div><span>Total Unit</span><strong id="totalQuantity">0</strong></div>
-                            <div><span>Total Harga Barang</span><strong id="totalGoods">Rp 0</strong></div>
-                            <div><span>Total Ongkir</span><strong id="totalShippingDisplay">Rp 0</strong></div>
-                            <div class="purchase-grand-total"><span>Estimasi Total Modal</span><strong id="grandTotal">Rp 0</strong></div>
-                        </div>
-                        <p class="purchase-formula"><i data-lucide="info"></i> <strong>Rumus harga pokok per unit:</strong> harga barang per unit + (total ongkir ÷ total unit barang). Ongkir dialokasikan merata berdasarkan jumlah unit.</p>
-                        <div class="purchase-actions">
-                            <button type="button" class="btn btn-outline" onclick="addPurchaseRow()"><i data-lucide="plus"></i> Tambah Barang</button>
-                            <button type="submit" class="btn btn-primary"><i data-lucide="save"></i> Simpan Pembelian</button>
-                        </div>
-                    </div>
-                </form>
-                </section>
-
-                
-<section class="purchase-panel" id="purchaseHistoryPanel" role="tabpanel" aria-labelledby="tabHistory">
-
-    <div class="table-card purchase-history-card">
-
-        <div class="table-header-action">
-
-            <div class="table-title">
-                <i data-lucide="history"></i>
-                <h2>Riwayat Barang Masuk</h2>
-            </div>
-
-            <div class="master-search">
-                <i data-lucide="search"></i>
-                <input
-                    type="text"
-                    id="purchaseSearch"
-                    placeholder="Cari invoice, supplier, atau barang..."
-                    oninput="searchPurchases()"
-                >
-            </div>
-
+            <a class="btn-primary" href="{{ route('pembelianstok.create') }}"><i data-lucide="plus"></i> Tambah Pembelian</a>
         </div>
 
-        <div class="table-responsive">
+        @if(session('success'))<div class="alert-success">{{ session('success') }}</div>@endif
+        @if(session('error'))<div class="alert-error">{{ session('error') }}</div>@endif
+        @if($errors->any())
+            <div class="alert-error"><strong>Periksa kembali data:</strong><ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
+        @endif
 
-            <table class="data-table master-data-table" id="purchaseHistoryTable">
+        @if(!empty($showForm))
+        <section class="purchase-card form-card">
+            <div class="section-heading">
+                <div><span class="section-icon"><i data-lucide="file-plus-2"></i></span><div><h2>{{ isset($purchase) && $purchase ? 'Edit Pembelian' : 'Informasi Pembelian' }}</h2><p>Isi informasi invoice dan daftar material yang dibeli.</p></div></div>
+                <a class="btn-light" href="{{ route('pembelianstok.index') }}">Kembali ke Riwayat</a>
+            </div>
+            <form method="POST" action="{{ isset($purchase) && $purchase ? route('pembelianstok.update', $purchase->id) : route('pembelianstok.store') }}" id="purchaseForm">
+                @csrf
+                @if(isset($purchase) && $purchase) @method('PUT') @endif
+                <div class="form-grid">
+                    <label>Tanggal Pembelian<input type="date" name="purchase_date" required value="{{ old('purchase_date', isset($purchase) && $purchase ? $purchase->purchase_date->format('Y-m-d') : date('Y-m-d')) }}"></label>
+                    <label>No. Invoice<input type="text" name="invoice_number" placeholder="Contoh: INV-001" value="{{ old('invoice_number', $purchase->invoice_number ?? '') }}"></label>
+                    <label>Supplier / Toko<select name="supplier_id" required><option value="">Pilih supplier</option>@foreach($suppliers ?? [] as $supplier)<option value="{{ $supplier->id }}" @selected(old('supplier_id', $purchase->supplier_id ?? '') == $supplier->id)>{{ $supplier->name }}</option>@endforeach</select></label>
+                    <label>Nama Proyek<input type="text" name="project_name" placeholder="Contoh: Springwood 8I" value="{{ old('project_name', $purchase->project_name ?? '') }}"></label>
+                    <label>Total Ongkos Kirim (Rp)<input type="number" name="shipping_cost" id="shipping_cost" min="0" step="1" value="{{ old('shipping_cost', $purchase->shipping_cost ?? 0) }}"></label>
+                    <label>Status<select name="status"><option value="Tercatat" @selected(old('status', $purchase->status ?? 'Tercatat') == 'Tercatat')>Tercatat</option><option value="Diproses" @selected(old('status', $purchase->status ?? '') == 'Diproses')>Diproses</option><option value="Selesai" @selected(old('status', $purchase->status ?? '') == 'Selesai')>Selesai</option></select></label>
+                    <label class="full-field">Catatan<textarea name="notes" rows="2" placeholder="Catatan tambahan...">{{ old('notes', $purchase->notes ?? '') }}</textarea></label>
+                </div>
 
-                <thead>
-                    <tr>
-                        <th>Tanggal</th>
-                        <th>No. Invoice</th>
-                        <th>Supplier / Toko</th>
-                        <th>Total Unit</th>
-                        <th>Total Pembelian</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
+                <div class="items-heading"><div><h3>Daftar Barang</h3><p>Satu invoice dapat berisi beberapa material.</p></div><button type="button" class="btn-light" id="addItem"><i data-lucide="plus"></i> Tambah Barang</button></div>
+                <div class="table-wrap">
+                    <table class="purchase-entry-table">
+                        <thead><tr><th>No.</th><th>Material</th><th>Harga Satuan (Rp)</th><th>Jumlah</th><th>Satuan</th><th>Subtotal</th><th></th></tr></thead>
+                        <tbody id="purchaseItems">
+                        @php($oldItems = old('items', isset($purchase) && $purchase ? $purchase->items->map(fn($item) => ['material_id'=>$item->material_id,'price'=>$item->unit_price,'quantity'=>$item->quantity,'unit'=>$item->unit])->toArray() : [['material_id'=>'','price'=>'','quantity'=>1,'unit'=>'']]))
+                        @foreach($oldItems as $i => $item)
+                            <tr class="item-row">
+                                <td class="row-no">{{ $i + 1 }}</td>
+                                <td><select name="items[{{ $i }}][material_id]" class="material-select" required><option value="">Pilih material</option>@foreach($materials ?? [] as $material)<option value="{{ $material->id }}" data-unit="{{ $material->unit }}" @selected(($item['material_id'] ?? '') == $material->id)>{{ $material->code ?? 'MAT-'.$material->id }} - {{ $material->name }}</option>@endforeach</select></td>
+                                <td><input type="number" name="items[{{ $i }}][price]" class="item-price" min="0" step="1" required value="{{ $item['price'] ?? '' }}" placeholder="0"></td>
+                                <td><input type="number" name="items[{{ $i }}][quantity]" class="item-qty" min="0.01" step="0.01" required value="{{ $item['quantity'] ?? 1 }}"></td>
+                                <td><input type="text" name="items[{{ $i }}][unit]" class="item-unit" value="{{ $item['unit'] ?? '' }}" placeholder="Unit"></td>
+                                <td class="line-total">Rp 0</td>
+                                <td><button type="button" class="icon-delete" title="Hapus barang"><i data-lucide="trash-2"></i></button></td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="totals-strip">
+                    <div><span>Total Unit</span><strong id="totalUnits">0</strong></div>
+                    <div><span>Total Harga Barang</span><strong id="goodsTotal">Rp 0</strong></div>
+                    <div><span>Ongkos Kirim</span><strong id="shippingTotal">Rp 0</strong></div>
+                    <div class="grand-total"><span>Total Pembelian</span><strong id="grandTotal">Rp 0</strong></div>
+                </div>
+                <p class="formula-note"><i data-lucide="info"></i> Ongkir dibagikan secara proporsional berdasarkan jumlah unit. Harga pokok per unit = harga barang + alokasi ongkir per unit.</p>
+                <div class="form-actions"><a href="{{ route('pembelianstok.index') }}" class="btn-light">Batal</a><button type="submit" class="btn-primary"><i data-lucide="save"></i> Simpan Pembelian</button></div>
+            </form>
+        </section>
+        @else
+        <div class="stats-grid">
+            <article class="stat-card"><span class="stat-icon blue"><i data-lucide="package-plus"></i></span><div><small>Total Barang Masuk</small><strong>{{ number_format($totalIncoming ?? 0, 0, ',', '.') }}</strong><em>Unit tercatat</em></div></article>
+            <article class="stat-card"><span class="stat-icon green"><i data-lucide="receipt"></i></span><div><small>Total Transaksi</small><strong>{{ number_format($totalPurchases ?? 0, 0, ',', '.') }}</strong><em>Invoice pembelian</em></div></article>
+        </div>
 
-                <tbody>
-
-                    @forelse($purchases ?? [] as $purchase)
-
+        <section class="purchase-card history-card">
+            <div class="section-heading">
+                <div><span class="section-icon"><i data-lucide="history"></i></span><div><h2>Riwayat Pembelian</h2><p>Setiap baris mewakili satu invoice, bukan satu barang.</p></div></div>
+                <div class="table-search"><i data-lucide="search"></i><input type="search" id="historySearch" placeholder="Cari invoice, supplier, material, proyek..."></div>
+            </div>
+            <div class="table-wrap">
+                <table class="history-table" id="historyTable">
+                    <thead><tr><th>Tanggal</th><th>No. Invoice</th><th>Supplier</th><th>Detail Barang</th><th>Total Unit</th><th>Total Pembelian</th><th>Proyek</th><th>Status</th><th>Aksi</th></tr></thead>
+                    <tbody>
+                    @forelse($purchases ?? [] as $row)
                         <tr>
-
                             <td>
-                                {{ $purchase->purchase_date ?? '-' }}
+                                {{ $row->purchase_date
+                                    ? \Carbon\Carbon::parse($row->purchase_date)->format('d-m-Y')
+                                    : '-' }}
                             </td>
-
-                            <td>
-                                {{ $purchase->invoice_number ?? '-' }}
-                            </td>
-
-                            <td>
-                                {{ $purchase->supplier?->name ?? $purchase->supplier_name ?? '-' }}
-                            </td>
-
-                            <td>
-                                {{ number_format($purchase->total_quantity ?? 0, 0, ',', '.') }}
-                            </td>
-
-                            <td class="price-value">
-                                Rp {{ number_format($purchase->total_cost ?? $purchase->total_amount ?? 0, 0, ',', '.') }}
-                            </td>
-
-                            <td>
-                                <span class="badge badge-success">
-                                    Tercatat
-                                </span>
-                            </td>
-
-                           {{-- ACTION DROPDOWN --}}
-                            <td>
-                                <div class="action-dropdown">
-
-                                    {{-- TOMBOL TITIK TIGA --}}
-                                    <button
-                                        type="button"
-                                        class="btn-action"
-                                        onclick="toggleDropdown(event, 'purchase-{{ $purchase->id }}')"
-                                    >
-                                        <i data-lucide="more-horizontal"></i>
-                                    </button>
-
-                                    <div
-                                        id="purchase-{{ $purchase->id }}"
-                                        class="dropdown-menu-action"
-                                    >
-
-                                        {{-- EDIT --}}
-                                        <button
-                                            type="button"
-                                            class="dropdown-item-action"
-                                            onclick="editPurchase({{ $purchase->id }})"
-                                        >
-                                            <i data-lucide="edit-3"></i>
-                                            Edit
-                                        </button>
-
-                                        {{-- HAPUS --}}
-                                        <button
-                                            type="button"
-                                            class="dropdown-item-action delete"
-                                            onclick="deletePurchase({{ $purchase->id }})"
-                                        >
-                                            <i data-lucide="trash-2"></i>
-                                            Hapus
-                                        </button>
-
-                                        {{-- FORM DELETE TERSEMBUNYI --}}
-                                        <form
-                                            id="delete-purchase-form-{{ $purchase->id }}"
-                                            method="POST"
-                                            action="{{ route('pembelianstok.destroy', $purchase->id) }}"
-                                            style="display: none;"
-                                        >
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-
-                                    </div>
-                                </div>
-                            </td>
-
+                            <td class="invoice-cell">{{ $row->invoice_number }}</td>
+                            <td>{{ $row->supplier->name ?? '-' }}</td>
+                            <td><div class="material-lines">@foreach($row->items as $item)<span>{{ $item->material_name }} <small>({{ rtrim(rtrim(number_format($item->quantity, 2, ',', '.'), '0'), ',') }} {{ $item->unit }})</small></span>@endforeach</div></td>
+                            <td>{{ number_format((float)($row->total_quantity ?? 0), 2, ',', '.') }}</td>
+                            <td class="money-cell">Rp {{ number_format($row->grand_total, 0, ',', '.') }}</td>
+                            <td>{{ $row->project_name ?: '-' }}</td>
+                            <td><span class="status-pill">{{ $row->status }}</span></td>
+                            <td><div class="row-actions"><a href="{{ route('pembelianstok.edit', $row->id) }}" title="Edit"><i data-lucide="pencil"></i></a><form method="POST" action="{{ route('pembelianstok.destroy', $row->id) }}" onsubmit="return confirm('Hapus invoice ini beserta seluruh detail barang masuknya?')">@csrf @method('DELETE')<button title="Hapus"><i data-lucide="trash-2"></i></button></form></div></td>
                         </tr>
-
                     @empty
-
-                        <tr>
-                            <td colspan="7" class="empty-state">
-
-                                <i data-lucide="package-open"></i>
-
-                                <strong>
-                                    Belum ada riwayat pembelian
-                                </strong>
-
-                                <span>
-                                    Barang masuk yang disimpan akan muncul di bagian ini.
-                                </span>
-
-                            </td>
-                        </tr>
-
+                        <tr><td colspan="9" class="empty-row"><i data-lucide="package-open"></i><strong>Belum ada riwayat pembelian</strong><span>Transaksi yang disimpan akan muncul di sini.</span></td></tr>
                     @endforelse
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-    </main>
-
-</div>
-
-<div class="modal-overlay"
-     id="priceModal">
-
-
-    <div class="master-modal">
-
-
-        {{-- MODAL HEADER --}}
-        <div class="modal-header">
-
-            <div>
-
-                <span class="modal-icon">
-
-                    <i data-lucide="badge-dollar-sign"></i>
-
-                </span>
-
-
-                <div>
-
-                    <h3>
-                        Tambah Harga Material
-                    </h3>
-
-                    <p>
-                        Tambahkan harga baru untuk material.
-                    </p>
-
-                </div>
-
+                    </tbody>
+                </table>
             </div>
-
-
-            <button
-                type="button"
-                onclick="closePriceModal()"
-                class="modal-close">
-
-                <i data-lucide="x"></i>
-
-            </button>
-
-        </div>
-
-
-        {{-- FORM --}}
-        <form
-            method="POST"
-            action="{{ Route::has('masterharga.price.store') ? route('masterharga.price.store') : '#' }}">
-
-            @csrf
-
-
-            <div class="modal-body">
-
-
-                {{-- MATERIAL --}}
-                <form method="POST" action="{{ route('masterharga.price.store') }}">
-    @csrf
-    <div class="modal-body">
-
-    <!-- PILIH MATERIAL -->
-    <div class="form-group">
-        <label>Material</label>
-        <select name="material_id" required>
-            <option value="">Pilih Material</option>
-            @foreach($materials ?? [] as $material)
-                <option value="{{ $material->id }}">
-                    {{ $material->code ?? 'MAT-' . str_pad($material->id, 3, '0', STR_PAD_LEFT) }} - {{ $material->name }}
-                </option>
-            @endforeach
-        </select>
-    </div>
-
-    <!-- PILIH SUPPLIER -->
-    <div class="form-group">
-        <label>Supplier</label>
-        <select name="supplier_id" required>
-            <option value="">Pilih Supplier</option>
-            @foreach($suppliers ?? [] as $sup)
-                <option value="{{ $sup->id }}">
-                    {{ $sup->name }} {{ $sup->contact_person ? '('.$sup->contact_person.')' : '' }}
-                </option>
-            @endforeach
-        </select>
-    </div>
-
-    <!-- HARGA & TANGGAL -->
-    <div class="form-row">
-        <div class="form-group">
-            <label>Harga</label>
-            <input type="number" name="price" min="0" required placeholder="0">
-        </div>
-
-        <div class="form-group">
-            <label>Tanggal Harga</label>
-            <input type="date" name="price_date" value="{{ date('Y-m-d') }}" required>
-        </div>
-    </div>
-
-    <!-- HARGA ACUAN -->
-    <div class="form-group">
-        <label>Harga Acuan (Reference)</label>
-        <select name="is_reference">
-            <option value="1">Ya (Aktif)</option>
-            <option value="0">Tidak</option>
-        </select>
-    </div>
-
-    <!-- CATATAN -->
-    <div class="form-group">
-        <label>Catatan / Notes</label>
-        <input type="text" name="notes" placeholder="Catatan tambahan...">
-    </div>
-
-</div>
-
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline" onclick="closePriceModal()">Batal</button>
-        <button type="submit" class="btn btn-primary">
-            <i data-lucide="save"></i> Simpan Harga
-        </button>
-    </div>
-</form>
-
-    </div>
-
-</div>
-
-<div class="modal-overlay"
-     id="detailModal">
-
-
-    <div class="master-modal">
-
-
-        <div class="modal-header">
-
-            <div>
-
-                <span class="modal-icon">
-
-                    <i data-lucide="eye"></i>
-
-                </span>
-
-
-                <div>
-
-                    <h3>
-                        Detail Harga
-                    </h3>
-
-                    <p>
-                        Informasi harga material.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <button
-                type="button"
-                onclick="closeDetailModal()"
-                class="modal-close">
-
-                <i data-lucide="x"></i>
-
-            </button>
-
-        </div>
-
-
-        <div class="modal-body">
-
-            <div class="detail-row">
-
-                <span>
-                    Kode Material
-                </span>
-
-                <strong id="detailCode">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="detail-row">
-
-                <span>
-                    Material
-                </span>
-
-                <strong id="detailMaterial">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="detail-row">
-
-                <span>
-                    Kategori
-                </span>
-
-                <strong id="detailCategory">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="detail-row">
-
-                <span>
-                    Harga
-                </span>
-
-                <strong id="detailPrice">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="detail-row">
-
-                <span>
-                    Satuan
-                </span>
-
-                <strong id="detailUnit">
-                    -
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="modal-footer">
-
-            <button
-                type="button"
-                class="btn btn-outline"
-                onclick="closeDetailModal()">
-
-                Tutup
-
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
+        </section>
+        @endif
+    </section>
+</main>
 
 <script>
-
     lucide.createIcons();
 
-    function openPriceModal()
-    {
-        const modal =
-            document.getElementById('priceModal');
-
-        if(modal)
-        {
-            modal.classList.add('show');
-        }
-    }
-
-
-    function closePriceModal()
-    {
-        const modal =
-            document.getElementById('priceModal');
-
-        if(modal)
-        {
-            modal.classList.remove('show');
-        }
-    }
-
-
-    function showPriceDetail(
-        material,
-        code,
-        category,
-        price,
-        unit
-    )
-    {
-        document.getElementById('detailMaterial')
-            .textContent = material;
-
-        document.getElementById('detailCode')
-            .textContent = code;
-
-        document.getElementById('detailCategory')
-            .textContent = category;
-
-        document.getElementById('detailPrice')
-            .textContent =
-                'Rp ' +
-                Number(price).toLocaleString('id-ID');
-
-        document.getElementById('detailUnit')
-            .textContent = unit;
-
-
-        document
-            .getElementById('detailModal')
-            .classList.add('show');
-    }
-
-
-    function closeDetailModal()
-    {
-        document
-            .getElementById('detailModal')
-            .classList.remove('show');
-    }
-
-    function searchHarga()
-    {
-        const input =
-            document.getElementById('hargaSearch');
-
-        const filter =
-            input.value.toLowerCase();
-
-        const table =
-            document.getElementById('hargaTable');
-
-        const rows =
-            table.querySelectorAll('tbody tr');
-
-
-        rows.forEach(row =>
-        {
-            const text =
-                row.textContent.toLowerCase();
-
-            row.style.display =
-                text.includes(filter)
-                    ? ''
-                    : 'none';
+    const rupiah = n => 'Rp ' + Math.round(Number(n || 0)).toLocaleString('id-ID');
+    function calculatePurchase() {
+        const rows = [...document.querySelectorAll('.item-row')];
+        let units = 0, goods = 0;
+        rows.forEach((row, index) => {
+            row.querySelector('.row-no').textContent = index + 1;
+            const qty = Number(row.querySelector('.item-qty').value || 0);
+            const price = Number(row.querySelector('.item-price').value || 0);
+            units += qty;
+            goods += qty * price;
+            row.querySelector('.line-total').textContent = rupiah(qty * price);
         });
+        const shipping = Number(document.getElementById('shipping_cost')?.value || 0);
+        const put = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; };
+        put('totalUnits', units.toLocaleString('id-ID'));
+        put('goodsTotal', rupiah(goods));
+        put('shippingTotal', rupiah(shipping));
+        put('grandTotal', rupiah(goods + shipping));
     }
-
-    const globalSearch =
-        document.getElementById('globalSearch');
-
-
-    if(globalSearch)
-    {
-        globalSearch.addEventListener(
-            'keyup',
-            function()
-            {
-                const filter =
-                    this.value.toLowerCase();
-
-                document
-                    .querySelectorAll('#hargaTable tbody tr')
-                    .forEach(row =>
-                    {
-                        row.style.display =
-                            row.textContent
-                                .toLowerCase()
-                                .includes(filter)
-                                    ? ''
-                                    : 'none';
-                    });
-            }
-        );
-    }
-
-
-function toggleDropdown(event, id) {
-    event.stopPropagation();
-
-    document.querySelectorAll('.dropdown-menu-action').forEach(menu => {
-        if (menu.id !== id) {
-            menu.classList.remove('show');
-        }
+    document.getElementById('addItem')?.addEventListener('click', () => {
+        const tbody = document.getElementById('purchaseItems');
+        const index = tbody.querySelectorAll('.item-row').length;
+        const first = tbody.querySelector('.item-row');
+        const clone = first.cloneNode(true);
+        clone.querySelectorAll('input').forEach(input => input.value = input.classList.contains('item-qty') ? '1' : '');
+        clone.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+        clone.querySelectorAll('[name]').forEach(el => el.name = el.name.replace(/items\[\d+\]/, `items[${index}]`));
+        tbody.appendChild(clone);
+        lucide.createIcons(); calculatePurchase();
     });
-
-    document.getElementById(id)?.classList.toggle('show');
-}
-
-window.addEventListener('click', function() {
-    document.querySelectorAll('.dropdown-menu-action').forEach(menu => {
-        menu.classList.remove('show');
+    document.getElementById('purchaseItems')?.addEventListener('input', calculatePurchase);
+    document.getElementById('purchaseItems')?.addEventListener('change', e => {
+        if (e.target.classList.contains('material-select')) {
+            const opt = e.target.options[e.target.selectedIndex];
+            e.target.closest('tr').querySelector('.item-unit').value = opt.dataset.unit || '';
+        }
+        calculatePurchase();
     });
-});
-
-
-function editPurchase(id) {
-    window.location.href = `/pembelian-stok/${id}/edit`;
-}
-
-
-function deletePurchase(id) {
-    if (confirm('Apakah Anda yakin ingin menghapus transaksi pembelian ini?')) {
-        document.getElementById('delete-purchase-form-' + id).submit();
-    }
-}
-
-
-    function toggleDropdown(event, id)
-    {
-        event.stopPropagation();
-
-
-        document
-            .querySelectorAll('.dropdown-menu-action')
-            .forEach(menu =>
-            {
-                if(menu.id !== id)
-                {
-                    menu.classList.remove('show');
-                }
-            });
-
-
-        const menu =
-            document.getElementById(id);
-
-
-        if(menu)
-        {
-            menu.classList.toggle('show');
-        }
-    }
-
-
-    window.addEventListener(
-        'click',
-        function()
-        {
-            document
-                .querySelectorAll('.dropdown-menu-action')
-                .forEach(menu =>
-                {
-                    menu.classList.remove('show');
-                });
-        }
-    );
-
-
-
-    function deletePrice(id)
-    {
-        if(!confirm(
-            'Apakah kamu yakin ingin menghapus data harga ini?'
-        ))
-        {
-            return;
-        }
-
-        alert(
-            'Data ID ' +
-            id +
-            ' siap dihapus setelah route delete dibuat.'
-        );
-    }
-
-    function editPrice(id)
-    {
-
-        const editUrl =
-            @json(Route::has('masterharga.price.edit')
-                ? route('masterharga.price.edit', ':id')
-                : '');
-
-        if(editUrl)
-        {
-            window.location.href =
-                editUrl.replace(':id', id);
-
-            return;
-        }
-
-
-        alert(
-            'Route edit harga belum dibuat.'
-        );
-    }
-
-    const checkAll =
-        document.getElementById('checkAll');
-
-
-    if(checkAll)
-    {
-        checkAll.addEventListener(
-            'change',
-            function()
-            {
-                document
-                    .querySelectorAll('.row-check')
-                    .forEach(
-                        checkbox =>
-                        checkbox.checked =
-                            this.checked
-                    );
-            }
-        );
-    }
-
-    function changeTheme()
-    {
-        document.body.classList.toggle(
-            'pink-theme'
-        );
-
-
-        localStorage.setItem(
-            'dhd-theme',
-
-            document.body.classList.contains(
-                'pink-theme'
-            )
-                ? 'pink'
-                : 'default'
-        );
-    }
-
-
-    document.addEventListener(
-        'DOMContentLoaded',
-        function()
-        {
-            if(
-                localStorage.getItem('dhd-theme')
-                ===
-                'pink'
-            )
-            {
-                document.body.classList.add(
-                    'pink-theme'
-                );
-            }
-        }
-    );
-
-    function updateDateTime()
-    {
-        const now =
-            new Date();
-
-
-        const dateElement =
-            document.getElementById(
-                'currentDate'
-            );
-
-        const timeElement =
-            document.getElementById(
-                'currentTime'
-            );
-
-
-        if(dateElement)
-        {
-            dateElement.textContent =
-                now.toLocaleDateString(
-                    'id-ID',
-                    {
-                        weekday: 'long',
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric'
-                    }
-                );
-        }
-
-
-        if(timeElement)
-        {
-            timeElement.textContent =
-                now.toLocaleTimeString(
-                    'id-ID',
-                    {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    }
-                ) + ' WIB';
-        }
-    }
-
-
-    updateDateTime();
-
-    setInterval(
-        updateDateTime,
-        1000
-    );
-
-
-    document
-        .querySelectorAll('.modal-overlay')
-        .forEach(modal =>
-        {
-            modal.addEventListener(
-                'click',
-                function(event)
-                {
-                    if(
-                        event.target === modal
-                    )
-                    {
-                        modal.classList.remove(
-                            'show'
-                        );
-                    }
-                }
-            );
-        });
-
-</script>
-
-
-<script>
-(function(){
-    const tbody = document.getElementById('purchaseItems');
-    let rowIndex = tbody ? tbody.querySelectorAll('.purchase-row').length : 0;
-    const rupiah = value => 'Rp ' + Math.round(Number(value)||0).toLocaleString('id-ID');
-    window.addPurchaseRow = function(){
-        if(!tbody) return;
-        const first = tbody.querySelector('.purchase-row');
-        const row = first.cloneNode(true);
-        row.querySelectorAll('input').forEach(input=>{input.value = input.classList.contains('item-quantity') ? 1 : (input.classList.contains('item-price') ? 0 : '');});
-        row.querySelectorAll('select').forEach(select=>select.selectedIndex=0);
-        row.querySelector('.manual-name').disabled = true;
-        row.querySelector('.master-material').disabled = false;
-        row.querySelector('.item-unit').value='';
-        row.querySelector('.item-subtotal').textContent='Rp 0';
-        row.querySelector('.item-cost').textContent='Rp 0';
-        row.querySelectorAll('[name]').forEach(el=>el.name=el.name.replace(/items\[\d+\]/,'items['+rowIndex+']'));
-        rowIndex++;
-        tbody.appendChild(row);
-        renumberRows(); calculatePurchaseTotals(); if(window.lucide) lucide.createIcons();
-    };
-    window.removePurchaseRow = function(button){
-        if(!tbody) return;
-        const rows=tbody.querySelectorAll('.purchase-row');
-        if(rows.length===1){
-            const row=rows[0]; row.querySelectorAll('input').forEach(input=>input.value=input.classList.contains('item-quantity')?1:(input.classList.contains('item-price')?0:''));
-            row.querySelectorAll('select').forEach(select=>select.selectedIndex=0);
-            row.querySelector('.manual-name').disabled=true; row.querySelector('.item-unit').value='';
-        }else button.closest('tr').remove();
-        renumberRows(); calculatePurchaseTotals();
-    };
-    window.toggleItemSource = function(select){
-        const row=select.closest('tr'); const manual=select.value==='manual';
-        row.querySelector('.master-material').disabled=manual;
-        row.querySelector('.manual-name').disabled=!manual;
-        if(manual){row.querySelector('.master-material').value='';row.querySelector('.item-price').value=0;row.querySelector('.item-unit').value='';}
-        else {row.querySelector('.manual-name').value='';}
-        calculatePurchaseTotals();
-    };
-    window.fillMasterPrice = function(select){
-        const row=select.closest('tr'); const option=select.options[select.selectedIndex];
-        if(option && option.value){row.querySelector('.item-price').value=option.dataset.price||0;row.querySelector('.item-unit').value=option.dataset.unit||'';row.querySelector('.manual-unit').value=option.dataset.unit||'';}
-        calculatePurchaseTotals();
-    };
-    function renumberRows(){tbody.querySelectorAll('.purchase-row').forEach((row,i)=>row.querySelector('.row-number').textContent=i+1);}
-    window.calculatePurchaseTotals=function(){
-        if(!tbody)return;
-        const rows=[...tbody.querySelectorAll('.purchase-row')];
-        const totalUnits=rows.reduce((sum,row)=>sum+Math.max(0,Number(row.querySelector('.item-quantity').value)||0),0);
-        const goods=rows.reduce((sum,row)=>sum+(Math.max(0,Number(row.querySelector('.item-price').value)||0)*Math.max(0,Number(row.querySelector('.item-quantity').value)||0)),0);
-        const shipping=Math.max(0,Number(document.getElementById('shipping_cost').value)||0);
-        rows.forEach(row=>{
-            const price=Math.max(0,Number(row.querySelector('.item-price').value)||0);
-            const qty=Math.max(0,Number(row.querySelector('.item-quantity').value)||0);
-            row.querySelector('.item-subtotal').textContent=rupiah(price*qty);
-            row.querySelector('.item-cost').textContent=rupiah(price+(totalUnits?shipping/totalUnits:0));
-        });
-        document.getElementById('totalQuantity').textContent=totalUnits.toLocaleString('id-ID');
-        document.getElementById('totalGoods').textContent=rupiah(goods);
-        document.getElementById('totalShippingDisplay').textContent=rupiah(shipping);
-        document.getElementById('grandTotal').textContent=rupiah(goods+shipping);
-    };
-    window.searchPurchases=function(){
-        const filter=(document.getElementById('purchaseSearch').value||'').toLowerCase();
-        document.querySelectorAll('#purchaseHistoryTable tbody tr').forEach(row=>row.style.display=row.textContent.toLowerCase().includes(filter)?'':'none');
-    };
-    const globalSearch=document.getElementById('globalSearch');
-    if(globalSearch)globalSearch.addEventListener('input',function(){const f=this.value.toLowerCase();document.querySelectorAll('#purchaseHistoryTable tbody tr').forEach(row=>row.style.display=row.textContent.toLowerCase().includes(f)?'':'none');});
-    calculatePurchaseTotals();
-})();
-</script>
-
-
-<script>
-    window.showPurchaseTab = function(tab) {
-        const showForm = tab === 'form';
-        const formPanel = document.getElementById('purchaseFormPanel');
-        const historyPanel = document.getElementById('purchaseHistoryPanel');
-        const tabForm = document.getElementById('tabForm');
-        const tabHistory = document.getElementById('tabHistory');
-
-        if (!formPanel || !historyPanel || !tabForm || !tabHistory) return;
-
-        formPanel.hidden = !showForm;
-        historyPanel.hidden = showForm;
-
-        tabForm.classList.toggle('active', showForm);
-        tabHistory.classList.toggle('active', !showForm);
-        tabForm.setAttribute('aria-selected', String(showForm));
-        tabHistory.setAttribute('aria-selected', String(!showForm));
-
-        if (window.lucide) lucide.createIcons();
-        if (showForm) {
-            const firstField = document.getElementById('purchase_date');
-            if (firstField) firstField.focus({ preventScroll: true });
-        }
-    };
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const hasErrors = {{ $errors->any() ? 'true' : 'false' }};
-        window.showPurchaseTab(hasErrors ? 'form' : 'history');
+    document.getElementById('purchaseItems')?.addEventListener('click', e => {
+        const button = e.target.closest('.icon-delete');
+        if (!button) return;
+        const tbody = document.getElementById('purchaseItems');
+        if (tbody.querySelectorAll('.item-row').length === 1) {
+            const row = button.closest('tr');
+            row.querySelectorAll('input').forEach(input => input.value = input.classList.contains('item-qty') ? '1' : '');
+            row.querySelector('select').selectedIndex = 0;
+        } else button.closest('tr').remove();
+        calculatePurchase();
     });
-</script>
+    document.getElementById('shipping_cost')?.addEventListener('input', calculatePurchase);
+    calculatePurchase();
 
+    document.getElementById('historySearch')?.addEventListener('input', function () {
+        const q = this.value.toLowerCase();
+        document.querySelectorAll('#historyTable tbody tr').forEach(row => row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none');
+    });
+    document.getElementById('globalSearch')?.addEventListener('input', function () {
+        const q = this.value.toLowerCase();
+        const table = document.querySelectorAll('#historyTable tbody tr');
+        table.forEach(row => row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none');
+    });
+    function updateClock() {
+        const now = new Date();
+        const date = document.getElementById('currentDate');
+        const time = document.getElementById('currentTime');
+        if (date) date.textContent = now.toLocaleDateString('id-ID', {weekday:'long', day:'2-digit', month:'long', year:'numeric'});
+        if (time) time.textContent = now.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) + ' WIB';
+    }
+    updateClock(); setInterval(updateClock, 1000);
+    function changeTheme() {
+        document.body.classList.toggle('pink-theme');
+        localStorage.setItem('dhd-theme', document.body.classList.contains('pink-theme') ? 'pink' : 'default');
+    }
+    if (localStorage.getItem('dhd-theme') === 'pink') document.body.classList.add('pink-theme');
+</script>
 </body>
 </html>

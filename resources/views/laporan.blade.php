@@ -5,13 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>DHD Interior - Inventori & Stok</title>
+    <title>DHD Interior - Laporan</title>
 
     @vite(['resources/css/laporan.css'])
 
     <script src="https://unpkg.com/lucide@latest"></script>
-
-    
 </head>
 
 <body>
@@ -26,23 +24,10 @@
     </div>
 
     <nav class="sidebar-menu">
-        {{-- DASHBOARD --}}
-        <a href="{{ Route::has('dashboard') ? route('dashboard') : '#' }}" 
-           class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-            <i data-lucide="layout-dashboard"></i>
-            <span>Dashboard</span>
-        </a>
-
-        {{-- RAP --}}
-        <a href="#" class="menu-item">
-            <i data-lucide="clipboard-list"></i>
-            <span>RAP & Anggaran</span>
-        </a>
-
         {{-- INVENTORI & STOK (MENU GROUP) --}}
         <div class="menu-group">
-            <a href="{{ route('inventori.index') }}" 
-               class="menu-item{{ request()->routeIs('masterharga.*', 'supplier.*') ? 'active' : '' }}">
+            <a href="{{ route('inventori.index') }}"
+               class="menu-item {{ request()->routeIs('masterharga.*', 'supplier.*', 'pembelianstok.*', 'stokgudang.*') ? 'active' : '' }}">
                 <i data-lucide="package"></i>
                 <span>Inventori & Stok</span>
                 <i data-lucide="chevron-up" class="arrow"></i>
@@ -53,37 +38,25 @@
                    class="{{ request()->routeIs('masterharga.*') ? 'active' : '' }}">
                     Master Harga
                 </a>
-                <a href="{{ route('supplier.index') }}" 
+                <a href="{{ route('supplier.index') }}"
                    class="{{ request()->routeIs('supplier.*') ? 'active' : '' }}">
                     Supplier
                 </a>
-                <a href="{{ route('pembelianstok.index') }}" 
+                <a href="{{ route('pembelianstok.index') }}"
                    class="{{ request()->routeIs('pembelianstok.*') ? 'active' : '' }}">
-                    Pembelian & stok
+                    Pembelian &amp; Stok
                 </a>
                 <a href="{{ route('stokgudang.index') }}"
-                class="{{ request()->routeIs('stokgudang.*') ? 'active' : '' }}">
+                   class="{{ request()->routeIs('stokgudang.*') ? 'active' : '' }}">
                     Stok Gudang
                 </a>
             </div>
         </div>
 
-        {{-- OPERASIONAL --}}
-        <a href="#" class="menu-item">
-            <i data-lucide="wallet"></i>
-            <span>Operasional & Finansial</span>
-        </a>
-
         {{-- LAPORAN --}}
-        <a href="#" class="menu-item  menu-toggle active">
+        <a href="{{ route('laporan.index') }}" class="menu-item menu-toggle active">
             <i data-lucide="file-text"></i>
             <span>Laporan</span>
-        </a>
-
-        {{-- PENGATURAN --}}
-        <a href="#" class="menu-item">
-            <i data-lucide="settings"></i>
-            <span>Pengaturan</span>
         </a>
     </nav>
 
@@ -111,420 +84,376 @@
         </div>
     </div>
 </aside>
+
 {{-- MAIN CONTENT --}}
-    <main class="main-content">
-        {{-- TOPBAR --}}
-        <header class="topbar">
-            <div class="search-box">
-                <i data-lucide="search"></i>
-                <input type="text" id="globalSearch" placeholder="Cari supplier...">
-            </div>
+<main class="main-content">
+    {{-- TOPBAR --}}
+    <header class="topbar">
+        <div class="search-box">
+            <i data-lucide="search"></i>
+            <input type="text" id="globalSearch" placeholder="Cari data laporan...">
+        </div>
 
-            <div class="topbar-right">
-                <div class="date-info">
-                    <i data-lucide="calendar-days"></i>
-                    <div>
-                        <strong id="currentDate"></strong>
-                        <span id="currentTime"></span>
-                    </div>
-                </div>
-
-                <button type="button" class="notification-button">
-                    <i data-lucide="bell"></i>
-                    <span class="notification-dot"></span>
-                </button>
-
-                <div class="admin-profile">
-                    <div class="admin-avatar">ST</div>
-                    <span>Steven</span>
-                    <i data-lucide="chevron-down"></i>
-                </div>
-            </div>
-        </header>
-
-
-
-        <section class="content-wrapper">
-
-
-            <div class="page-heading">
+        <div class="topbar-right">
+            <div class="date-info">
+                <i data-lucide="calendar-days"></i>
                 <div>
-                    <span class="page-eyebrow">REPORT CENTER</span>
-                    <h1>Laporan & Ekspor Data</h1>
-                    <p>
-                        Kelola, lihat, dan unduh laporan perusahaan
-                        dalam satu tempat.
-                    </p>
+                    <strong id="currentDate"></strong>
+                    <span id="currentTime"></span>
                 </div>
             </div>
 
-            <div class="report-grid">
+            <button type="button" class="notification-button">
+                <i data-lucide="bell"></i>
+                <span class="notification-dot"></span>
+            </button>
 
-                <div class="report-card rap-card">
-                    <div class="report-card-top">
-                        <div class="report-icon">
-                            <i data-lucide="clipboard-list"></i>
-                        </div>
-                        <span class="report-number">01</span>
-                    </div>
+            <div class="admin-profile">
+                <div class="admin-avatar">ST</div>
+                <span>Steven</span>
+                <i data-lucide="chevron-down"></i>
+            </div>
+        </div>
+    </header>
 
-                    <div class="report-card-content">
-                        <h3>Laporan RAP</h3>
-                        <p>Anggaran dan realisasi proyek</p>
-                    </div>
+    <section class="content-wrapper">
 
-                    <div class="report-card-footer">
-                        <span>Anggaran Proyek</span>
-                        <i data-lucide="arrow-up-right"></i>
+        <div class="page-heading">
+            <div>
+                <span class="page-eyebrow">REPORT CENTER</span>
+                <h1>Laporan &amp; Ekspor Data</h1>
+                <p>
+                    Kelola, lihat, dan unduh laporan pembelian serta stok gudang dalam satu tempat.
+                </p>
+            </div>
+        </div>
+
+        {{-- KARTU PILIHAN LAPORAN (KHUSUS PEMBELIAN & STOK GUDANG) --}}
+        <div class="report-grid">
+
+            <div class="report-card purchase-card" id="cardPembelian" style="cursor: pointer;">
+                <div class="report-card-top">
+                    <div class="report-icon">
+                        <i data-lucide="shopping-cart"></i>
                     </div>
+                    <span class="report-number">01</span>
                 </div>
 
-                <div class="report-card finance-card">
-                    <div class="report-card-top">
-                        <div class="report-icon">
-                            <i data-lucide="chart-no-axes-combined"></i>
-                        </div>
-                        <span class="report-number">02</span>
-                    </div>
-
-                    <div class="report-card-content">
-                        <h3>Laporan Keuangan</h3>
-                        <p>Pemasukan dan pengeluaran</p>
-                    </div>
-
-                    <div class="report-card-footer">
-                        <span>Keuangan Perusahaan</span>
-                        <i data-lucide="arrow-up-right"></i>
-                    </div>
+                <div class="report-card-content">
+                    <h3>Pembelian &amp; Stok</h3>
+                    <p>Riwayat transaksi pembelian material dan ongkir</p>
                 </div>
 
-                <div class="report-card debt-card">
-                    <div class="report-card-top">
-                        <div class="report-icon">
-                            <i data-lucide="hand-coins"></i>
-                        </div>
-                        <span class="report-number">03</span>
-                    </div>
-
-                    <div class="report-card-content">
-                        <h3>Hutang & Piutang</h3>
-                        <p>Tagihan dan pembayaran</p>
-                    </div>
-
-                    <div class="report-card-footer">
-                        <span>Tagihan Perusahaan</span>
-                        <i data-lucide="arrow-up-right"></i>
-                    </div>
+                <div class="report-card-footer">
+                    <span>Transaksi Masuk</span>
+                    <i data-lucide="arrow-up-right"></i>
                 </div>
-
-                <div class="report-card stock-card">
-                    <div class="report-card-top">
-                        <div class="report-icon">
-                            <i data-lucide="boxes"></i>
-                        </div>
-                        <span class="report-number">04</span>
-                    </div>
-
-                    <div class="report-card-content">
-                        <h3>Laporan Stok</h3>
-                        <p>Persediaan dan mutasi barang</p>
-                    </div>
-
-                    <div class="report-card-footer">
-                        <span>Inventori & Gudang</span>
-                        <i data-lucide="arrow-up-right"></i>
-                    </div>
-                </div>
-
             </div>
 
-            <div class="report-section">
-
-                <div class="section-heading">
-                    <div>
-                        <span class="section-eyebrow">REPORT SETTINGS</span>
-                        <h2>Filter Laporan</h2>
-                        <p>Atur periode, kategori laporan, dan format ekspor.</p>
+            <div class="report-card stock-card" id="cardStok" style="cursor: pointer;">
+                <div class="report-card-top">
+                    <div class="report-icon">
+                        <i data-lucide="boxes"></i>
                     </div>
-
-                    <div class="filter-heading-icon">
-                        <i data-lucide="sliders-horizontal"></i>
-                    </div>
+                    <span class="report-number">02</span>
                 </div>
 
-                <form id="reportForm" class="report-filter-form">
+                <div class="report-card-content">
+                    <h3>Stok Gudang</h3>
+                    <p>Persediaan barang, harga pokok, dan nilai stok</p>
+                </div>
 
-                    <div class="filter-group">
-                        <label for="reportType">Kategori Laporan</label>
-                        <div class="input-wrapper">
-                            <i data-lucide="file-text"></i>
-                            <select id="reportType" name="report_type">
-                                <option value="rap">Laporan RAP</option>
-                                <option value="keuangan">Laporan Keuangan</option>
-                                <option value="hutang">Hutang & Piutang</option>
-                                <option value="stok">Laporan Stok</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="filter-group">
-                        <label for="startDate">Tanggal Mulai</label>
-                        <div class="input-wrapper">
-                            <i data-lucide="calendar"></i>
-                            <input type="date" id="startDate" name="start_date">
-                        </div>
-                    </div>
-
-                    <div class="filter-group">
-                        <label for="endDate">Tanggal Akhir</label>
-                        <div class="input-wrapper">
-                            <i data-lucide="calendar-check"></i>
-                            <input type="date" id="endDate" name="end_date">
-                        </div>
-                    </div>
-
-                    <div class="filter-group">
-                        <label for="exportFormat">Format Ekspor</label>
-                        <div class="input-wrapper">
-                            <i data-lucide="file-down"></i>
-                            <select id="exportFormat" name="format">
-                                <option value="excel">Excel (.xlsx)</option>
-                                <option value="csv">CSV (.csv)</option>
-                                <option value="pdf">PDF (.pdf)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="filter-actions">
-                        <button type="button" class="btn-reset" id="resetFilter">
-                            <i data-lucide="rotate-ccw"></i>
-                            Reset
-                        </button>
-
-                        <button type="button" class="btn-preview" id="previewReport">
-                            <i data-lucide="eye"></i>
-                            Preview Laporan
-                        </button>
-
-                        <button type="button" class="btn-export" id="exportReport">
-                            <i data-lucide="download"></i>
-                            Ekspor Data
-                        </button>
-                    </div>
-
-                </form>
+                <div class="report-card-footer">
+                    <span>Inventori &amp; Gudang</span>
+                    <i data-lucide="arrow-up-right"></i>
+                </div>
             </div>
 
-            <div class="export-info">
-                <div class="export-info-icon">
-                    <i data-lucide="info"></i>
-                </div>
+        </div>
 
+        {{-- FILTER LAPORAN --}}
+        <div class="report-section">
+
+            <div class="section-heading">
                 <div>
-                    <h4>Informasi Ekspor Laporan</h4>
-                    <p>
-                        Pilih kategori dan periode laporan sebelum melakukan
-                        ekspor. Data akan disiapkan sesuai filter yang dipilih
-                        dan format file yang ditentukan.
-                    </p>
+                    <span class="section-eyebrow">REPORT SETTINGS</span>
+                    <h2>Filter Laporan</h2>
+                    <p>Atur periode, kategori laporan, dan format ekspor.</p>
+                </div>
+
+                <div class="filter-heading-icon">
+                    <i data-lucide="sliders-horizontal"></i>
                 </div>
             </div>
 
+            <form id="reportForm" class="report-filter-form">
 
-            <div class="report-section preview-section">
-
-                <div class="section-heading preview-heading">
-                    <div>
-                        <span class="section-eyebrow">DATA OVERVIEW</span>
-                        <h2>Preview Laporan</h2>
-                        <p id="previewDescription">
-                            Pratinjau konsep laporan perusahaan.
-                        </p>
-                    </div>
-
-                    <span class="preview-status">
-                        <span></span>
-                        Preview
-                    </span>
-                </div>
-
-                <div class="preview-table-wrapper">
-                    <table class="preview-table">
-                        <thead id="previewHead">
-                            <tr>
-                                <th>No.</th>
-                                <th>Nama Proyek</th>
-                                <th>Anggaran</th>
-                                <th>Realisasi</th>
-                                <th>Selisih</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="previewBody">
-                            <tr>
-                                <td colspan="6" class="empty-preview">
-                                    <i data-lucide="file-search"></i>
-                                    <strong>Belum ada preview laporan</strong>
-                                    <span>
-                                        Pilih kategori laporan dan klik
-                                        Preview Laporan.
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="preview-footer">
-                    <span id="previewCount">Menunggu data laporan</span>
-                    <span> DHD Interior Management System</span>
-                </div>
-
-            </div>
-
-
-            <div class="format-section">
-
-                <div class="format-heading">
-                    <div>
-                        <span class="section-eyebrow">DOWNLOAD OPTIONS</span>
-                        <h2>Format File Tersedia</h2>
-                        <p>Pilih format sesuai kebutuhan dokumentasi.</p>
+                <div class="filter-group">
+                    <label for="reportType">Kategori Laporan</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="file-text"></i>
+                        <select id="reportType" name="report_type">
+                            <option value="pembelian">Laporan Pembelian &amp; Stok</option>
+                            <option value="stok">Laporan Stok Gudang</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="format-grid">
-
-                    <div class="format-card">
-                        <div class="format-icon excel-icon">
-                            <i data-lucide="file-spreadsheet"></i>
-                        </div>
-                        <div>
-                            <h3>Microsoft Excel</h3>
-                            <p>Format .xlsx untuk pengolahan data dan perhitungan.</p>
-                        </div>
-                        <span class="format-label excel-label">EXCEL</span>
+                <div class="filter-group">
+                    <label for="startDate">Tanggal Mulai</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="calendar"></i>
+                        <input type="date" id="startDate" name="start_date">
                     </div>
-
-                    <div class="format-card">
-                        <div class="format-icon csv-icon">
-                            <i data-lucide="file-text"></i>
-                        </div>
-                        <div>
-                            <h3>CSV File</h3>
-                            <p>Format .csv untuk pertukaran dan pengolahan data.</p>
-                        </div>
-                        <span class="format-label csv-label">CSV</span>
-                    </div>
-
-                    <div class="format-card">
-                        <div class="format-icon pdf-icon">
-                            <i data-lucide="file-pdf"></i>
-                        </div>
-                        <div>
-                            <h3>PDF Document</h3>
-                            <p>Format .pdf untuk dokumentasi dan pencetakan.</p>
-                        </div>
-                        <span class="format-label pdf-label">PDF</span>
-                    </div>
-
                 </div>
 
-            </div>
+                <div class="filter-group">
+                    <label for="endDate">Tanggal Akhir</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="calendar-check"></i>
+                        <input type="date" id="endDate" name="end_date">
+                    </div>
+                </div>
 
-            <div class="page-disclaimer">
+                <div class="filter-group">
+                    <label for="exportFormat">Format Ekspor</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="file-down"></i>
+                        <select id="exportFormat" name="format">
+                            <option value="excel">Excel (.xlsx)</option>
+                            <option value="csv">CSV (.csv)</option>
+                            <option value="pdf">PDF (.pdf)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filter-actions">
+                    <button type="button" class="btn-reset" id="resetFilter">
+                        <i data-lucide="rotate-ccw"></i>
+                        Reset
+                    </button>
+
+                    <button type="button" class="btn-preview" id="previewReport">
+                        <i data-lucide="eye"></i>
+                        Preview Laporan
+                    </button>
+
+                    <button type="button" class="btn-export" id="exportReport">
+                        <i data-lucide="download"></i>
+                        Ekspor Data
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="export-info">
+            <div class="export-info-icon">
                 <i data-lucide="info"></i>
-                Preview tampilan dan data di halaman ini belum terhubung
-                dengan sistem ekspor database.
             </div>
 
-        </section>
+            <div>
+                <h4>Informasi Ekspor Laporan</h4>
+                <p>
+                    Pilih kategori (<strong>Pembelian &amp; Stok</strong> atau <strong>Stok Gudang</strong>) dan periode laporan sebelum melakukan ekspor. Data akan disiapkan sesuai filter yang dipilih dalam format Excel, CSV, atau PDF.
+                </p>
+            </div>
+        </div>
 
-    </main>
+        {{-- PREVIEW LAPORAN --}}
+        <div class="report-section preview-section">
 
-    <script>
-        lucide.createIcons();
+            <div class="section-heading preview-heading">
+                <div>
+                    <span class="section-eyebrow">DATA OVERVIEW</span>
+                    <h2>Preview Laporan</h2>
+                    <p id="previewDescription">
+                        Pratinjau laporan Pembelian &amp; Stok.
+                    </p>
+                </div>
 
+                <span class="preview-status">
+                    <span></span>
+                    Preview
+                </span>
+            </div>
 
-        const currentDate = document.getElementById('currentDate');
+            <div class="preview-table-wrapper">
+                <table class="preview-table" id="previewTable">
+                    <thead id="previewHead">
+                        <tr>
+                            <th>No.</th>
+                            <th>Tanggal</th>
+                            <th>No. Invoice</th>
+                            <th>Supplier</th>
+                            <th>Proyek</th>
+                            <th>Total Unit</th>
+                            <th>Ongkos Kirim</th>
+                            <th>Total Pembelian</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
 
-        currentDate.textContent = new Date().toLocaleDateString('id-ID', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
+                    <tbody id="previewBody">
+                        <tr>
+                            <td colspan="9" class="empty-preview">
+                                <i data-lucide="file-search"></i>
+                                <strong>Memuat preview laporan...</strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="preview-footer">
+                <span id="previewCount">Menunggu data laporan</span>
+                <span>DHD Interior Management System</span>
+            </div>
+
+        </div>
+
+    </section>
+</main>
+
+<script>
+    lucide.createIcons();
+
+    function updateClock() {
+        const now = new Date();
+        const dateEl = document.getElementById('currentDate');
+        const timeEl = document.getElementById('currentTime');
+        if (dateEl) {
+            dateEl.textContent = now.toLocaleDateString('id-ID', {
+                weekday: 'long',
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+        if (timeEl) {
+            timeEl.textContent = now.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit'
+            }) + ' WIB';
+        }
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    const reportType         = document.getElementById('reportType');
+    const startDateInput     = document.getElementById('startDate');
+    const endDateInput       = document.getElementById('endDate');
+    const exportFormatInput  = document.getElementById('exportFormat');
+    const previewHead        = document.getElementById('previewHead');
+    const previewBody        = document.getElementById('previewBody');
+    const previewDescription = document.getElementById('previewDescription');
+    const previewCount       = document.getElementById('previewCount');
+
+    async function loadPreview() {
+        const params = new URLSearchParams({
+            report_type: reportType.value,
+            start_date: startDateInput.value,
+            end_date: endDateInput.value,
         });
 
-        const reportType = document.getElementById('reportType');
-        const previewHead = document.getElementById('previewHead');
-        const previewBody = document.getElementById('previewBody');
-        const previewDescription = document.getElementById('previewDescription');
-        const previewCount = document.getElementById('previewCount');
+        previewBody.innerHTML = `
+            <tr>
+                <td colspan="12" class="empty-preview">
+                    <strong>Memuat data laporan...</strong>
+                </td>
+            </tr>
+        `;
 
-        const previewColumns = {
-            rap: {
-                title: 'Preview Laporan RAP',
-                columns: ['No.', 'Nama Proyek', 'Anggaran', 'Realisasi', 'Selisih', 'Status']
-            },
-            keuangan: {
-                title: 'Preview Laporan Keuangan',
-                columns: ['No.', 'Tanggal', 'Keterangan', 'Kategori', 'Jenis', 'Nominal']
-            },
-            hutang: {
-                title: 'Preview Hutang & Piutang',
-                columns: ['No.', 'Nama Pihak', 'Jenis', 'Tanggal', 'Jatuh Tempo', 'Nominal']
-            },
-            stok: {
-                title: 'Preview Laporan Stok',
-                columns: ['No.', 'Kode Barang', 'Nama Material', 'Stok', 'Satuan', 'Status']
-            }
-        };
+        try {
+            const response = await fetch(`{{ route('laporan.preview') }}?${params.toString()}`);
+            const data = await response.json();
 
-        function renderHeader() {
-            const selected = previewColumns[reportType.value];
+            previewDescription.textContent = data.title;
 
             previewHead.innerHTML = `
                 <tr>
-                    ${selected.columns.map(column => `<th>${column}</th>`).join('')}
+                    ${data.headings.map(col => `<th>${col}</th>`).join('')}
                 </tr>
             `;
 
+            if (!data.rows || data.rows.length === 0) {
+                previewBody.innerHTML = `
+                    <tr>
+                        <td colspan="${data.headings.length}" class="empty-preview">
+                            <strong>Tidak ada data ditemukan</strong>
+                            <span>Coba ubah rentang tanggal atau pilih kategori laporan lain.</span>
+                        </td>
+                    </tr>
+                `;
+                previewCount.textContent = '0 data ditemukan';
+            } else {
+                previewBody.innerHTML = data.rows.map(row => `
+                    <tr>
+                        ${row.map(cell => `<td>${cell}</td>`).join('')}
+                    </tr>
+                `).join('');
+                previewCount.textContent = `Menampilkan ${data.rows.length} baris data`;
+            }
+        } catch (error) {
             previewBody.innerHTML = `
                 <tr>
-                    <td colspan="6" class="empty-preview">
-                        <strong>${selected.title}</strong>
-                        <span>Silakan hubungkan data database untuk menampilkan laporan.</span>
+                    <td colspan="12" class="empty-preview">
+                        <strong>Gagal memuat preview</strong>
+                        <span>Periksa koneksi atau log server Laravel.</span>
                     </td>
                 </tr>
             `;
-
-            previewDescription.textContent = selected.title;
-            previewCount.textContent = 'Belum ada data aktual';
-            lucide.createIcons();
         }
+    }
 
-        document.getElementById('previewReport').addEventListener('click', function () {
-            renderHeader();
+    document.getElementById('previewReport').addEventListener('click', loadPreview);
+    reportType.addEventListener('change', loadPreview);
+
+    document.getElementById('resetFilter').addEventListener('click', function () {
+        document.getElementById('reportForm').reset();
+        loadPreview();
+    });
+
+    document.getElementById('exportReport').addEventListener('click', function () {
+        const params = new URLSearchParams({
+            report_type: reportType.value,
+            start_date: startDateInput.value,
+            end_date: endDateInput.value,
+            format: exportFormatInput.value,
         });
 
-        reportType.addEventListener('change', renderHeader);
+        window.location.href = `{{ route('laporan.export') }}?${params.toString()}`;
+    });
 
-        document.getElementById('resetFilter').addEventListener('click', function () {
-            document.getElementById('reportForm').reset();
+    document.getElementById('cardPembelian')?.addEventListener('click', () => {
+        reportType.value = 'pembelian';
+        loadPreview();
+    });
 
-            renderHeader();
+    document.getElementById('cardStok')?.addEventListener('click', () => {
+        reportType.value = 'stok';
+        loadPreview();
+    });
+
+    // Pencarian cepat di tabel preview
+    document.getElementById('globalSearch')?.addEventListener('input', function () {
+        const q = this.value.toLowerCase();
+        document.querySelectorAll('#previewBody tr').forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
         });
+    });
 
+    function changeTheme() {
+        document.body.classList.toggle('pink-theme');
+        localStorage.setItem('dhd-theme', document.body.classList.contains('pink-theme') ? 'pink' : 'default');
+    }
 
-        document.getElementById('exportReport').addEventListener('click', function () {
-            alert('Fitur ekspor akan aktif setelah integrasi Controller dan database selesai.');
-        });
+    if (localStorage.getItem('dhd-theme') === 'pink') {
+        document.body.classList.add('pink-theme');
+    }
 
-
-        function changeTheme() {
-            document.body.classList.toggle('dark-theme');
-        }
-    </script>
+    loadPreview();
+</script>
 
 </body>
 </html>

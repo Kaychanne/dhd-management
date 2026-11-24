@@ -13,10 +13,13 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/dashboard', function () {
+    return redirect()->route('inventori.index');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/inventori', [MaterialController::class, 'index'])->name('inventori.index');
 
@@ -27,7 +30,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::resource('materials', MaterialController::class);
+// Route::resource('materials', MaterialController::class);
 
 
 Route::get('/masterharga', [MasterHargaController::class, 'index'])
@@ -90,12 +93,9 @@ Route::delete('/stok-gudang/{id}', [StokGudangController::class, 'destroy'])
     ->name('stokgudang.destroy');
 
 
-Route::get('/laporan', [LaporanController::class, 'index'])
-    ->name('laporan.index');
-
-Route::get('/laporan/preview', [LaporanController::class, 'preview'])
-    ->name('laporan.preview');
-
-Route::get('/laporan/export/csv', [LaporanController::class, 'exportCsv'])
-    ->name('laporan.export.csv');
+Route::prefix('laporan')->name('laporan.')->group(function () {
+    Route::get('/', [LaporanController::class, 'index'])->name('index');
+    Route::get('/preview', [LaporanController::class, 'preview'])->name('preview');
+    Route::get('/export', [LaporanController::class, 'export'])->name('export');
+});
 require __DIR__.'/auth.php';
